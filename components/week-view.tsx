@@ -33,7 +33,11 @@ export default function WeekView() {
     const interval = setInterval(() => {
       setCurrentTime(dayjs());
     }, 60000); // Update every minute
-    return () => clearInterval(interval);
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };  
   }, []);
 
   return (
