@@ -25,8 +25,10 @@ export default function DayView() {
 
   return (
     <>
-      <div className="grid grid-cols-[auto_auto_1fr] px-4 py-2">
-        <div className="w-16 mt-2 border-r border-gray-300 text-gray-600 text-xs">GMT -3</div>
+      <div className="grid grid-cols-[auto_auto_1fr] px-4 py-2 border-2 rounded-2xl">
+        <div className="w-16 mt-2 border-r border-gray-300 text-gray-600 text-xs">
+          GMT -3
+        </div>
         <div className="flex w-16 flex-col items-center ml-2">
           <div className={cn("text-xs", isToday && "text-blue-600")}>
             {userSelectedDate.locale(es).format("ddd").toUpperCase()}{" "}
@@ -43,7 +45,7 @@ export default function DayView() {
         <div></div>
       </div>
 
-      <ScrollArea className="h-[70vh]">
+      <ScrollArea className="h-[70vh] border-2 rounded-2xl">
         <div className="grid grid-cols-[auto_1fr] px-4 py-2">
           {/* Time Column */}
           <div className="w-16 border-r border-gray-300">

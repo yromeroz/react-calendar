@@ -3,19 +3,23 @@ import { useDateStore, useViewStore } from "@/lib/store";
 // import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
+// import { get } from "http";
 import React, { Fragment } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 export default function SideBarCalendar() {
   const {
     setMonth,
-    selectedMonthIndex,
-    twoDMonthArray,
     userSelectedDate,
+    twoDMonthSidebarArray,
     setDate,
+    sidebarMonthIndex,
+    setSidebarMonth,
+    sidebarViewDate,
+    setSidebarDate
   } = useDateStore();
   const { selectedView } = useViewStore();
-  const weeksOfMonth = getWeeks(selectedMonthIndex);
+  const weeksOfMonth = getWeeks(sidebarMonthIndex);
 
   function getDayClass(day: dayjs.Dayjs) {
     const nowDay = dayjs().format("DD-MM-YY");
@@ -25,36 +29,37 @@ export default function SideBarCalendar() {
       return "font-bold rounded-full bg-blue-500 text-white";
     } else if (currDay === selDay) {
       return "font-bold rounded-full bg-blue-100 text-blue-600";
-    } else if (currDay.substring(3, 5) !== selDay.substring(3, 5)) {
-      return "text-gray-300";
+    } else if (day.month() !== sidebarMonthIndex) {
+        return "text-gray-300";
     } else {
       return " ";
     }
   }
 
   const handleDayClick = (day: dayjs.Dayjs) => {
-    const currDay = day.format("DD-MM-YY");
-    const selDay = userSelectedDate && userSelectedDate.format("DD-MM-YY");
     switch (selectedView) {
-      case "month":
-        if (currDay.substring(3, 5) < selDay.substring(3, 5)) {
-          setMonth(selectedMonthIndex - 1);
-          setDate(day);
-        } else if (currDay.substring(3, 5) > selDay.substring(3, 5)) {
-          setMonth(selectedMonthIndex + 1);
-          setDate(day);
-        } else setDate(day);
+      case "month":        
+        if (day.month() !== sidebarMonthIndex) {         
+          setSidebarMonth(day.month());
+          setMonth(day.month());
+        } 
+        setSidebarDate(day);
+        setDate(day);
         break;
       case "week":
-        if (currDay.substring(3, 5) < selDay.substring(3, 5)) {
-          setMonth(selectedMonthIndex - 1);
-          setDate(day);
-        } else if (currDay.substring(3, 5) > selDay.substring(3, 5)) {
-          setMonth(selectedMonthIndex + 1);
-          setDate(day);
-        } else setDate(day);
+        if (day.month() !== sidebarMonthIndex) {         
+          setSidebarMonth(day.month());
+          setMonth(day.month());
+        } 
+        setSidebarDate(day);
+        setDate(day);        
         break;
       case "day":
+        if (day.month() !== sidebarMonthIndex) {         
+          setSidebarMonth(day.month());
+          setMonth(day.month());
+        } 
+        setSidebarDate(day);        
         setDate(day);
         break;
       default:
@@ -62,14 +67,24 @@ export default function SideBarCalendar() {
     }
   };
 
-  const handlePrevClick = () => {
-    setMonth(selectedMonthIndex - 1); 
-    setDate(userSelectedDate.subtract(1, "month"));
+  const handlePrevClick = (): void => {
+    const prevDay = sidebarViewDate.subtract(1, "month");
+    setSidebarDate(prevDay); 
+    if (sidebarMonthIndex ===  0) {
+      setSidebarMonth(11);
+    } else {
+      setSidebarMonth(sidebarMonthIndex - 1);
+    } 
   };
 
-  const handleNextClick = () => { 
-    setMonth(selectedMonthIndex + 1);
-    setDate(userSelectedDate.add(1, "month"));
+  const handleNextClick = (): void => {
+    const nextDay = sidebarViewDate.add(1, "month");
+    setSidebarDate(nextDay); 
+    if (sidebarMonthIndex ===  11) {
+      setSidebarMonth(0);
+    } else {
+      setSidebarMonth(sidebarMonthIndex + 1);
+    }     
   };
 
   function capitalizeFirstLetter(str: string) {
@@ -81,22 +96,19 @@ export default function SideBarCalendar() {
     <div className="my-6 p-2">
       <div className="flex items-center justify-between">
         <h4 className="text-sm">
-          {capitalizeFirstLetter(
-            dayjs(new Date(dayjs().year(), selectedMonthIndex))
-            .locale(es)
-            .format("MMMM YYYY")
-            )}
+          {capitalizeFirstLetter(sidebarViewDate
+              .locale(es)
+              .format("MMMM YYYY"),
+          )}
         </h4>
         <div className="flex items-center gap-3">
           <MdKeyboardArrowLeft
             className="size-5 cursor-pointer font-bold"
             onClick={() => handlePrevClick()}
-            // onClick={() => (selectedMonthIndex - 1)}
           />
           <MdKeyboardArrowRight
             className="size-5 cursor-pointer font-bold"
             onClick={() => handleNextClick()}
-            // onClick={() => setMonth(selectedMonthIndex + 1)}
           />
         </div>
       </div>
@@ -116,7 +128,7 @@ export default function SideBarCalendar() {
       {/* Main Content: Weeks and Days */}
       <div className="mt-2 grid grid-cols-[auto_1fr] text-xs">
         {/* Week Number  column */}
-        <div className="grid w-6 grid-rows-5 gap-1 gap-y-3 rounded-sm bg-gray-200 p-1">
+        <div className="grid w-6 grid-rows-4 gap-1 gap-y-3 rounded-sm bg-gray-200 p-1">
           {weeksOfMonth.map((week, i) => (
             <span
               key={i}
@@ -129,8 +141,8 @@ export default function SideBarCalendar() {
 
         {/* Dates grid */}
 
-        <div className="grid grid-cols-7 grid-rows-5 gap-1 gap-y-3 rounded-sm p-1 text-xs">
-          {twoDMonthArray.map((row, i) => (
+        <div className="grid grid-cols-7 grid-rows-4 gap-1 gap-y-3 rounded-sm p-1 text-xs">
+          {twoDMonthSidebarArray.map((row, i) => (
             <Fragment key={i}>
               {row.map((day, index) => (
                 <button

@@ -14,6 +14,11 @@ interface DateStoreType {
   twoDMonthArray: dayjs.Dayjs[][];
   selectedMonthIndex: number;
   setMonth: (index: number) => void;
+  twoDMonthSidebarArray: dayjs.Dayjs[][];
+  sidebarMonthIndex: number;
+  setSidebarMonth: (index: number) => void;
+  sidebarViewDate: Dayjs;
+  setSidebarDate: (date: Dayjs) => void;
 }
 
 export type CalendarEventType = {
@@ -66,6 +71,15 @@ export const useDateStore = create<DateStoreType>()(
         },
         setMonth: (index) => {
           set({ twoDMonthArray: getMonth(index), selectedMonthIndex: index });
+        },
+        twoDMonthSidebarArray: getMonth(),
+        sidebarMonthIndex: dayjs().month(),
+        setSidebarMonth: (index) => {
+          set({ twoDMonthSidebarArray: getMonth(index), sidebarMonthIndex: index });
+        },
+        sidebarViewDate: dayjs(),
+        setSidebarDate: (value: Dayjs) => {
+          set({ sidebarViewDate: value });
         },
       }),
       { name: "date_data", skipHydration: true },

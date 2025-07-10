@@ -27,7 +27,7 @@ export default function Create() {
     <>
       <Button
         variant="ghost"
-        className="w-[150px] justify-center py-5 shadow border-2"
+        className="w-[100px] justify-center py-5 shadow border-2"
         onClick={handleOpenPopover}
       >
         <span> Reservar </span>{" "}

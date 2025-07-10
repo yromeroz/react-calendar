@@ -4,47 +4,64 @@ import React from "react";
 import { Menu } from "lucide-react";
 import { Button } from "../ui/button";
 // import Image from "next/image";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { MdCalendarMonth, MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { useDateStore, useToggleSideBarStore, useViewStore } from "@/lib/store";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 
 export default function HeaderLeft() {
-  const todaysDate = dayjs();
-  const { userSelectedDate, setDate, setMonth, selectedMonthIndex } =
+  // const todaysDate = dayjs();
+  const { userSelectedDate, setDate, setMonth, selectedMonthIndex, setSidebarMonth, setSidebarDate } =
     useDateStore();
 
   const { setSideBarOpen } = useToggleSideBarStore();
 
   const { selectedView } = useViewStore();
 
-  const handleTodayClick = () => {
-    switch (selectedView) {
-      case "month":
-        setMonth(dayjs().month());
-        break;
-      case "week":
-        setDate(todaysDate);
-        break;
-      case "day":
-        setDate(todaysDate);
-        setMonth(dayjs().month());
-        break;
-      default:
-        break;
-    }
-  };
+  // const handleTodayClick = () => {
+  //   switch (selectedView) {
+  //     case "month":
+  //       setMonth(dayjs().month());
+  //       break;
+  //     case "week":
+  //       setDate(todaysDate);
+  //       break;
+  //     case "day":
+  //       setDate(todaysDate);
+  //       setMonth(dayjs().month());
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
   const handlePrevClick = () => {
     switch (selectedView) {
       case "month":
         setMonth(selectedMonthIndex - 1);
+        setDate(dayjs().month(selectedMonthIndex - 1).date(1));
+        setSidebarMonth(selectedMonthIndex - 1);
+        setSidebarDate(dayjs().month(selectedMonthIndex - 1).date(1));
         break;
       case "week":
-        setDate(userSelectedDate.subtract(1, "week"));
+        const prevWeekDay = userSelectedDate.subtract(1, "week");        
+        if (prevWeekDay.month() < selectedMonthIndex) {
+          setMonth(selectedMonthIndex - 1);
+          setDate(prevWeekDay);
+          setSidebarMonth(selectedMonthIndex - 1);
+        } else {  
+          setDate(prevWeekDay);
+        }  
         break;
       case "day":
-        setDate(userSelectedDate.subtract(1, "day"));
+        const prevDay = userSelectedDate.subtract(1, "day");        
+        if (prevDay.month() < selectedMonthIndex) {
+          setMonth(selectedMonthIndex - 1);
+          setDate(prevDay);
+          setSidebarMonth(selectedMonthIndex - 1);
+        } else {  
+          setDate(prevDay);
+        }        
         break;
       default:
         break;
@@ -54,13 +71,30 @@ export default function HeaderLeft() {
   const handleNextClick = () => {
     switch (selectedView) {
       case "month":
-        setMonth(selectedMonthIndex + 1);
+        setMonth(selectedMonthIndex + 1);        
+        setDate(dayjs().month(selectedMonthIndex + 1).date(1));
+        setSidebarMonth(selectedMonthIndex + 1);
+        setSidebarDate(dayjs().month(selectedMonthIndex + 1).date(1));
         break;
       case "week":
-        setDate(userSelectedDate.add(1, "week"));
-        break;
+        const nextWeekDay = userSelectedDate.add(1, "week");        
+        if (nextWeekDay.month() > selectedMonthIndex) {
+          setMonth(selectedMonthIndex + 1);
+          setDate(nextWeekDay);
+          setSidebarMonth(selectedMonthIndex + 1);
+        } else {         
+          setDate(nextWeekDay);
+        }        
+        break;        
       case "day":
-        setDate(userSelectedDate.add(1, "day"));
+        const nextDay = userSelectedDate.add(1, "day");        
+        if (nextDay.month() > selectedMonthIndex) {        
+          setMonth(selectedMonthIndex + 1);
+          setDate(nextDay);
+          setSidebarMonth(selectedMonthIndex + 1);
+        } else {
+          setDate(nextDay);
+        }
         break;
       default:
         break;
@@ -84,14 +118,15 @@ export default function HeaderLeft() {
           height={40}
           alt="icon"
         /> */}
-        {/* <h1 className="text-xl"> || Reserva de locales || </h1> */}
-        <div className="box-sizing-content border ml-44 text-xs "/>
+        <MdCalendarMonth size={32} className="text-gray-500 ml-1" />
+        <h1 className="text-xl px-1"> Calendario </h1>
+        <div className="box-sizing-content border-0 ml-12 text-xs "/>
       </div>
 
       {/* Today Button */}
-      <Button variant="outline" onClick={handleTodayClick}>
+      {/* <Button variant="outline" onClick={handleTodayClick}>
         Hoy
-      </Button>
+      </Button> */}
 
       {/* Navigation Controls */}
       <div className="flex items-center gap-3">

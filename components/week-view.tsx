@@ -3,10 +3,9 @@ import { useDateStore, useEventStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { ScrollArea } from "./ui/scroll-area";
 import { EventRenderer } from "./event-renderer";
-
 
 export default function WeekView() {
   const [currentTime, setCurrentTime] = useState(dayjs());
@@ -14,7 +13,23 @@ export default function WeekView() {
 
   const { userSelectedDate, setDate } = useDateStore();
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
+    const timer = setTimeout(() => {
+      if (scrollContainerRef.current) {
+        const scrollArea = scrollContainerRef.current.closest(
+          "[data-radix-scroll-area-viewport]",
+        ) as HTMLElement | null;
+
+        if (scrollArea) {
+          const hoursOffset = 7; // Scroll to 7 AM
+          const hourHeight = 64; // Adjust this value based on actual rendered height
+          scrollArea.scrollTop = hoursOffset * hourHeight;
+        }
+      }
+    }, 50); // Delay ensures DOM is ready
+
     const interval = setInterval(() => {
       setCurrentTime(dayjs());
     }, 60000); // Update every minute
@@ -23,7 +38,7 @@ export default function WeekView() {
 
   return (
     <>
-      <div className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] place-items-center px-4 py-2">
+      <div className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] place-items-center px-4 py-2  border-2 rounded-2xl">
         <div className="w-16 border-r border-gray-300">
           <div className="relative h-16">
             <div className="absolute top-2 text-xs text-gray-600">GMT -3</div>
@@ -51,12 +66,19 @@ export default function WeekView() {
 
       {/* Time Column & Corresponding Boxes of time per each date  */}
 
-      <ScrollArea className="h-[70vh]">
-        <div className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] px-4 py-2">
+      <ScrollArea className="h-[70vh] border-2 rounded-2xl">
+        <div
+          ref={scrollContainerRef}
+          className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] px-4 py-2"
+        >
           {/* Time Column */}
           <div className="w-16 border-r border-gray-300">
             {getHours.map((hour, index) => (
-              <div key={index} className="relative h-16">
+              <div
+                key={index}
+                id={hour.format("HH") === "07" ? "start-hour-7" : undefined}
+                className="relative h-16"
+              >
                 <div className="absolute -top-2 text-xs text-gray-600">
                   {hour.format("HH:mm")}
                 </div>
