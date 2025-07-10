@@ -14,8 +14,11 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Google Calendar Clone",
-  description: "Making Scheduling possible",
+  title: "Calendario",
+  description: "Planificacion de salones y cursos",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
