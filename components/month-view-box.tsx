@@ -1,14 +1,13 @@
 import { useDateStore, useEventStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
-import es from "dayjs/locale/es";
 import React from "react";
 import { EventRenderer } from "./event-renderer";
 
 
 export default function MonthViewBox({
   day,
-  rowIndex,
+  // rowIndex,
 }: {
   day: dayjs.Dayjs | null;
   rowIndex: number;
@@ -50,7 +49,7 @@ export default function MonthViewBox({
         )} */}
         <h4
           className={cn(
-            "text-start text-sm font-semibold pl-2 pt-1",
+            "text-start text-sm pl-2 pt-1",
             isToday &&
               "flex h-8 w-8 justify-items-start justify-start rounded-full bg-blue-600 text-white",
             isOutsideMonth && "text-gray-400",  

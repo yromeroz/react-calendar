@@ -62,7 +62,7 @@ export default function DayView() {
 
         {getRooms().map((room, index) => (
           <div key={index} className="flex flex-col items-center">
-            <div className={cn("text-xml")}>
+            <div className={cn("text-sm")}>
               {room.name.toUpperCase()}
             </div>
           </div>
