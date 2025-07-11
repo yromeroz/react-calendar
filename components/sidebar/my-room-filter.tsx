@@ -7,7 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useViewStore } from "@/lib/store";
 export default function MyFilters() {
 
   // const { setView } = useViewStore();
