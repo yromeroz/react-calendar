@@ -30,10 +30,10 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
             e.stopPropagation();
             openEventSummary(event);
           }}
-          className="line-clamp-2 w-[90%] cursor-pointer rounded-sm bg-green-700 p-1 text-sm text-white"
+          className="line-clamp-1 w-[90%] cursor-pointer rounded-sm bg-blue-300 p-1 text-sm text-black"
         >
-          <p>{event.date.format("h:mm A")}</p>
-          {event.title}
+          <p>[{event.date.format("h:mma")}] {event.title}</p>
+          
         </div>
       ))}
     </>

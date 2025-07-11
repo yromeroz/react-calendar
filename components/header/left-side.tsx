@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 // import Image from "next/image";
 import { MdCalendarMonth, MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { useDateStore, useToggleSideBarStore, useViewStore } from "@/lib/store";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 
@@ -149,10 +150,12 @@ export default function HeaderLeft() {
       </div>
 
       {/* Current Month and Year Display */}
-      <h1 className="hidden text-xl lg:block">
-        {dayjs(new Date(dayjs().year(), selectedMonthIndex)).locale(es).format(
-          "MMMM YYYY",
-        ).toUpperCase()}
+      <h1 className="hidden text-xl font-semibold lg:block">
+        {capitalizeFirstLetter(
+          dayjs(new Date(dayjs().year(), selectedMonthIndex))
+                .locale(es)
+                .format("MMMM YYYY",))
+        }
       </h1>
     </div>
   );

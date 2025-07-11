@@ -1,5 +1,6 @@
 import { getWeeks } from "@/lib/getTime";
 import { useDateStore, useViewStore } from "@/lib/store";
+import { capitalizeFirstLetter } from "@/lib/utils"
 // import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
@@ -72,11 +73,6 @@ export default function SideBarCalendar() {
       setSidebarMonth(sidebarMonthIndex + 1);
     }    
   };
-
-  function capitalizeFirstLetter(str: string) {
-    if (!str) return str; // Handle empty strings
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  }
 
   return (
     <div className="my-6 p-2">
