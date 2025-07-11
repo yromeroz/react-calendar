@@ -46,7 +46,6 @@ export default function DayView() {
   return (
     <>
       <div className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr] place-items-center px-4 py-1 border-2 rounded-2xl">
-        {/* <div className="w-16 mt-2 border-r border-gray-300 text-gray-600 text-xs"> */}
         <div className="flex w-16 flex-col items-center border-r border-gray-300 pr-4">  
           <div className={cn("text-xs", isToday && "text-blue-600")}>
             {userSelectedDate.locale(es).format("ddd").toUpperCase()}{" "}
@@ -60,20 +59,6 @@ export default function DayView() {
             {userSelectedDate.format("DD")}{" "}
           </div>
         </div>
-        {/* <div className="flex w-16 flex-col items-center ml-2">
-          <div className={cn("text-xs", isToday && "text-blue-600")}>
-            {userSelectedDate.locale(es).format("ddd").toUpperCase()}{" "}
-          </div>{" "}
-          <div
-            className={cn(
-              "h-12 w-12 rounded-full p-2 text-2xl",
-              isToday && "bg-blue-600 text-white",
-            )}
-          >
-            {userSelectedDate.format("DD")}{" "}
-          </div>
-        </div> */}
-        {/* Week View Header */}
 
         {getRooms().map((rooms, index) => (
           <div key={index} className="flex flex-col items-center">
@@ -107,9 +92,11 @@ export default function DayView() {
           {/* Day/Boxes Column */}
           {getRooms().map(
             (rooms, index) => {
-
               return (
-                <div className="relative border-r border-gray-300">
+                <div 
+                  key={index}
+                  id={rooms.id.toString()}
+                  className="relative border-r border-gray-300">
                   {getHours.map((hour, i) => (
                     <div
                       key={i}
