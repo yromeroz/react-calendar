@@ -49,8 +49,10 @@ export default function HeaderLeft() {
           setMonth(selectedMonthIndex - 1);
           setDate(prevWeekDay);
           setSidebarMonth(selectedMonthIndex - 1);
+          setSidebarDate(prevWeekDay);
         } else {  
           setDate(prevWeekDay);
+          setSidebarDate(prevWeekDay);
         }  
         break;
       case "day":
@@ -59,8 +61,10 @@ export default function HeaderLeft() {
           setMonth(selectedMonthIndex - 1);
           setDate(prevDay);
           setSidebarMonth(selectedMonthIndex - 1);
+          setSidebarDate(prevDay);
         } else {  
           setDate(prevDay);
+          setSidebarDate(prevDay);
         }        
         break;
       default:
@@ -82,8 +86,10 @@ export default function HeaderLeft() {
           setMonth(selectedMonthIndex + 1);
           setDate(nextWeekDay);
           setSidebarMonth(selectedMonthIndex + 1);
+          setSidebarDate(nextWeekDay);
         } else {         
           setDate(nextWeekDay);
+          setSidebarDate(nextWeekDay);
         }        
         break;        
       case "day":
@@ -92,8 +98,10 @@ export default function HeaderLeft() {
           setMonth(selectedMonthIndex + 1);
           setDate(nextDay);
           setSidebarMonth(selectedMonthIndex + 1);
+          setSidebarDate(nextDay);
         } else {
           setDate(nextDay);
+          setSidebarDate(nextDay);
         }
         break;
       default:

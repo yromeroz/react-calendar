@@ -3,14 +3,12 @@ import { useDateStore, useViewStore } from "@/lib/store";
 // import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
-// import { get } from "http";
 import React, { Fragment } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 export default function SideBarCalendar() {
   const {
     setMonth,
-    userSelectedDate,
     twoDMonthSidebarArray,
     setDate,
     sidebarMonthIndex,
@@ -22,9 +20,9 @@ export default function SideBarCalendar() {
   const weeksOfMonth = getWeeks(sidebarMonthIndex);
 
   function getDayClass(day: dayjs.Dayjs) {
-    const nowDay = dayjs().format("DD-MM-YY");
-    const currDay = day.format("DD-MM-YY");
-    const selDay = userSelectedDate && userSelectedDate.format("DD-MM-YY");
+    const nowDay = dayjs().locale(es).format("DD-MM-YY");
+    const currDay = day.locale(es).format("DD-MM-YY");
+    const selDay = sidebarViewDate && sidebarViewDate.locale(es).format("DD-MM-YY");
     if (nowDay === currDay) {
       return "font-bold rounded-full bg-blue-500 text-white";
     } else if (currDay === selDay) {
@@ -38,29 +36,15 @@ export default function SideBarCalendar() {
 
   const handleDayClick = (day: dayjs.Dayjs) => {
     switch (selectedView) {
-      case "month":        
-        if (day.month() !== sidebarMonthIndex) {         
-          setSidebarMonth(day.month());
-          setMonth(day.month());
-        } 
-        setSidebarDate(day);
-        setDate(day);
-        break;
-      case "week":
-        if (day.month() !== sidebarMonthIndex) {         
-          setSidebarMonth(day.month());
-          setMonth(day.month());
-        } 
-        setSidebarDate(day);
-        setDate(day);        
-        break;
+      case "month":
+      case "week":  
       case "day":
+        setSidebarDate(day);
         if (day.month() !== sidebarMonthIndex) {         
           setSidebarMonth(day.month());
-          setMonth(day.month());
-        } 
-        setSidebarDate(day);        
+        }        
         setDate(day);
+        setMonth(day.month());
         break;
       default:
         break;
@@ -69,22 +53,24 @@ export default function SideBarCalendar() {
 
   const handlePrevClick = (): void => {
     const prevDay = sidebarViewDate.subtract(1, "month");
-    setSidebarDate(prevDay); 
+    setSidebarDate(prevDay);
+    setDate(prevDay); 
     if (sidebarMonthIndex ===  0) {
       setSidebarMonth(11);
     } else {
       setSidebarMonth(sidebarMonthIndex - 1);
-    } 
+    }     
   };
 
   const handleNextClick = (): void => {
     const nextDay = sidebarViewDate.add(1, "month");
-    setSidebarDate(nextDay); 
+    setSidebarDate(nextDay);
+    setDate(nextDay); 
     if (sidebarMonthIndex ===  11) {
       setSidebarMonth(0);
     } else {
       setSidebarMonth(sidebarMonthIndex + 1);
-    }     
+    }    
   };
 
   function capitalizeFirstLetter(str: string) {
@@ -98,17 +84,23 @@ export default function SideBarCalendar() {
         <h4 className="text-sm">
           {capitalizeFirstLetter(sidebarViewDate
               .locale(es)
-              .format("MMMM YYYY"),
+              .format("MMMM YYYY"),  
           )}
         </h4>
         <div className="flex items-center gap-3">
           <MdKeyboardArrowLeft
             className="size-5 cursor-pointer font-bold"
-            onClick={() => handlePrevClick()}
+            onClick={() => {
+              handlePrevClick();
+            }
+            }
           />
           <MdKeyboardArrowRight
             className="size-5 cursor-pointer font-bold"
-            onClick={() => handleNextClick()}
+            onClick={() => {
+              handleNextClick();
+              }
+            }
           />
         </div>
       </div>

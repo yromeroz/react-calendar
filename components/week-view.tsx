@@ -42,7 +42,7 @@ export default function WeekView() {
 
   return (
     <>
-      <div className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] place-items-center px-4 py-2  border-2 rounded-2xl">
+      <div className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] place-items-center pl-4 py-1 border-2 rounded-2xl">
         <div className="w-16 border-r border-gray-300">
           <div className="relative h-16">
             <div className="absolute top-2 text-xs text-gray-600">GMT -3</div>
@@ -58,7 +58,7 @@ export default function WeekView() {
             </div>
             <div
               className={cn(
-                "h-12 w-12 rounded-full p-2 text-2xl",
+                "h-10 w-10 rounded-full px-2 pt-1 text-xl",
                 today && "bg-blue-600 text-white",
               )}
             >
@@ -70,10 +70,10 @@ export default function WeekView() {
 
       {/* Time Column & Corresponding Boxes of time per each date  */}
 
-      <ScrollArea className="h-[70vh] border-2 rounded-2xl">
+      <ScrollArea className="h-[75vh] border-2 rounded-2xl">
         <div
           ref={scrollContainerRef}
-          className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] px-4 py-2"
+          className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] pl-4 py-2"
         >
           {/* Time Column */}
           <div className="w-16 border-r border-gray-300">
@@ -84,7 +84,7 @@ export default function WeekView() {
                 className="relative h-16"
               >
                 <div className="absolute -top-2 text-xs text-gray-600">
-                  {hour.format("HH:mm")}
+                  {hour.format("h:mm A")}
                 </div>
               </div>
             ))}

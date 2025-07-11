@@ -66,20 +66,20 @@ export const useDateStore = create<DateStoreType>()(
         userSelectedDate: dayjs(),
         twoDMonthArray: getMonth(),
         selectedMonthIndex: dayjs().month(),
+        sidebarViewDate: dayjs(),        
+        twoDMonthSidebarArray: getMonth(),
+        sidebarMonthIndex: dayjs().month(),                
         setDate: (value: Dayjs) => {
           set({ userSelectedDate: value });
         },
+        setSidebarDate: (value: Dayjs) => {
+          set({ sidebarViewDate: value });
+        },        
         setMonth: (index) => {
           set({ twoDMonthArray: getMonth(index), selectedMonthIndex: index });
         },
-        twoDMonthSidebarArray: getMonth(),
-        sidebarMonthIndex: dayjs().month(),
-        setSidebarMonth: (index) => {
-          set({ twoDMonthSidebarArray: getMonth(index), sidebarMonthIndex: index });
-        },
-        sidebarViewDate: dayjs(),
-        setSidebarDate: (value: Dayjs) => {
-          set({ sidebarViewDate: value });
+        setSidebarMonth: (idx) => {
+          set({ twoDMonthSidebarArray: getMonth(idx), sidebarMonthIndex: idx });
         },
       }),
       { name: "date_data", skipHydration: true },
