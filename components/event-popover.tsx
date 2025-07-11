@@ -106,7 +106,7 @@ export default function EventPopover({
             <Input
               type="text"
               name="title"
-              placeholder="Adicionar <Tipo de reserva/Curso>"
+              placeholder="Adicionar <Salón / Curso> "
               className="my-4 rounded-none border-0 border-b text-2xl focus-visible:border-b-2 focus-visible:border-b-blue-600 focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>

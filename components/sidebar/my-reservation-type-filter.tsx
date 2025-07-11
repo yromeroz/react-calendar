@@ -7,10 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useViewStore } from "@/lib/store";
-
 export default function MyResTypeFilter() {
-  const { setView } = useViewStore();
 
   const myResTypes = [
     { id: "1", name: "Reunión" },
@@ -25,7 +22,7 @@ export default function MyResTypeFilter() {
   return (
     <div className="p-1 flex items-center space-x-4">
       {/* <SearchComponent /> */}
-      <Select onValueChange={(v) => setView(v)}>
+      <Select>
         <SelectTrigger className="w-48 h-6 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-full text-gray-500">
           <SelectValue placeholder="Tipo de Reserva" />
         </SelectTrigger>

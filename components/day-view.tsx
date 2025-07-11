@@ -5,7 +5,7 @@ import es from "dayjs/locale/es";
 import React, { useEffect, useState, useRef } from "react";
 import { ScrollArea } from "./ui/scroll-area";
 import { getHours, isCurrentDay } from "@/lib/getTime";
-import { getRooms, rooms } from "@/lib/data";
+import { getRooms } from "@/lib/data";
 import { EventRenderer } from "./event-renderer";
 
 
@@ -60,10 +60,10 @@ export default function DayView() {
           </div>
         </div>
 
-        {getRooms().map((rooms, index) => (
+        {getRooms().map((room, index) => (
           <div key={index} className="flex flex-col items-center">
             <div className={cn("text-xml")}>
-              {rooms.name.toUpperCase()}
+              {room.name.toUpperCase()}
             </div>
           </div>
         ))}
@@ -91,11 +91,11 @@ export default function DayView() {
 
           {/* Day/Boxes Column */}
           {getRooms().map(
-            (rooms, index) => {
+            (room, index) => {
               return (
                 <div 
                   key={index}
-                  id={rooms.id.toString()}
+                  id={room.id.toString()}
                   className="relative border-r border-gray-300">
                   {getHours.map((hour, i) => (
                     <div

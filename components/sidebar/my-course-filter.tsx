@@ -7,10 +7,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useViewStore } from "@/lib/store";
 
 export default function MyFilters() {
-  const { setView } = useViewStore();
 
   const myCourses = [
     { id: "1", name: "Economía" },
@@ -25,7 +23,7 @@ export default function MyFilters() {
     <div className="p-1 flex items-center space-x-4">
       {/* <SearchComponent /> */}
       <div>
-      <Select onValueChange={(v) => setView(v)}>
+      <Select>
         <SelectTrigger className="w-48 h-6 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-full text-gray-500">
           <SelectValue placeholder="Cursos" />
         </SelectTrigger>

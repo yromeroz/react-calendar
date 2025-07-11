@@ -3,22 +3,22 @@ import dayjs from "dayjs";
 
 // Dummy event data for demonstration
 export const monthEvents = [
-    {id: "ascx34", date: dayjs(), title: "Meeting with team", description: "We are meeting" },
-    {id: "ascx35", date: dayjs().hour(10), title: "Code review", description: "We are meeting for code review"  },
-    {id: "ascx36", date: dayjs().add(3, "day"), title: "Project deadline", description: "We are meeting"  },
+    {id: "ascx34", date: dayjs(), title: "Reunión con el equipo", description: "Reunión de coordinación" },
+    {id: "ascx35", date: dayjs().hour(10), title: "Revisión de código", description: "Reunión para revisar el código"  },
+    {id: "ascx36", date: dayjs().add(3, "day"), title: "Chequeo de proyecto", description: "Reunión de chequeo de proyecto"  },
     // More events
   ];
 
 
   export const weekEvents = [
-    {id: "ascx34", date: dayjs().hour(10), title: "Meeting with team", description: "We are meeting" },
-    {id: "ascx35", date: dayjs().add(3, "day").hour(14), title: "Project deadline", description: "We are meeting" },
+    {id: "ascx34", date: dayjs().hour(10), title: "Reunión con el equipo", description: "Reunión de coordinación" },
+    {id: "ascx35", date: dayjs().add(3, "day").hour(14), title: "Chequeo de proyecto", description: "Reunión de chequeo de proyecto" },
   ];
 
 
   export const dayEvents = [
-    {id: "ascx34", date: dayjs().hour(10), title: "Meeting with team", description: "We are meeting" },
-    {id: "ascx35", date: dayjs().hour(14), title: "Project deadline", description: "We are meeting" },
+    {id: "ascx34", date: dayjs().hour(10), title: "Reunión con el equipo", description: "Reunión de coordinación" },
+    {id: "ascx35", date: dayjs().hour(14), title: "Chequeo de proyecto", description: "Reunión de chequeo de proyecto" },
   ];
 
 
