@@ -8,16 +8,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { getCourses } from "@/lib/data";
+
 export default function MyFilters() {
 
-  const myCourses = [
-    { id: "1", name: "Economía" },
-    { id: "2", name: "Antropología" },
-    { id: "3", name: "Análisis matemático" },
-    { id: "4", name: "Administración de empresas" },
-    { id: "5", name: "Psicología" },
-    { id: "6", name: "Informática" },
-  ]
+  const courses = getCourses();
 
   return (
     <div className="p-1 flex items-center space-x-4">
@@ -28,7 +23,7 @@ export default function MyFilters() {
           <SelectValue placeholder="Cursos" />
         </SelectTrigger>
         <SelectContent>
-          {myCourses.map((course) => (
+          {courses.map((course) => (
             <SelectItem key={course.id} value={course.name}>{course.name}</SelectItem>
           ))}
         </SelectContent>

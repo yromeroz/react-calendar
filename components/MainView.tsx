@@ -38,6 +38,9 @@ export default function MainView({
       date: dayjs(event.date),
       title: event.title,
       description: event.description,
+      room: event.room,
+      course: event.course,
+      reservationType: event.reservationType,
     }));
 
     setEvents(mappedEvents);

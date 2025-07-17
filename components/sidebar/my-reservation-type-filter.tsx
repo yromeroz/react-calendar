@@ -7,17 +7,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getReservationTypes } from "@/lib/data";
 export default function MyResTypeFilter() {
-
-  const myResTypes = [
-    { id: "1", name: "Reunión" },
-    { id: "2", name: "Examen" },
-    { id: "3", name: "Conferencia" },
-    { id: "4", name: "Seminario" },
-    { id: "5", name: "Taller" },
-    { id: "6", name: "Otro evento" },
-  ]
-
+  const resTypes = getReservationTypes();
 
   return (
     <div className="p-1 flex items-center space-x-4">
@@ -27,7 +19,7 @@ export default function MyResTypeFilter() {
           <SelectValue placeholder="Tipo de Reserva" />
         </SelectTrigger>
         <SelectContent>
-          {myResTypes.map((restype) => (
+          {resTypes.map((restype) => (
             <SelectItem key={restype.id} value={restype.name}>{restype.name}</SelectItem>
           ))}
         </SelectContent>

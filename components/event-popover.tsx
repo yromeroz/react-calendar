@@ -1,19 +1,28 @@
+"use client";
+
 import React, { useEffect, useRef, useState, useTransition } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea"; 
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import {
-  HiOutlineMenuAlt2,
   HiOutlineMenuAlt4,
-  HiOutlineUsers,
+  HiOutlineUser,
 } from "react-icons/hi";
+import {
+  MdNotes,
+  MdOutlineCategory,
+  MdOutlineClass,
+  MdOutlineMeetingRoom,
+} from "react-icons/md";
 import { IoCloseSharp } from "react-icons/io5";
-import { IoMdCalendar } from "react-icons/io";
 import { FiClock } from "react-icons/fi";
 import AddTime from "./add-time";
 import { createEvent } from "@/app/actions/event-actions";
-import { cn } from "@/lib/utils";
+// import { cn } from "@/lib/utils";
+import { getRooms, getCourses, getReservationTypes } from "@/lib/data";
+import { capitalizeFirstLetter } from "@/lib/utils";
 
 interface EventPopoverProps {
   isOpen: boolean;
@@ -31,6 +40,12 @@ export default function EventPopover({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [selectedRoom, setRoom]  = useState("");
+  const [selectedCourse, setCourse] = useState("");
+  const [selectedReservationType, setReservationType] = useState("");
+  const rooms = getRooms();
+  const courses = getCourses();
+  const reservationTypes = getReservationTypes();  
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -63,6 +78,7 @@ export default function EventPopover({
   async function onSubmit(formData: FormData) {
     setError(null);
     setSuccess(null);
+    // console.log("Form Data:", Object.fromEntries(formData));
     startTransition(async () => {
       try {
         const result = await createEvent(formData);
@@ -75,7 +91,9 @@ export default function EventPopover({
           }, 2000);
         }
       } catch {
-        setError("Ha ocurrido un error inesperado. Por favor, intente nuevamente.");
+        setError(
+          "Ha ocurrido un error inesperado. Por favor, intente nuevamente.",
+        );
       }
     });
   }
@@ -87,11 +105,11 @@ export default function EventPopover({
     >
       <div
         ref={popoverRef}
-        className="w-full max-w-md rounded-lg bg-white shadow-lg"
+        className="w-96 max-w-md rounded-2xl bg-white shadow-lg"
         onClick={handlePopoverClick}
       >
-        <div className="mb-2 flex items-center justify-between rounded-md bg-slate-100 p-1">
-          <HiOutlineMenuAlt4 />
+        <div className="mb-2 flex items-center justify-between rounded-2xl bg-slate-100 p-1">
+          <HiOutlineMenuAlt4 className="ml-1" />
           <Button
             variant="ghost"
             size="icon"
@@ -106,26 +124,41 @@ export default function EventPopover({
             <Input
               type="text"
               name="title"
-              placeholder="Adicionar <Salón / Curso> "
-              className="my-4 rounded-none border-0 border-b text-2xl focus-visible:border-b-2 focus-visible:border-b-blue-600 focus-visible:ring-0 focus-visible:ring-offset-0"
+              placeholder="Título del evento"
+              className="my-2 rounded-none border-0 border-b text-lg focus-visible:border-b-2 focus-visible:border-b-blue-600 focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
           <div className="flex items-center justify-between">
-            <Button className="bg-blue-100 text-blue-700 hover:bg-blue-100 hover:text-blue-700">
-              Reserva
-            </Button>
-            {/* <Button type="button" variant="ghost">
-              Task
-            </Button>
-            <Button type="button" variant="ghost">
-              Appointmet Schedule <sup className="bg-blue-500">new</sup>
-            </Button> */}
+            {/* <div className="w-auto px-4 py-2 text-blue-700 text-lg">
+              Reserva de local
+            </div> */}
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <MdOutlineMeetingRoom className="size-5 text-slate-600" />
+            <select
+              id="rooms"
+              name="room"
+              value={selectedRoom}
+              onChange={(e) => setRoom(e.target.value)}
+              className="w-72 pl-4 py-2 text-sm rounded-lg border-0 bg-slate-100 text-gray-500 placeholder:text-slate-600 placeholder:text-sm"
+            >
+              <option value="">Elija un salón</option>
+              {rooms.map((room) => (
+                <option key={room.id} value={room.id}>
+                  {room.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="flex items-center space-x-3">
             <FiClock className="size-5 text-gray-600" />
             <div className="flex items-center space-x-3 text-sm">
-              <p>{dayjs(date).locale(es).format("dddd, MMMM D")}</p>
+              <p>{capitalizeFirstLetter(
+                    dayjs(date).locale(es).format("dddd, MMMM D")
+                )}  
+              </p>
               <AddTime onTimeSelect={setSelectedTime} />
               <input type="hidden" name="date" value={date} />
               <input type="hidden" name="time" value={selectedTime} />
@@ -133,57 +166,76 @@ export default function EventPopover({
           </div>
 
           <div className="flex items-center space-x-3">
-            <HiOutlineUsers className="size-5 text-slate-600" />
-            <Input
-              type="text"
-              name="guests"
-              placeholder="Adicionar participantes"
-              className={cn(
-                "w-full rounded-lg border-0 bg-slate-100 pl-7 placeholder:text-slate-600",
-                "focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0",
-              )}
-            />
+            <MdOutlineClass className="size-5 text-slate-600" />
+            <select
+              id="courses"
+              name="course"
+              value={selectedCourse}
+              onChange={(e) => setCourse(e.target.value)}
+              className="w-72 pl-4 py-2 text-sm rounded-lg border-0 bg-slate-100 text-gray-500 placeholder:text-slate-600"
+            >
+              <option value="">Elija un curso</option>
+              {courses.map((course) => (
+                <option key={course.id} value={course.id}>
+                  {course.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="flex items-center space-x-3">
-            <HiOutlineMenuAlt2 className="size-5 text-slate-600" />
-            <Input
-              type="text"
+            <MdOutlineCategory className="size-5 text-slate-600" />
+            <select
+              id="reservationtype"
+              name="reservationtype"
+              value={selectedReservationType}
+              onChange={(e) => setReservationType(e.target.value)}
+              className="w-72 pl-4 py-2 text-sm rounded-lg border-0 bg-slate-100 text-gray-500 placeholder:text-slate-600"
+            >
+              <option value="">Elija tipo de reserva</option>
+              {reservationTypes.map((restype) => (
+                <option key={restype.id} value={restype.id}>
+                  {restype.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+         <div className="flex items-start space-x-3">
+            <MdNotes  className="size-5 text-slate-600" />  
+            <Textarea
               name="description"
-              placeholder="Adicionar descripción"
-              className={cn(
-                "w-full rounded-lg border-0 bg-slate-100 pl-7 placeholder:text-slate-600",
-                "focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0",
-              )}
+              placeholder="Adicione breve descripción"
+              className="w-72 rounded-none border-0 border-b text-xs focus-visible:border-b-2 focus-visible:border-b-blue-600 focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
-
           <div className="flex items-center space-x-3">
-            <IoMdCalendar className="size-5 text-slate-600" />
+            <HiOutlineUser className="size-5 text-slate-600" />
             <div className="">
               <div className="flex items-center space-x-3 text-sm">
                 {" "}
-                <p>Usuario</p>{" "}
+                <p>Invitado</p>{" "}
                 <div className="h-4 w-4 rounded-full bg-violet-500"></div>{" "}
               </div>
               <div className="flex items-center space-x-1 text-xs">
                 <span>Ocupado</span>
                 <div className="h-1 w-1 rounded-full bg-gray-500"></div>
-                <span>Visibilidad predeterminada</span>{" "}
+                <span>Visibilidad pública</span>{" "}
                 <div className="h-1 w-1 rounded-full bg-gray-500"></div>
-                <span>Notificar 30 minutos antes</span>
+                <span>No notificar</span>
               </div>
             </div>
           </div>
 
           <div className="flex justify-end space-x-2">
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={isPending} className="w-auto rounded-2xl">
               {isPending ? "Guardando..." : "Guardar"}
             </Button>
           </div>
-
           {error && <p className="mt-2 px-6 text-red-500">{error}</p>}
-          {success && <p className="mt-2 px-6 text-green-500">Reserva exitosa</p>}
+          {success && (
+            <p className="mt-2 px-6 text-green-500">Reserva exitosa</p>
+          )}
         </form>
       </div>
     </div>

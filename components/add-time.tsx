@@ -11,7 +11,7 @@ export default function AddTime({
   onTimeSelect: (time: string) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedTime, setSelectedTime] = useState('00:00')
+  const [selectedTime, setSelectedTime] = useState('07:00')
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
