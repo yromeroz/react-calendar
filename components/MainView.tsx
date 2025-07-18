@@ -13,6 +13,7 @@ import EventPopover from "./event-popover";
 import { EventSummaryPopover } from "./event-summary-popover";
 import { useEffect } from "react";
 import dayjs from "dayjs";
+// import { set } from "react-hook-form";
 
 export default function MainView({
   eventsData,
@@ -28,6 +29,7 @@ export default function MainView({
     closeEventSummary,
     selectedEvent,
     setEvents,
+    setUnfilteredEvents
   } = useEventStore();
 
   const { userSelectedDate } = useDateStore();
@@ -44,7 +46,8 @@ export default function MainView({
     }));
 
     setEvents(mappedEvents);
-  }, [eventsData, setEvents]);
+    setUnfilteredEvents(mappedEvents);
+  }, [eventsData, setEvents, setUnfilteredEvents]);
 
   return (
     <div className="mx-3 h-[88vh] flex bg-blue-50">

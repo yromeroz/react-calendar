@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import React from "react";
 import { 
   getRooms, 
-  // getCourses, 
+  getCourses, 
   // getReservationTypes 
 } from "@/lib/data";
 
@@ -14,13 +14,18 @@ type EventRendererProps = {
   date: dayjs.Dayjs;
   view: "month" | "week" | "day";
   events: CalendarEventType[];
+  // filters?: {
+  //   room?: number;
+  //   course?: number;
+  //   reservationType?: number;
+  // };
 };
 
 export function EventRenderer({ date, view, events }: EventRendererProps) {
   const { openEventSummary } = useEventStore();
 
     const rooms = getRooms();
-    // const courses = getCourses();
+    const courses = getCourses();
     // const reservationTypes = getReservationTypes();
     // const { selectedEvent, setEvents } = useEventStore();
 
@@ -31,13 +36,26 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
     } else if (view === "week" || view === "day") {
       return event.date.format("DD-MM-YY HH") === date.format("DD-MM-YY HH");
     }
+
   });
+
+  const getViewClass = (view: string, color: string) => {
+    if (view === "day") {
+      return `line-clamp-1 w-[95%] cursor-pointer rounded-sm bg-${color}-300 p-1 text-sm text-blackp-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer`;
+    } else {
+      return "line-clamp-1 w-[95%] cursor-pointer rounded-sm bg-blue-300 p-1 text-sm text-black";
+    }
+  }
 
   return (
     <>
       {filteredEvents.map((event) => {
         const room = rooms.find((room) => room.id === event.room);
         const roomName = room ? room.name : "-";
+
+        const course = courses.find((course) => course.id === event.course);
+        const courseName = course ? course.name : "-";
+        const courseColor = course ? course.color : "gray";
 
         return (
           <div
@@ -46,9 +64,13 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
               e.stopPropagation();
               openEventSummary(event);
             }}
-            className="line-clamp-1 w-[95%] cursor-pointer rounded-sm bg-blue-300 p-1 text-sm text-black"
+            className={getViewClass(view, courseColor)}
           >
-            <p>{event.date.format("h:mmA")} | {roomName}</p>
+            { view === "day" ? (
+              <p>{event.date.format("h:mmA")} | {courseName}</p>
+            ) : (
+              <p>{event.date.format("h:mmA")} | {roomName}</p>
+            )}
 
           </div>
       );

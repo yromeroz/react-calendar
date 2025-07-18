@@ -33,10 +33,12 @@ export type CalendarEventType = {
 
 type EventStore = {
   events: CalendarEventType[];
+  unfilteredEvents: CalendarEventType[];
   isPopoverOpen: boolean;
   isEventSummaryOpen: boolean;
   selectedEvent: CalendarEventType | null;
   setEvents: (events: CalendarEventType[]) => void;
+  setUnfilteredEvents: (events: CalendarEventType[]) => void;
   openPopover: () => void;
   closePopover: () => void;
   openEventSummary: (event: CalendarEventType) => void;
@@ -92,10 +94,12 @@ export const useDateStore = create<DateStoreType>()(
 
 export const useEventStore = create<EventStore>((set) => ({
   events: [],
+  unfilteredEvents: [],
   isPopoverOpen: false,
   isEventSummaryOpen: false,
   selectedEvent: null,
   setEvents: (events) => set({ events }),
+  setUnfilteredEvents: (events) => set({ unfilteredEvents: events }),
   openPopover: () => set({ isPopoverOpen: true }),
   closePopover: () => set({ isPopoverOpen: false }),
   openEventSummary: (event) =>

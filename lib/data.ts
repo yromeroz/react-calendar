@@ -32,6 +32,7 @@ type Room = {
 type Course = {
   id: number;
   name: string;
+  color: string;
 };
 
 type ReservationType = {
@@ -51,12 +52,12 @@ export const rooms = [
 export const getRooms = (): Room[]  => rooms;
 
 export const courses = [
-  { id: 1, name: "Economía" },
-  { id: 2, name: "Antropología" },
-  { id: 3, name: "Análisis matemático" },
-  { id: 4, name: "Administración de empresas" },
-  { id: 5, name: "Psicología" },
-  { id: 6, name: "Informática" },
+  { id: 1, name: "Economía", color: "blue" },
+  { id: 2, name: "Antropología", color: "green" },
+  { id: 3, name: "Análisis matemático", color: "yellow" },
+  { id: 4, name: "Administración de empresas", color: "orange" },
+  { id: 5, name: "Psicología", color: "red" },
+  { id: 6, name: "Informática", color: "violet" },
 ]
 
 export const getCourses = (): Course[]  => courses;

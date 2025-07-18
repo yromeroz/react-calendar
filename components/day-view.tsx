@@ -107,7 +107,8 @@ export default function DayView() {
                       }}
                     >
                       <EventRenderer
-                        events={events}
+                        // events={events}
+                        events={events.filter(roomEvents => roomEvents.room === room.id)}
                         date={userSelectedDate.hour(hour.hour())}
                         view="day"
                       />
