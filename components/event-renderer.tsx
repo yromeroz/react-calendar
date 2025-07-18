@@ -41,9 +41,13 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
 
   const getViewClass = (view: string, color: string) => {
     if (view === "day") {
-      return `line-clamp-1 w-[95%] cursor-pointer rounded-sm bg-${color}-300 p-1 text-sm text-blackp-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer`;
+      // const courseColor = "bg-"+color+"-300";
+      
+      const res = "line-clamp-2 bg-"+color+"-300";
+      console.log("res", res);
+      return res;
     } else {
-      return "line-clamp-1 w-[95%] cursor-pointer rounded-sm bg-blue-300 p-1 text-sm text-black";
+      return "line-clamp-1 bg-blue-300";
     }
   }
 
@@ -55,7 +59,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
 
         const course = courses.find((course) => course.id === event.course);
         const courseName = course ? course.name : "-";
-        const courseColor = course ? course.color : "gray";
+        const courseColor = course ? course.color : "blue";
 
         return (
           <div
@@ -64,12 +68,12 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
               e.stopPropagation();
               openEventSummary(event);
             }}
-            className={getViewClass(view, courseColor)}
+            className={`w-[95%] cursor-pointer rounded-sm p-1 text-sm text-black ${getViewClass(view, courseColor)}`}
           >
             { view === "day" ? (
-              <p>{event.date.format("h:mmA")} | {courseName}</p>
+              <p>{event.date.format("h:mmA")} <br/>{courseName}</p>
             ) : (
-              <p>{event.date.format("h:mmA")} | {roomName}</p>
+              <p>{event.date.format("h:mmA")} {roomName}</p>
             )}
 
           </div>

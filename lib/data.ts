@@ -52,12 +52,12 @@ export const rooms = [
 export const getRooms = (): Room[]  => rooms;
 
 export const courses = [
-  { id: 1, name: "Economía", color: "blue" },
-  { id: 2, name: "Antropología", color: "green" },
+  { id: 1, name: "Economía", color: "green" },
+  { id: 2, name: "Antropología", color: "violet" },
   { id: 3, name: "Análisis matemático", color: "yellow" },
-  { id: 4, name: "Administración de empresas", color: "orange" },
-  { id: 5, name: "Psicología", color: "red" },
-  { id: 6, name: "Informática", color: "violet" },
+  { id: 4, name: "Administración de empresas", color: "amber" },
+  { id: 5, name: "Psicología", color: "pink" },
+  { id: 6, name: "Informática", color: "red" },
 ]
 
 export const getCourses = (): Course[]  => courses;
