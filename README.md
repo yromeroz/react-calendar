@@ -1,2 +1,2 @@
 # react-calendar
-Rooms Reservation Scheduler (looks like Google Calendar)
+Rooms and Courses Reservation Scheduler (looks like Google Calendar)
