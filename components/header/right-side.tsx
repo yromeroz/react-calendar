@@ -16,7 +16,8 @@ export default function HeaderRight() {
   const { setView } = useViewStore();
 
   return (
-    <div className="flex items-center space-x-4 pr-4">
+    <div className="flex items-center space-x-4 pr-4"
+    title="Elegir vista del calendario">
     {/* <SearchComponent /> */}
     <Select onValueChange={(v) => setView(v)}>
       <SelectTrigger className="w-24 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-full">

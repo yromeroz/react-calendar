@@ -3,6 +3,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 // import { ChevronDown } from "lucide-react";
+import { LuPlus } from "react-icons/lu";
 import { useDateStore } from "@/lib/store";
 import { useCallback, useState } from "react";
 // import { SvgIcons } from "../svg-icons";
@@ -26,11 +27,13 @@ export default function Create() {
   return (
     <>
       <Button
+        title="Crear nueva reservación"
         variant="ghost"
-        className="w-[100px] justify-center px-7 py-5 shadow border-2 rounded-2xl bg-slate-200"
+        className="w-[140px] justify-center px-7 py-5 shadow border-2 rounded-2xl bg-slate-200"
         onClick={handleOpenPopover}
       >
-        <span> Reservar </span>{" "}
+        <LuPlus  size={20} className="text-gray-500 pr-1" />
+        <span> Reservar </span>{""}
       </Button>
       {isPopoverOpen && (
         <EventPopover

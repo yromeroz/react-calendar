@@ -15,19 +15,19 @@ export default function MonthView() {
 
   return (
     <>
-       <div className="grid grid-cols-7 place-items-center px-2 py-2 border-2 rounded-xl">
+       <div className="grid grid-cols-7 place-items-center px-2 py-1 border-2 rounded-xl">
              {/* Week View Header */}
 
              {getWeekDays(userSelectedDate).map(({ currentDate }, index) => (
                <div key={index} className="h-10 w-10 flex flex-col items-center pt-1">
-                 <div className={cn("text-lg")}>
+                 <div className={cn("text-md")}>
                    {currentDate.locale(es).format("ddd").toUpperCase()}
                  </div>
                </div>
              ))}
 
         </div>
-        <section className={`grid grid-cols-7 grid-rows-${twoDMonthArray.length} h-[75vh] border-2 rounded-2xl`}>
+        <section className={`grid grid-cols-7 grid-rows-${twoDMonthArray.length} h-[78vh] border-2 rounded-2xl`}>
             {twoDMonthArray.map((row, i) => (
                <Fragment key={i}>
                  {row.map((day, index) => (

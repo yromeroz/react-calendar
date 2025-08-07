@@ -68,7 +68,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
               e.stopPropagation();
               openEventSummary(event);
             }}
-            className={`w-[95%] cursor-pointer rounded-sm p-1 text-sm text-black ${getViewClass(view, courseColor)}`}
+            className={`w-[95%] cursor-pointer rounded-sm border-2 border-gray-400 p-1 text-sm text-black ${getViewClass(view, courseColor)}`}
           >
             { view === "day" ? (
               <p>{event.date.format("h:mmA")} <br/>{courseName}</p>
