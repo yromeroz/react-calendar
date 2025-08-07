@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { LuPlus } from "react-icons/lu";
 import { useDateStore } from "@/lib/store";
 import { useCallback, useState } from "react";
-// import { SvgIcons } from "../svg-icons";
 import EventPopover from "../event-popover";
 
 export default function Create() {

@@ -25,6 +25,7 @@
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.33.0",
     "lucide-react": "^0.446.0",
+    "mysql2": "^3.14.3",
     "next": "14.2.13",
     "react": "^18",
     "react-dom": "^18",
