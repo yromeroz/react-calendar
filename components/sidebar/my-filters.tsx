@@ -47,7 +47,7 @@ export default function MyFilters() {
       title="Filtrar por salón">
 {/*  */}
       <Select onValueChange={(roomId) => setRoomFilter(roomId)}>    
-        <SelectTrigger className="w-48 h-6 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-full text-gray-500">
+        <SelectTrigger className="w-80 h-10 lg:w-48 lg:h-6 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-full text-gray-500">
           <SelectValue placeholder="Salones" />
         </SelectTrigger>
         <SelectContent>
@@ -62,7 +62,7 @@ export default function MyFilters() {
     title="Filtrar por curso">
     <div>
       <Select onValueChange={(courseId) => setCourseFilter(courseId)}>
-        <SelectTrigger className="w-48 h-6 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-full text-gray-500">
+        <SelectTrigger className="w-80 h-10 lg:w-48 lg:h-6 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-full text-gray-500">
           <SelectValue placeholder="Cursos" />
         </SelectTrigger>
         <SelectContent>
@@ -77,7 +77,7 @@ export default function MyFilters() {
     <div className="p-1 flex items-center space-x-4"
     title="Filtrar por tipo de reserva">
       <Select onValueChange={(resTypeId) => setReservationFilter(resTypeId)}>
-        <SelectTrigger className="w-48 h-6 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-full text-gray-500">
+        <SelectTrigger className="w-80 h-10 lg:w-48 lg:h-6 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-full text-gray-500">
           <SelectValue placeholder="Tipo de Reserva" />
         </SelectTrigger>
         <SelectContent>

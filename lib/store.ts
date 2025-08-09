@@ -35,6 +35,7 @@ type EventStore = {
   events: CalendarEventType[];
   unfilteredEvents: CalendarEventType[];
   isPopoverOpen: boolean;
+  isPopmenuOpen: boolean;
   isEventSummaryOpen: boolean;
   selectedEvent: CalendarEventType | null;
   setEvents: (events: CalendarEventType[]) => void;
@@ -97,11 +98,14 @@ export const useEventStore = create<EventStore>((set) => ({
   unfilteredEvents: [],
   isPopoverOpen: false,
   isEventSummaryOpen: false,
+  isPopmenuOpen: false,
   selectedEvent: null,
   setEvents: (events) => set({ events }),
   setUnfilteredEvents: (events) => set({ unfilteredEvents: events }),
   openPopover: () => set({ isPopoverOpen: true }),
   closePopover: () => set({ isPopoverOpen: false }),
+  openPopmenu: () => set({ isPopmenuOpen: true }),
+  closePopmenu: () => set({ isPopmenuOpen: false }),
   openEventSummary: (event) =>
     set({ isEventSummaryOpen: true, selectedEvent: event }),
   closeEventSummary: () =>

@@ -13,6 +13,7 @@ import { useDateStore, useToggleSideBarStore, useViewStore } from "@/lib/store";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
+import FloatingMenu from "./FloatingMenu";
 
 export default function HeaderLeft() {
   // const todaysDate = dayjs();
@@ -132,19 +133,12 @@ export default function HeaderLeft() {
           height={40}
           alt="icon"
         /> */}
-        <MdCalendarMonth size={32} className="text-blue-900 ml-3" />
+        <MdCalendarMonth size={32} className="text-gray-400 ml-3" />
         <h1 className="text-xl font-semibold px-1"> Calendario </h1>
         <div className="box-sizing-content border-0 ml-12 text-xs "/>
       </div>
 
-      <Button
-          title="Barra lateral"
-          variant="ghost"
-          className="lg:hidden rounded-full p-2 shadow border-1 bg-gray-300"
-          onClick={() => setSideBarOpen()}
-        >
-          <Menu className="size-6" />
-      </Button>
+      <FloatingMenu />
       
       {/* Today Button */}
       {/* <Button variant="outline" onClick={handleTodayClick}>

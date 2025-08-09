@@ -13,7 +13,7 @@ import EventPopover from "./event-popover";
 import { EventSummaryPopover } from "./event-summary-popover";
 import { useEffect } from "react";
 import dayjs from "dayjs";
-import FloatingButton from "./floating-button";
+import FloatingButton from "./FloatingButton";
 // import { FiMenu } from "react-icons/fi";
 // import { set } from "react-hook-form";
 
@@ -35,10 +35,6 @@ export default function MainView({
   } = useEventStore();
 
   const { userSelectedDate } = useDateStore();
-
-  const handleButtonClick = () => {
-    alert('Floating button clicked!');
-  };
 
   useEffect(() => {
     const mappedEvents: CalendarEventType[] = eventsData.map((event) => ({
@@ -82,7 +78,7 @@ export default function MainView({
         />
       )}
 
-      <FloatingButton onClick={handleButtonClick} />
+      <FloatingButton />
     </div>
   );
 }
