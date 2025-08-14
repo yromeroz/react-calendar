@@ -7,13 +7,20 @@ import { ScrollArea } from "./ui/scroll-area";
 import { getHours, isCurrentDay } from "@/lib/getTime";
 import { getRooms } from "@/lib/data";
 import { EventRenderer } from "./event-renderer";
-
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 export default function DayView() {
   const [currentTime, setCurrentTime] = useState(dayjs());
   const { openPopover, events } = useEventStore();
   const { userSelectedDate, setDate } = useDateStore();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [startIndex, setStartIndex] = useState(0);
+  const visibleCount = 7; // Number of visible rooms
+  const rooms  = getRooms();
+  const [ showScrollLeft, setShowScrollLeft ] = useState(false);
+  const [ showScrollRight, setShowScrollRight ] = useState(true);
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -41,14 +48,35 @@ export default function DayView() {
   }, []);
 
   const isToday =
-    userSelectedDate.format("DD-MM-YY") === dayjs().format("DD-MM-YY");
+    userSelectedDate.format("DD-MM-YY") === dayjs().format("DD-MM-YY"); 
+
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -100, behavior: "smooth" });
+    }
+    const prev =  Math.max(startIndex - 1, 0);
+    setStartIndex(prev);
+    setShowScrollLeft(prev > 0);
+    setShowScrollRight(true);
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 100, behavior: "smooth" });
+    }
+    const next = Math.min(startIndex + 1, rooms.length - visibleCount);
+    setStartIndex(next);
+    setShowScrollRight(next < rooms.length - visibleCount);
+    setShowScrollLeft(true);
+  };  
 
   return (
     <>
-      <div className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr] place-items-center px-4 py-1 border-2 rounded-2xl">
+      <div className="grid grid-cols-[auto_auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr_auto] place-items-center pl-4 pr-2 py-1 border-2 rounded-2xl">
+        {/* Date  Header */}
         <div className="flex w-16 flex-col items-center border-r border-gray-300 pr-4">  
           <div className={cn("text-xs", isToday && "text-blue-600")}>
-            {userSelectedDate.locale(es).format("ddd").toUpperCase()}{" "}
+            {dayjs().locale(es).format("ddd").toUpperCase()}{" "}
           </div>{" "}
           <div
             className={cn(
@@ -60,20 +88,39 @@ export default function DayView() {
           </div>
         </div>
 
-        {getRooms().map((room, index) => (
-          <div key={index} className="flex flex-col items-center">
-            <div className={cn("text-sm")}>
-              {room.name.toUpperCase()}
+        {/* left arrow  button */} 
+        <div className="flex flex-col items-center">
+        { (rooms.length > visibleCount) && 
+            showScrollLeft && 
+            <MdKeyboardArrowLeft
+              className="size-5 cursor-pointer font-bold"
+              onClick={scrollLeft}
+            /> }
+        </div>
+
+        {/* header rooms  list*/}
+          {rooms.slice(startIndex, startIndex + visibleCount).map((room, index) => (
+            <div key={index} className="relative">
+            {/*  className="w-36 flex flex-col items-center"> */}
+              <div className={cn("text-sm")}>
+                {room.name.toUpperCase()}
+              </div>
             </div>
-          </div>
-        ))}
-        <div></div>
+          ))}
+          
+        {/* right arrow  button */}
+        <div className="flex flex-col items-center">
+          { (rooms.length > visibleCount) && showScrollRight && <MdKeyboardArrowRight
+            className="size-5 cursor-pointer font-bold"
+            onClick={scrollRight}
+          /> }
+        </div>
       </div>
 
       <ScrollArea className="h-[75vh] border-2 rounded-2xl">
         <div 
           ref={scrollContainerRef}
-          className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr] pl-4 py-2">
+          className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] pl-4 py-2">
           {/* Time Column */}
           <div className="w-16 border-r border-gray-300">
             {getHours.map((hour, index) => (
@@ -90,7 +137,7 @@ export default function DayView() {
           </div>
 
           {/* Day/Boxes Column */}
-          {getRooms().map(
+          {rooms.slice(startIndex, startIndex + visibleCount).map(
             (room, index) => {
               return (
                 <div 
@@ -107,7 +154,7 @@ export default function DayView() {
                       }}
                     >
                       <EventRenderer
-                        events={events}
+                        events={events.filter(roomEvents => roomEvents.room === room.id)}
                         date={userSelectedDate.hour(hour.hour())}
                         view="day"
                       />
@@ -127,7 +174,8 @@ export default function DayView() {
               );
             },
           )}
-        </div>        
+
+        </div>       
       </ScrollArea>
     </>
   );

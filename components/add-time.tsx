@@ -7,12 +7,17 @@ import { ChevronDown } from "lucide-react"
 
 export default function AddTime({
   onTimeSelect,
+  initialTime = '08:00'
 }: {
   onTimeSelect: (time: string) => void;
+  initialTime?: string;
 }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedTime, setSelectedTime] = useState('07:00')
-  const dropdownRef = useRef<HTMLDivElement>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedTime, setSelectedTime] = useState(initialTime);
+  // const [selectedEndTime, setSelectedEndTime] = useState(initialTime.slice(0, 2) + ':30');
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const timeButtonRef = useRef<Record<string, HTMLButtonElement | null>>({});
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -21,11 +26,18 @@ export default function AddTime({
       }
     }
 
+    if(isOpen && initialTime && timeButtonRef.current[initialTime]) {
+      timeButtonRef.current[initialTime]?.scrollIntoView({
+          behavior: 'auto',
+          block: 'center', 
+        });
+      }    
+
     document.addEventListener('mousedown', handleClickOutside)
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [])
+  }, [isOpen, initialTime]);
 
   const generateTimeIntervals = () => {
     const intervals = []
@@ -57,10 +69,11 @@ export default function AddTime({
       </Button>
       {isOpen && (
         <div className="absolute z-50 mt-2 w-24 rounded-md border bg-popover text-popover-foreground shadow-md">
-          <ScrollArea className="h-60">
+          <ScrollArea className="h-60" ref={scrollAreaRef}>
             <div className="p-1">
               {generateTimeIntervals().map((time) => (
                 <Button
+                  ref={(el) => { timeButtonRef.current[time] = el; }}
                   key={time}
                   variant="ghost"
                   className="w-full justify-start"
