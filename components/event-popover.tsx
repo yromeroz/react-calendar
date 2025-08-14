@@ -162,6 +162,9 @@ export default function EventPopover({
               <AddTime onTimeSelect={setSelectedTime} />
               <input type="hidden" name="date" value={date} />
               <input type="hidden" name="time" value={selectedTime} />
+              <AddTime onTimeSelect={setSelectedTime} />
+              <input type="hidden" name="date" value={date} />
+              <input type="hidden" name="time" value={selectedTime} />
             </div>
           </div>
 

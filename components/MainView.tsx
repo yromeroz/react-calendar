@@ -13,6 +13,9 @@ import EventPopover from "./event-popover";
 import { EventSummaryPopover } from "./event-summary-popover";
 import { useEffect } from "react";
 import dayjs from "dayjs";
+import FloatingButton from "./FloatingButton";
+// import { FiMenu } from "react-icons/fi";
+// import { set } from "react-hook-form";
 
 export default function MainView({
   eventsData,
@@ -28,6 +31,7 @@ export default function MainView({
     closeEventSummary,
     selectedEvent,
     setEvents,
+    setUnfilteredEvents
   } = useEventStore();
 
   const { userSelectedDate } = useDateStore();
@@ -44,17 +48,19 @@ export default function MainView({
     }));
 
     setEvents(mappedEvents);
-  }, [eventsData, setEvents]);
+    setUnfilteredEvents(mappedEvents);
+  }, [eventsData, setEvents, setUnfilteredEvents]);
 
   return (
-    <div className="mx-3 h-[88vh] flex bg-blue-50">
+    <div className="mx-3 flex bg-blue-50">
       {/* SideBar */}
       <SideBar />
 
-      <div className="flex-1 px-2 pb-4">
+      <div className="flex-1 px-2 pb-2">
         {selectedView === "month" && <MonthView />}
         {selectedView === "week" && <WeekView />}
         {selectedView === "day" && <DayView />}
+
       </div>
       {isPopoverOpen && (
         <EventPopover
@@ -71,6 +77,8 @@ export default function MainView({
           event={selectedEvent}
         />
       )}
+
+      <FloatingButton />
     </div>
   );
 }

@@ -4,11 +4,16 @@ import React from "react";
 import { Menu } from "lucide-react";
 import { Button } from "../ui/button";
 // import Image from "next/image";
-import { MdCalendarMonth, MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { 
+  MdCalendarMonth,
+  // MdCalendarToday, 
+  MdKeyboardArrowLeft, 
+  MdKeyboardArrowRight } from "react-icons/md";
 import { useDateStore, useToggleSideBarStore, useViewStore } from "@/lib/store";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
+import FloatingMenu from "./FloatingMenu";
 
 export default function HeaderLeft() {
   // const todaysDate = dayjs();
@@ -115,8 +120,9 @@ export default function HeaderLeft() {
       {/* Sidebar Toggle and Calendar Icon */}
       <div className="hidden items-center lg:flex">
         <Button
+          title="Barra lateral"
           variant="ghost"
-          className="rounded-full p-2"
+          className="rounded-full px-2 py-5 shadow border-1 bg-gray-300"
           onClick={() => setSideBarOpen()}
         >
           <Menu className="size-6" />
@@ -127,11 +133,13 @@ export default function HeaderLeft() {
           height={40}
           alt="icon"
         /> */}
-        <MdCalendarMonth size={32} className="text-gray-500 ml-1" />
-        <h1 className="text-xl px-1"> Calendario </h1>
+        <MdCalendarMonth size={32} className="text-gray-400 ml-3" />
+        <h1 className="text-xl font-semibold px-1"> Calendario </h1>
         <div className="box-sizing-content border-0 ml-12 text-xs "/>
       </div>
 
+      <FloatingMenu />
+      
       {/* Today Button */}
       {/* <Button variant="outline" onClick={handleTodayClick}>
         Hoy
@@ -150,7 +158,7 @@ export default function HeaderLeft() {
       </div>
 
       {/* Current Month and Year Display */}
-      <h1 className="hidden text-xl font-semibold lg:block">
+      <h1 className="text-[clamp(0.75rem,2.5vmin,1.25rem)] font-semibold">
         {capitalizeFirstLetter(
           dayjs(new Date(dayjs().year(), selectedMonthIndex))
                 .locale(es)
