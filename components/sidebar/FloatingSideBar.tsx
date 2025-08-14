@@ -58,7 +58,7 @@ export default function FloatingSideBar({
     >
       <div
         ref={sidebarRef}
-        className="space-y-4 w-96 max-w-md px-2 pb-4 rounded-2xl bg-white shadow-lg"
+        className="space-y-4 w-92 max-w-md px-2 pb-4 rounded-2xl bg-white shadow-lg"
         onClick={handleSidebarClick}
       >
         <div className="flex items-center justify-between rounded-2xl bg-slate-100 py-1">

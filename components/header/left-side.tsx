@@ -134,7 +134,7 @@ export default function HeaderLeft() {
           alt="icon"
         /> */}
         <MdCalendarMonth size={32} className="text-gray-400 ml-3" />
-        <h1 className="text-xl font-semibold px-1"> Calendario </h1>
+        <h1 className="text-[clamp(0.75rem,4vmin,1.25rem)] font-semibold px-1"> Calendario </h1>
         <div className="box-sizing-content border-0 ml-12 text-xs "/>
       </div>
 
@@ -148,17 +148,19 @@ export default function HeaderLeft() {
       {/* Navigation Controls */}
       <div className="flex items-center gap-3">
         <MdKeyboardArrowLeft
-          className="size-6 cursor-pointer font-bold"
+          title="Anterior"
+          className="size-6 cursor-pointer font-bold hover:text-blue-600"
           onClick={handlePrevClick}
         />
         <MdKeyboardArrowRight
-          className="size-6 cursor-pointer font-bold"
+          title="Siguiente"
+          className="size-6 cursor-pointer font-bold hover:text-blue-600"
           onClick={handleNextClick}
         />
       </div>
 
       {/* Current Month and Year Display */}
-      <h1 className="text-[clamp(0.75rem,2.5vmin,1.25rem)] font-semibold">
+      <h1 className="text-[clamp(0.75rem,4vmin,1.25rem)] font-semibold">
         {capitalizeFirstLetter(
           dayjs(new Date(dayjs().year(), selectedMonthIndex))
                 .locale(es)

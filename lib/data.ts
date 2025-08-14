@@ -41,15 +41,15 @@ type ReservationType = {
 };
   
 export const rooms = [
-  { id: 1, name: "Salón 1" },
-  { id: 2, name: "Salón 2" },
-  { id: 3, name: "Salón 3" },
-  { id: 4, name: "Salón 4" },
-  { id: 5, name: "Salón 5" },
-  { id: 6, name: "Salón 6" },
-  { id: 7, name: "Salón 7" },
-  { id: 8, name: "Salón 8" },
-  { id: 9, name: "Salón 9" },
+  { id: 1, name: "Salón 1", shortname: "S1" },
+  { id: 2, name: "Salón 2", shortname: "S2" },
+  { id: 3, name: "Salón 3", shortname: "S3" },
+  { id: 4, name: "Salón 4", shortname: "S4" },
+  { id: 5, name: "Salón 5", shortname: "S5" },
+  { id: 6, name: "Salón 6", shortname: "S6" },
+  { id: 7, name: "Salón 7", shortname: "S7" },
+  { id: 8, name: "Salón 8", shortname: "S8" },
+  { id: 9, name: "Salón 9", shortname: "S9" },
 ]
 
 export const getRooms = (): Room[]  => rooms;

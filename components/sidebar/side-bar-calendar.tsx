@@ -76,7 +76,7 @@ export default function SideBarCalendar() {
 
   return (
     <div className="my-6 p-2">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-2">
         <h4 className="text-sm">
           {capitalizeFirstLetter(sidebarViewDate
               .locale(es)

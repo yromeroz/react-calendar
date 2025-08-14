@@ -42,10 +42,12 @@ export default function WeekView() {
 
   return (
     <>
-      <div className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] place-items-center pl-4 py-1 border-2 rounded-2xl">
+      <div className="h-[clamp(4rem,10vh,6rem)] grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] place-items-center pl-4 py-1 border-2 rounded-2xl">
         <div className="w-16 border-r border-gray-300">
           <div className="relative h-16">
-            <div className="absolute top-2 text-xs text-gray-600">GMT -3</div>
+            <div className="absolute top-2 text-xs text-gray-600">GMT
+              {dayjs().format("Z")}
+            </div>
           </div>
         </div>
 
@@ -53,12 +55,12 @@ export default function WeekView() {
 
         {getWeekDays(userSelectedDate).map(({ currentDate, today }, index) => (
           <div key={index} className="flex flex-col items-center">
-            <div className={cn("text-xs", today && "text-blue-600")}>
+            <div className={cn("text-[clamp(0.625rem,1.5vmin,0.75rem)]", today && "text-blue-600")}>
               {currentDate.locale(es).format("ddd").toUpperCase()}
             </div>
             <div
               className={cn(
-                "h-10 w-10 rounded-full px-2 pt-1 text-xl",
+                "h-10 w-10 rounded-full px-2 pt-1 text-[clamp(0.75rem,3vmin,1.25rem)]",
                 today && "bg-blue-600 text-white",
               )}
             >
