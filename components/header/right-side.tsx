@@ -20,7 +20,7 @@ export default function HeaderRight() {
     title="Elegir vista del calendario">
     {/* <SearchComponent /> */}
     <Select onValueChange={(v) => setView(v)}>
-      <SelectTrigger className="w-24 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-full">
+      <SelectTrigger className="w-24 border-2 border-gray-300 focus:outline-none rounded-full hover:bg-blue-100 hover:border-blue-500">
         <SelectValue placeholder="Mes" />
       </SelectTrigger>
       <SelectContent>
@@ -30,7 +30,7 @@ export default function HeaderRight() {
       </SelectContent>
     </Select>
 
-    <Avatar>
+    <Avatar title="Usuario">
       <AvatarImage src="/img/user2.png" />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>

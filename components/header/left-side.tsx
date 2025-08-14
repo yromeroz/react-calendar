@@ -122,7 +122,7 @@ export default function HeaderLeft() {
         <Button
           title="Barra lateral"
           variant="ghost"
-          className="rounded-full p-2 shadow border-1 bg-gray-300"
+          className="rounded-full px-2 py-5 shadow border-1 bg-gray-300"
           onClick={() => setSideBarOpen()}
         >
           <Menu className="size-6" />
@@ -158,7 +158,7 @@ export default function HeaderLeft() {
       </div>
 
       {/* Current Month and Year Display */}
-      <h1 className="text-xl font-semibold">
+      <h1 className="text-[clamp(0.75rem,2.5vw,1.25rem)] font-semibold">
         {capitalizeFirstLetter(
           dayjs(new Date(dayjs().year(), selectedMonthIndex))
                 .locale(es)

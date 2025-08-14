@@ -1,5 +1,5 @@
 import Header from "@/components/header/Header";
-// import Footer from "@/components/footer/Footer";
+import Footer from "@/components/footer/Footer";
 import MainView from "@/components/MainView";
 import { db } from "@/db/drizzle";
 import { eventsTable } from "@/db/schema"; // Make sure this path matches your schema file
@@ -29,7 +29,7 @@ export default async function Home() {
     <div className="">
       <Header />
       <MainView eventsData={dbEvents as unknown as CalendarEventType[]} />
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

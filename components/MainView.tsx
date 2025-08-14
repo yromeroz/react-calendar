@@ -52,7 +52,7 @@ export default function MainView({
   }, [eventsData, setEvents, setUnfilteredEvents]);
 
   return (
-    <div className="mx-3 h-[88vh] flex bg-blue-50">
+    <div className="mx-3 flex bg-blue-50">
       {/* SideBar */}
       <SideBar />
 

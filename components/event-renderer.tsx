@@ -41,13 +41,10 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
 
   const getViewClass = (view: string, color: string) => {
     if (view === "day") {
-      // const courseColor = "bg-"+color+"-300";
-      
-      const res = "line-clamp-2 bg-"+color+"-300";
-      console.log("res", res);
+      const res = `line-clamp-2 bg-${color}-300 hover:bg-${color}-100`;
       return res;
     } else {
-      return "line-clamp-1 bg-blue-300";
+      return "line-clamp-1 bg-blue-300 hover:bg-blue-100 hover:border-blue-500";
     }
   }
 
@@ -68,7 +65,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
               e.stopPropagation();
               openEventSummary(event);
             }}
-            className={`w-[95%] cursor-pointer rounded-sm border-2 border-gray-400 p-1 text-sm text-black ${getViewClass(view, courseColor)}`}
+            className={`w-[95%] cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none p-1 text-xs md:text-sm text-black ${getViewClass(view, courseColor)}`}
           >
             { view === "day" ? (
               <p>{event.date.format("h:mmA")} <br/>{courseName}</p>

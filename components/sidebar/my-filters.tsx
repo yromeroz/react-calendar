@@ -46,8 +46,14 @@ export default function MyFilters() {
     <div className="mt-6 p-1 flex items-center space-x-4"
       title="Filtrar por salón">
 {/*  */}
-      <Select onValueChange={(roomId) => setRoomFilter(roomId)}>    
-        <SelectTrigger className="w-80 h-10 lg:w-48 lg:h-6 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-full text-gray-500">
+      <Select 
+        value={roomFilter}
+        onValueChange={(roomId) => setRoomFilter(roomId)}>    
+        <SelectTrigger 
+          className={`w-80 h-10 lg:w-48 lg:h-10 border-2 focus:outline-none rounded-full hover:bg-blue-100 ${
+            roomFilter == "all"
+            ? "border-gray-300 text-gray-500 hover:border-blue-500 hover:text-black"
+            : "border-blue-500 text-black"}`}>
           <SelectValue placeholder="Salones" />
         </SelectTrigger>
         <SelectContent>
@@ -61,14 +67,19 @@ export default function MyFilters() {
     <div className="p-1 flex items-center space-x-4"
     title="Filtrar por curso">
     <div>
-      <Select onValueChange={(courseId) => setCourseFilter(courseId)}>
-        <SelectTrigger className="w-80 h-10 lg:w-48 lg:h-6 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-full text-gray-500">
+      <Select
+        value={courseFilter} 
+        onValueChange={(courseId) => setCourseFilter(courseId)}>
+        <SelectTrigger className={`w-80 h-10 lg:w-48 lg:h-10 border-2 focus:outline-none rounded-full hover:bg-blue-100 ${
+            courseFilter == "all"
+            ? "border-gray-300 text-gray-500 hover:border-blue-500 hover:text-black"
+            : "border-blue-500 text-black"}`}>
           <SelectValue placeholder="Cursos" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">Cursos</SelectItem>  
           {courses.map((course) => (
-            <SelectItem key={course.id} value={course.id.toString()}>{course.name}</SelectItem>
+            <SelectItem className="text-black" key={course.id} value={course.id.toString()}>{course.name}</SelectItem>
           ))}
         </SelectContent>
       </Select>
@@ -76,8 +87,13 @@ export default function MyFilters() {
     </div>
     <div className="p-1 flex items-center space-x-4"
     title="Filtrar por tipo de reserva">
-      <Select onValueChange={(resTypeId) => setReservationFilter(resTypeId)}>
-        <SelectTrigger className="w-80 h-10 lg:w-48 lg:h-6 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 rounded-full text-gray-500">
+      <Select
+        value={reservationFilter} 
+        onValueChange={(resTypeId) => setReservationFilter(resTypeId)}>
+        <SelectTrigger className={`w-80 h-10 lg:w-48 lg:h-10 border-2 focus:outline-none rounded-full hover:bg-blue-100 ${
+            reservationFilter == "all"
+            ? "border-gray-300 text-gray-500 hover:border-blue-500 hover:text-black"
+            : "border-blue-500 text-black"}`}>
           <SelectValue placeholder="Tipo de Reserva" />
         </SelectTrigger>
         <SelectContent>

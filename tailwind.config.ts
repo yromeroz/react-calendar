@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 const config: Config = {
     darkMode: ["class"],
@@ -8,14 +9,31 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
     safelist: [
-    'bg-green-300',
+    'bg-green-100',
+	'bg-green-300',
+	'bg-green-500',
+	'bg-red-100',
     'bg-red-300',
+	'bg-red-500',
+	'bg-blue-100',
+	'bg-blue-500',
     'bg-blue-300',
+	'bg-yellow-100',
+	'bg-yellow-500',
     'bg-yellow-300',
+	'bg-pink-100',
 	'bg-pink-300',
+	'bg-pink-500',
+	'bg-violet-100',
 	'bg-violet-300',
+	'bg-violet-500',
+	'bg-amber-100',
 	'bg-amber-300',
+	'bg-amber-500',
+	'bg-gray-100',
 	'bg-gray-300',
+	'bg-gray-400',
+	'bg-gray-500',
     // Add other dynamic classes here
   ],
   theme: {
@@ -85,12 +103,15 @@ const config: Config = {
   				}
   			}
   		},
+		fontSize: {
+			'tiny': '0.625rem',
+		},		
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out'
   		}
-  	}
-  },
-  plugins: [require("tailwindcss-animate")],
+		}
+	},
+  plugins: [tailwindcssAnimate],
 };
 export default config;
