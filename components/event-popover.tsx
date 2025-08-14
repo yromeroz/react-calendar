@@ -19,6 +19,7 @@ import {
 import { IoCloseSharp } from "react-icons/io5";
 import { FiClock } from "react-icons/fi";
 import AddTime from "./add-time";
+import AddEndTime from "./add-end-time";
 import { createEvent } from "@/app/actions/event-actions";
 // import { cn } from "@/lib/utils";
 import { getRooms, getCourses, getReservationTypes } from "@/lib/data";
@@ -37,6 +38,7 @@ export default function EventPopover({
 }: EventPopoverProps) {
   const popoverRef = useRef<HTMLDivElement>(null);
   const [selectedTime, setSelectedTime] = useState("07:00");
+  const [selectedEndTime, setSelectedEndTime] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -162,9 +164,9 @@ export default function EventPopover({
               <AddTime onTimeSelect={setSelectedTime} />
               <input type="hidden" name="date" value={date} />
               <input type="hidden" name="time" value={selectedTime} />
-              <AddTime onTimeSelect={setSelectedTime} />
+              <AddEndTime onTimeSelect={setSelectedEndTime} />
               <input type="hidden" name="date" value={date} />
-              <input type="hidden" name="time" value={selectedTime} />
+              <input type="hidden" name="time" value={selectedEndTime} />
             </div>
           </div>
 
