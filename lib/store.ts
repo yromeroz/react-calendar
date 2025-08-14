@@ -25,6 +25,7 @@ export type CalendarEventType = {
   id: number;
   title: string;
   date: dayjs.Dayjs;
+  endTime: dayjs.Dayjs;
   description: string;
   room: number;
   course: number;
