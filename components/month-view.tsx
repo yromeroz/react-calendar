@@ -19,8 +19,8 @@ export default function MonthView() {
              {/* Week View Header */}
 
              {getWeekDays(userSelectedDate).map(({ currentDate }, index) => (
-               <div key={index} className="h-10 w-10 flex flex-col items-center pt-1">
-                 <div className={cn("text-md")}>
+               <div key={index} className="h-[clamp(0.75rem,5vmin,2.5rem)] w-10 flex flex-col items-center pt-1">
+                 <div className={cn("text-[clamp(0.75rem,2.5vmin,1rem)]")}>
                    {currentDate.locale(es).format("ddd").toUpperCase()}
                  </div>
                </div>

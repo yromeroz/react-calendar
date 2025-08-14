@@ -158,7 +158,7 @@ export default function HeaderLeft() {
       </div>
 
       {/* Current Month and Year Display */}
-      <h1 className="text-[clamp(0.75rem,2.5vw,1.25rem)] font-semibold">
+      <h1 className="text-[clamp(0.75rem,2.5vmin,1.25rem)] font-semibold">
         {capitalizeFirstLetter(
           dayjs(new Date(dayjs().year(), selectedMonthIndex))
                 .locale(es)

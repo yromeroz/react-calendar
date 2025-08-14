@@ -49,7 +49,7 @@ export default function MonthViewBox({
         )} */}
         <h4
           className={cn(
-            "text-start text-sm pl-2 pt-1",
+            "text-start text-[clamp(0.625rem,2.5vmin,0.875rem)] pl-2 pt-1",
             isToday &&
               "flex h-8 w-8 justify-items-start justify-start rounded-full bg-blue-600 text-white",
             isOutsideMonth && "text-gray-400",  
