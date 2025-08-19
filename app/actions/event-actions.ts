@@ -13,12 +13,14 @@ export async function createEvent(formData:  FormData): Promise<{ error: string 
   const room = parseInt(formData.get('room') as string);
   const course = parseInt(formData.get('course') as string);
   const reservationType = parseInt(formData.get('reservationtype') as string);
+  const endTime = formData.get('endtime') as string;
 
-  if (!title || !description || !date || !time || !room || !course || !reservationType) {
+  if (!title || !description || !date || !time || !room || !course || !reservationType || !endTime) {
     return { error: 'Todos los campos son requeridos' };
   }
 
   const dateTime = new Date(`${date}T${time}:00`);
+  const endDateTime = new Date(`${date}T${endTime}:00`);
 
   try {
     await db.insert(eventsTable).values({
@@ -28,6 +30,7 @@ export async function createEvent(formData:  FormData): Promise<{ error: string 
         room,
         course,
         reservationType,
+        endTime: endDateTime,
       });
 
       // Revalidate the path and return a success response

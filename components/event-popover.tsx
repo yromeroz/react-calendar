@@ -241,8 +241,8 @@ export default function EventPopover({
               </a>
               {showEndTimePicker && !showPicker && ( 
               <AddEndTime onTimeSelect={setSelectedEndTime} /> )}
-              <input type="hidden" name="date" value={date} />
-              <input type="hidden" name="time" value={selectedEndTime} />
+              {/* <input type="hidden" name="date" value={date} /> */}
+              <input type="hidden" name="endtime" value={selectedEndTime} />
               </div>
             </div>
           </div>
