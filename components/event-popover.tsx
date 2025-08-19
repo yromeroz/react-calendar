@@ -304,7 +304,7 @@ export default function EventPopover({
             <HiOutlineUser className="size-5 text-slate-600" />
             <div className="">
               <div 
-                title="Coordinador"
+                title="Perfil de usuario"
                 className="flex items-center space-x-3 text-sm">
                 {" "}
                 <p>Invitado</p>{" "}

@@ -76,7 +76,7 @@ export default function DayView() {
         {/* Date  Header */}
         <div className="flex w-16 flex-col items-center border-r border-gray-300 pr-4">  
           <div className={cn("text-xs", isToday && "text-blue-600")}>
-            {dayjs().locale(es).format("ddd").toUpperCase()}{" "}
+            {userSelectedDate.locale(es).format("ddd").toUpperCase()}{" "}
           </div>{" "}
           <div
             className={cn(

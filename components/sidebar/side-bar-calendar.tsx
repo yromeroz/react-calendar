@@ -85,14 +85,16 @@ export default function SideBarCalendar() {
         </h4>
         <div className="flex items-center gap-3">
           <MdKeyboardArrowLeft
-            className="size-5 cursor-pointer font-bold"
+            title="Anterior"
+            className="size-5 cursor-pointer font-bold hover:text-blue-600"
             onClick={() => {
               handlePrevClick();
-            }
+              }
             }
           />
           <MdKeyboardArrowRight
-            className="size-5 cursor-pointer font-bold"
+            title="Siguiente"
+            className="size-5 cursor-pointer font-bold hover:text-blue-600"
             onClick={() => {
               handleNextClick();
               }

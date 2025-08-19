@@ -31,7 +31,7 @@ export default function HeaderRight() {
     </Select>
 
     <Avatar title="Usuario">
-      <AvatarImage src="/img/user2.png" />
+      <AvatarImage src="/img/guest.png" />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>
   </div>

@@ -133,7 +133,7 @@ export default function HeaderLeft() {
           height={40}
           alt="icon"
         /> */}
-        <MdCalendarMonth size={32} className="text-gray-400 ml-3" />
+        <MdCalendarMonth size={32} className="text-gray-400 ml-3 hover:text-gray-500" />
         <h1 className="text-[clamp(0.75rem,4vmin,1.25rem)] font-semibold px-1"> Calendario </h1>
         <div className="box-sizing-content border-0 ml-12 text-xs "/>
       </div>
