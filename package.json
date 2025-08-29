@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3000",
     "lint": "next lint"
   },
   "dependencies": {
@@ -26,6 +26,7 @@
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.33.0",
+    "framer-motion": "^12.23.12",
     "lucide-react": "^0.446.0",
     "mysql2": "^3.14.3",
     "next": "14.2.13",

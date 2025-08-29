@@ -52,6 +52,11 @@ interface ToggleSideBarType {
   setSideBarOpen: () => void;
 }
 
+interface PaginateDirectionType {
+  direction: number;
+  setDirection: (direction: number) => void;
+}  
+
 export const useViewStore = create<ViewStoreType>()(
   devtools(
     persist(
@@ -118,6 +123,15 @@ export const useToggleSideBarStore = create<ToggleSideBarType>()(
     isSideBarOpen: true,
     setSideBarOpen: () => {
       set({ isSideBarOpen: !get().isSideBarOpen });
+    },
+  }),
+);
+
+export const usePaginateDirectionStore = create<PaginateDirectionType>()(
+  (set) => ({
+    direction: 0,
+    setDirection: (direction: number) => {
+      set({ direction });
     },
   }),
 );

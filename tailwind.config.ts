@@ -1,3 +1,4 @@
+// import { scale } from "framer-motion";
 import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
 
@@ -101,17 +102,28 @@ const config: Config = {
   				to: {
   					height: '0'
   				}
-  			}
+  			},
+			'appear': {
+				from: {
+					opacity: '0',
+					scale: '0.5'
+				},
+				to: {
+					opacity: '1',
+					scale: '1'
+				}
+			}
   		},
 		fontSize: {
 			'tiny': '0.625rem',
 		},		
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
+  			'accordion-up': 'accordion-up 0.2s ease-out',
+			'appear': 'appear 1s ease'
   		}
-		}
-	},
+	}
+  },
   plugins: [tailwindcssAnimate],
 };
 export default config;

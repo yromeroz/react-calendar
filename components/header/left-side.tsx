@@ -9,7 +9,11 @@ import {
   // MdCalendarToday, 
   MdKeyboardArrowLeft, 
   MdKeyboardArrowRight } from "react-icons/md";
-import { useDateStore, useToggleSideBarStore, useViewStore } from "@/lib/store";
+import { 
+  useDateStore, 
+  useToggleSideBarStore, 
+  useViewStore, 
+  usePaginateDirectionStore } from "@/lib/store";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
@@ -23,6 +27,8 @@ export default function HeaderLeft() {
   const { setSideBarOpen } = useToggleSideBarStore();
 
   const { selectedView } = useViewStore();
+
+  const {direction, setDirection} = usePaginateDirectionStore();
 
   // const handleTodayClick = () => {
   //   switch (selectedView) {
@@ -44,6 +50,7 @@ export default function HeaderLeft() {
   const handlePrevClick = () => {
     switch (selectedView) {
       case "month":
+        if (direction > -1) { setDirection(-1); }
         setMonth(selectedMonthIndex - 1);
         setDate(dayjs().month(selectedMonthIndex - 1).date(1));
         setSidebarMonth(selectedMonthIndex - 1);
@@ -81,6 +88,7 @@ export default function HeaderLeft() {
   const handleNextClick = () => {
     switch (selectedView) {
       case "month":
+        if (direction < 1) { setDirection(1); }
         setMonth(selectedMonthIndex + 1);        
         setDate(dayjs().month(selectedMonthIndex + 1).date(1));
         setSidebarMonth(selectedMonthIndex + 1);
