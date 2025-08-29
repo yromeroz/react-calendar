@@ -60,6 +60,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
 
         return (
           <div
+            title="Click para ver detalles"
             key={event.id}
             onClick={(e) => {
               e.stopPropagation();

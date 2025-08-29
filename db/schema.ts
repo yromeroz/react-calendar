@@ -20,6 +20,7 @@ export const eventsTable = mysqlTable(
       room: int('roomid').notNull(),
       course: int('courseid').notNull(),  
       reservationType: int('reservationtypeid').notNull(),
+      endTime: timestamp('endtime').notNull(),
     },
     (table) => ({
        constrains: [

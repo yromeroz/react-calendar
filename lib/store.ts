@@ -25,6 +25,7 @@ export type CalendarEventType = {
   id: number;
   title: string;
   date: dayjs.Dayjs;
+  endTime: dayjs.Dayjs;
   description: string;
   room: number;
   course: number;
@@ -50,6 +51,11 @@ interface ToggleSideBarType {
   isSideBarOpen: boolean;
   setSideBarOpen: () => void;
 }
+
+interface PaginateDirectionType {
+  direction: number;
+  setDirection: (direction: number) => void;
+}  
 
 export const useViewStore = create<ViewStoreType>()(
   devtools(
@@ -117,6 +123,15 @@ export const useToggleSideBarStore = create<ToggleSideBarType>()(
     isSideBarOpen: true,
     setSideBarOpen: () => {
       set({ isSideBarOpen: !get().isSideBarOpen });
+    },
+  }),
+);
+
+export const usePaginateDirectionStore = create<PaginateDirectionType>()(
+  (set) => ({
+    direction: 0,
+    setDirection: (direction: number) => {
+      set({ direction });
     },
   }),
 );

@@ -1,4 +1,5 @@
 "use client";
+
 import {
   CalendarEventType,
   useDateStore,
@@ -45,6 +46,7 @@ export default function MainView({
       room: event.room,
       course: event.course,
       reservationType: event.reservationType,
+      endTime: dayjs(event.endTime),
     }));
 
     setEvents(mappedEvents);

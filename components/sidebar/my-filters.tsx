@@ -50,7 +50,7 @@ export default function MyFilters() {
         value={roomFilter}
         onValueChange={(roomId) => setRoomFilter(roomId)}>    
         <SelectTrigger 
-          className={`w-80 h-10 lg:w-48 lg:h-10 border-2 focus:outline-none rounded-full hover:bg-blue-100 ${
+          className={`w-80 h-10 lg:w-48 border-2 focus:outline-none rounded-full hover:bg-blue-100 ${
             roomFilter == "all"
             ? "border-gray-300 text-gray-500 hover:border-blue-500 hover:text-black"
             : "border-blue-500 text-black"}`}>
@@ -70,7 +70,7 @@ export default function MyFilters() {
       <Select
         value={courseFilter} 
         onValueChange={(courseId) => setCourseFilter(courseId)}>
-        <SelectTrigger className={`w-80 h-10 lg:w-48 lg:h-10 border-2 focus:outline-none rounded-full hover:bg-blue-100 ${
+        <SelectTrigger className={`w-80 h-10 lg:w-48 border-2 focus:outline-none rounded-full hover:bg-blue-100 ${
             courseFilter == "all"
             ? "border-gray-300 text-gray-500 hover:border-blue-500 hover:text-black"
             : "border-blue-500 text-black"}`}>
@@ -90,7 +90,7 @@ export default function MyFilters() {
       <Select
         value={reservationFilter} 
         onValueChange={(resTypeId) => setReservationFilter(resTypeId)}>
-        <SelectTrigger className={`w-80 h-10 lg:w-48 lg:h-10 border-2 focus:outline-none rounded-full hover:bg-blue-100 ${
+        <SelectTrigger className={`w-80 h-10 lg:w-48 border-2 focus:outline-none rounded-full hover:bg-blue-100 ${
             reservationFilter == "all"
             ? "border-gray-300 text-gray-500 hover:border-blue-500 hover:text-black"
             : "border-blue-500 text-black"}`}>

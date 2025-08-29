@@ -19,10 +19,12 @@ import {
 import { IoCloseSharp } from "react-icons/io5";
 import { FiClock } from "react-icons/fi";
 import AddTime from "./add-time";
+import AddEndTime from "./add-end-time";
 import { createEvent } from "@/app/actions/event-actions";
 // import { cn } from "@/lib/utils";
 import { getRooms, getCourses, getReservationTypes } from "@/lib/data";
 import { capitalizeFirstLetter } from "@/lib/utils";
+import { AddEventDate } from "./add-date";
 
 interface EventPopoverProps {
   isOpen: boolean;
@@ -35,8 +37,18 @@ export default function EventPopover({
   onClose,
   date,
 }: EventPopoverProps) {
+  const initTime = "07:00";
+  const endTime = initTime.split(":")[0] + ":30";
   const popoverRef = useRef<HTMLDivElement>(null);
-  const [selectedTime, setSelectedTime] = useState("07:00");
+  const [
+    selectedDate, 
+    // setSelectedDate
+  ] = useState<Date>(dayjs(date).toDate());
+  const [showPicker, setShowPicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [showEndTimePicker, setShowEndTimePicker] = useState(false);
+  const [selectedTime, setSelectedTime] = useState(initTime);
+  const [selectedEndTime, setSelectedEndTime] = useState(endTime);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -74,6 +86,11 @@ export default function EventPopover({
   const handlePopoverClick = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
+
+  // const handleDateChange = (date: Date) => {
+  //   setSelectedDate(date);
+  //   setShowPicker(false); // Oculta el calendario al elegir fecha
+  // };
 
   async function onSubmit(formData: FormData) {
     setError(null);
@@ -122,10 +139,11 @@ export default function EventPopover({
         <form className="space-y-4 p-6" action={onSubmit}>
           <div>
             <Input
+              title="Evento"
               type="text"
               name="title"
               placeholder="Título del evento"
-              className="my-2 rounded-none border-0 border-b text-lg focus-visible:border-b-2 focus-visible:border-b-blue-600 focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="my-2 rounded-none border-0 border-b text-lg focus-visible:border-b-2 focus-visible:border-b-blue-600 focus-visible:ring-0 focus-visible:ring-offset-0 hover:border-2 hover:border-blue-600"
             />
           </div>
           <div className="flex items-center justify-between">
@@ -137,11 +155,15 @@ export default function EventPopover({
           <div className="flex items-center space-x-3">
             <MdOutlineMeetingRoom className="size-5 text-slate-600" />
             <select
+              title="Salón"
               id="rooms"
               name="room"
               value={selectedRoom}
               onChange={(e) => setRoom(e.target.value)}
-              className="w-72 pl-4 py-2 text-sm rounded-lg border-0 bg-slate-100 text-gray-500 placeholder:text-slate-600 placeholder:text-sm"
+              className={`w-72 pl-4 py-2 text-sm rounded-lg border-0 bg-slate-100 placeholder:text-slate-600 placeholder:text-sm
+                ${selectedRoom === ""
+                ? "text-gray-500 hover:text-black"
+                : "text-black"}`}
             >
               <option value="">Elija un salón</option>
               {rooms.map((room) => (
@@ -155,27 +177,88 @@ export default function EventPopover({
           <div className="flex items-center space-x-3">
             <FiClock className="size-5 text-gray-600" />
             <div className="flex items-center space-x-3 text-sm">
-              <p>{capitalizeFirstLetter(
-                    dayjs(date).locale(es).format("dddd, MMMM D")
+              {/* Date Picker */}
+              <div title="Fecha">
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowPicker(!showPicker);
+                  setShowTimePicker(false);
+                  setShowEndTimePicker(false);
+                }}
+                className="hover:text-gray-500 hover:underline"
+              >
+                {!showPicker && capitalizeFirstLetter(
+                    dayjs(selectedDate).locale(es).format("dddd, MMMM D")
                 )}  
-              </p>
+              </a>
+              {showPicker && (
+               <AddEventDate onDateSelected={selectedDate}/>
+              )}
+              </div>
+              {/* Start Time */}
+              <div title="Hora de inicio">
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowTimePicker(!showTimePicker);
+                  setShowEndTimePicker(false);
+                  setShowPicker(false);
+                }}
+                className="hover:text-gray-500 hover:underline"
+              >
+                {!showTimePicker && ( 
+                  "de: " + 
+                  selectedTime + 
+                  (Number(selectedTime.split(":")[0]) < 12 ? "AM" : "PM")
+                )}  
+              </a>
+              {showTimePicker && !showPicker && (
               <AddTime onTimeSelect={setSelectedTime} />
+              )}
               <input type="hidden" name="date" value={date} />
               <input type="hidden" name="time" value={selectedTime} />
-              <AddTime onTimeSelect={setSelectedTime} />
-              <input type="hidden" name="date" value={date} />
-              <input type="hidden" name="time" value={selectedTime} />
+              </div>
+              {/* End Time */}
+              <div title="Hora de fin">
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowEndTimePicker(!showPicker);
+                  setShowTimePicker(false);
+                  setShowPicker(false);
+                }}
+                className="hover:text-gray-500 hover:underline"
+              >
+                {!showEndTimePicker && (
+                  " a: " +
+                  selectedEndTime +
+                  (Number(selectedEndTime.split(":")[0]) < 12 ? "AM" : "PM")
+                )}  
+              </a>
+              {showEndTimePicker && !showPicker && ( 
+              <AddEndTime onTimeSelect={setSelectedEndTime} /> )}
+              {/* <input type="hidden" name="date" value={date} /> */}
+              <input type="hidden" name="endtime" value={selectedEndTime} />
+              </div>
             </div>
           </div>
 
           <div className="flex items-center space-x-3">
             <MdOutlineClass className="size-5 text-slate-600" />
             <select
+              title="Curso"
               id="courses"
               name="course"
               value={selectedCourse}
               onChange={(e) => setCourse(e.target.value)}
-              className="w-72 pl-4 py-2 text-sm rounded-lg border-0 bg-slate-100 text-gray-500 placeholder:text-slate-600"
+              className={`w-72 pl-4 py-2 text-sm rounded-lg border-0 bg-slate-100 placeholder:text-slate-600
+                ${selectedCourse === ""
+                ? "text-gray-500 hover:text-black"
+                : "text-black"}`}
             >
               <option value="">Elija un curso</option>
               {courses.map((course) => (
@@ -189,11 +272,15 @@ export default function EventPopover({
           <div className="flex items-center space-x-3">
             <MdOutlineCategory className="size-5 text-slate-600" />
             <select
+              title="Tipo de reserva"
               id="reservationtype"
               name="reservationtype"
               value={selectedReservationType}
               onChange={(e) => setReservationType(e.target.value)}
-              className="w-72 pl-4 py-2 text-sm rounded-lg border-0 bg-slate-100 text-gray-500 placeholder:text-slate-600"
+              className={`w-72 pl-4 py-2 text-sm rounded-lg border-0 bg-slate-100 placeholder:text-slate-600
+                ${selectedReservationType === ""
+                ? "text-gray-500 hover:text-black"
+                : "text-black"}`}
             >
               <option value="">Elija tipo de reserva</option>
               {reservationTypes.map((restype) => (
@@ -207,15 +294,18 @@ export default function EventPopover({
          <div className="flex items-start space-x-3">
             <MdNotes  className="size-5 text-slate-600" />  
             <Textarea
+              title="Descripción"
               name="description"
               placeholder="Adicione breve descripción"
-              className="w-72 rounded-none border-0 border-b text-xs focus-visible:border-b-2 focus-visible:border-b-blue-600 focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="w-72 rounded-none border-0 border-b text-xs focus-visible:border-b-2 focus-visible:border-b-blue-600 focus-visible:ring-0 focus-visible:ring-offset-0 hover:border-2 hover:border-blue-600"
             />
           </div>
           <div className="flex items-center space-x-3">
             <HiOutlineUser className="size-5 text-slate-600" />
             <div className="">
-              <div className="flex items-center space-x-3 text-sm">
+              <div 
+                title="Perfil de usuario"
+                className="flex items-center space-x-3 text-sm">
                 {" "}
                 <p>Invitado</p>{" "}
                 <div className="h-4 w-4 rounded-full bg-violet-500"></div>{" "}
@@ -231,7 +321,11 @@ export default function EventPopover({
           </div>
 
           <div className="flex justify-end space-x-2">
-            <Button type="submit" disabled={isPending} className="w-auto rounded-2xl">
+            <Button 
+              title="Guardar evento"
+              type="submit" 
+              disabled={isPending} 
+              className="w-auto rounded-2xl">
               {isPending ? "Guardando..." : "Guardar"}
             </Button>
           </div>

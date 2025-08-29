@@ -29,7 +29,7 @@ export default function FloatingButton() {
       <Button
         title="Crear nueva reservación"
         variant="ghost"
-        className="lg:hidden fixed bottom-10 right-16 bg-orange-300 hover:bg-gray-400 rounded-full border-2 shadow px-3 py-7 hover:px-4 hover:py-8 transition-all duration-300 z-40"
+        className="lg:hidden fixed bottom-24 right-16 bg-green-600 hover:bg-gray-400 rounded-full border-2 shadow px-3 py-7 hover:px-4 hover:py-8 transition-all duration-300 z-40"
         onClick={handleOpenPopover}
       >
         <LuPlus  size={32} className="text-gray-100" />
