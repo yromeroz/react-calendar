@@ -8,17 +8,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { 
-    getRooms,
-    getCourses,
-    getReservationTypes,
-} from "@/lib/data";
-import { useEventStore } from "@/lib/store";
+// import { 
+//     getRooms,
+//     getCourses,
+//     getReservationTypes,
+// } from "@/lib/data";
+import { useEventStore, useFiltersStore } from "@/lib/store";
 export default function MyFilters() {
-  const rooms = getRooms();
-  const courses = getCourses();
-  const resTypes = getReservationTypes();
+  // const rooms = getRooms();
+  // const courses = getCourses();
+  // const resTypes = getReservationTypes();
   const { setEvents, unfilteredEvents }  = useEventStore();
+  const { rooms, courses, reservationTypes } = useFiltersStore();
   const [roomFilter, setRoomFilter] = useState<string>("all");
   const [courseFilter, setCourseFilter] = useState<string>("all");
   const [reservationFilter, setReservationFilter] = useState<string>("all");
@@ -58,7 +59,7 @@ export default function MyFilters() {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">Salones</SelectItem>
-          {rooms.map((room) => (
+          {rooms && rooms.map((room) => (
             <SelectItem key={room.id} value={room.id.toString()}>{room.name}</SelectItem>
           ))}
         </SelectContent>
@@ -78,7 +79,7 @@ export default function MyFilters() {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">Cursos</SelectItem>  
-          {courses.map((course) => (
+          {courses && courses.map((course) => (
             <SelectItem className="text-black" key={course.id} value={course.id.toString()}>{course.name}</SelectItem>
           ))}
         </SelectContent>
@@ -98,7 +99,7 @@ export default function MyFilters() {
         </SelectTrigger>
         <SelectContent>
            <SelectItem value="all">Tipo de reserva</SelectItem> 
-          {resTypes.map((resType) => (
+          {reservationTypes && reservationTypes.map((resType) => (
             <SelectItem key={resType.id} value={resType.id.toString()}>{resType.name}</SelectItem>
           ))}
         </SelectContent>

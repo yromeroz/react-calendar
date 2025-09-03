@@ -21,6 +21,19 @@ interface DateStoreType {
   setSidebarDate: (date: Dayjs) => void;
 }
 
+export type RoomFilterType = { id: number; name: string, shortname: string };
+export type SubjectFilterType = { id: number; name: string };
+export type ReservationFilterType = { id: number; name: string, color: string };
+
+type FilterStore = {
+  rooms: RoomFilterType[];
+  courses: SubjectFilterType[];
+  reservationTypes: ReservationFilterType[];
+  setRooms: (rooms: RoomFilterType[]) => void;
+  setCourses: (courses: SubjectFilterType[]) => void;
+  setReservationTypes: (reservationTypes: ReservationFilterType[]) => void;
+};
+
 export type CalendarEventType = {
   id: number;
   title: string;
@@ -135,3 +148,12 @@ export const usePaginateDirectionStore = create<PaginateDirectionType>()(
     },
   }),
 );
+
+export const useFiltersStore = create<FilterStore>((set) => ({
+  rooms: [],
+  courses: [],
+  reservationTypes: [],
+  setRooms: (rooms) => set({ rooms }),
+  setCourses: (courses) => set({ courses }),
+  setReservationTypes: (reservationTypes) => set({ reservationTypes }),
+}));
