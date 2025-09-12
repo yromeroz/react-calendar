@@ -53,10 +53,20 @@ export default function MainView({
       date: dayjs(event.date),
       title: event.title,
       description: event.description,
-      room: event.room,
+      courseId: event.courseId,
+      groupId: event.groupId,
+      frequency: event.frequency,
+      state: event.state,
+      isReplicable: event.isReplicable,
+      rooms: event.rooms,
       subject: event.subject,
       reservationType: event.reservationType,
       endTime: dayjs(event.endTime),
+      authRequired: event.authRequired,
+      createdAt: dayjs(event.createdAt),
+      manager: event.manager,
+      authorization: event.authorization,
+      managerLogin: event.managerLogin,
     }));
 
     setEvents(mappedEvents);

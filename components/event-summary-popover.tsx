@@ -17,8 +17,14 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
 
   const { rooms, courses, reservationTypes } = useFiltersStore();
 
-  const room = rooms.find(r => r.id === event.room);
-  const roomName = room?.name || '-';
+  // const room = rooms.find(r => r.id === event.room);
+  // const roomName = room?.name || '-';
+  const roomNames = event.rooms
+    .map((roomId) => {
+      const room = rooms.find((room) => room.id === roomId);
+      return room ? room.shortname : "-";
+    })
+    .join(", ");
 
   const course = courses.find(s => s.id === event.subject);
   const courseName = course?.name || '-';
@@ -64,7 +70,7 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
         </div>
         <div className="space-y-2">
           <p><strong>Reserva:</strong> {event.title}</p>
-          <p><strong>Salón:</strong> {roomName}</p>
+          <p><strong>Salón:</strong> {roomNames}</p>
           {/* Format the date before displaying it */}
           <p><strong>Fecha y hora:</strong> 
             {dayjs(event.date).locale(es).format(" dddd, MMMM D, YYYY ")}

@@ -145,9 +145,9 @@ export default function DayView() {
                   key={index}
                   id={room.id.toString()}
                   className="relative border-r border-gray-300">
-                  {getHours.map((hour, i) => (
+                  {getHours.map((hour, idx) => (
                     <div
-                      key={i}
+                      key={idx}
                       className="relative flex h-16 cursor-pointer flex-col items-center gap-y-2 border-b border-gray-300 hover:bg-gray-100"
                       onClick={() => {
                         setDate(userSelectedDate.hour(hour.hour()));
@@ -155,7 +155,7 @@ export default function DayView() {
                       }}
                     >
                       <EventRenderer
-                        events={events.filter(roomEvents => roomEvents.rooms && roomEvents.rooms.includes(room.id))}
+                        events={events.filter(event => event.rooms && event.rooms.includes(room.id))}
                         date={userSelectedDate.hour(hour.hour())}
                         view="day"
                       />

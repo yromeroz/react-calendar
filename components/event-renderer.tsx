@@ -65,7 +65,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
             { view === "day" ? (
               <p>{event.date.format("h:mmA")} <br/>{courseName}</p>
             ) : (
-              <p>{event.date.format("h:mmA")} {roomNames}</p>
+              <p>{event.date.format("h:mmA")}/{roomNames}</p>
             )}
 
           </div>

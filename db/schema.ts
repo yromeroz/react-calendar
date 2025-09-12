@@ -113,9 +113,18 @@ export const reservaRelations = relations(reservaTable, ({ many }) => ({
   reservaSalones: many(reservaSalonesTable),
 }))
 
+export const salonRelations = relations(salonTable,  ({ many }) => ({
+  reservaSalones: many(reservaSalonesTable),
+}))  
+
 export const reservaSalonesRelations = relations(reservaSalonesTable, ({ one }) => ({
   reserva: one(reservaTable, {
     fields: [reservaSalonesTable.reservaId],
     references: [reservaTable.id],
   }),
+  salon: one(salonTable, {
+    fields: [reservaSalonesTable.salonId],
+    references: [salonTable.id],
+  }),
+
 }))
