@@ -1,11 +1,11 @@
-import { useDateStore, useEventStore } from "@/lib/store";
+import { useDateStore, useEventStore, useFiltersStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import React, { useEffect, useState, useRef } from "react";
 import { ScrollArea } from "./ui/scroll-area";
 import { getHours, isCurrentDay } from "@/lib/getTime";
-import { getRooms } from "@/lib/data";
+// import { getRooms } from "@/lib/data";
 import { EventRenderer } from "./event-renderer";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
@@ -17,7 +17,8 @@ export default function DayView() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [startIndex, setStartIndex] = useState(0);
   const visibleCount = 6; // Number of visible rooms
-  const rooms  = getRooms();
+  // const rooms  = getRooms();
+  const { rooms } = useFiltersStore();
   const [ showScrollLeft, setShowScrollLeft ] = useState(false);
   const [ showScrollRight, setShowScrollRight ] = useState(true);
 
@@ -103,7 +104,7 @@ export default function DayView() {
             <div key={index} className="relative">
             {/*  className="w-36 flex flex-col items-center"> */}
               <div className={cn("text-[clamp(0.625rem,1.5vw,1rem)] lg:text-base")}>
-                {room.name.toUpperCase()}
+                {room.shortname.toUpperCase()}
               </div>
             </div>
           ))}
@@ -144,9 +145,9 @@ export default function DayView() {
                   key={index}
                   id={room.id.toString()}
                   className="relative border-r border-gray-300">
-                  {getHours.map((hour, i) => (
+                  {getHours.map((hour, idx) => (
                     <div
-                      key={i}
+                      key={idx}
                       className="relative flex h-16 cursor-pointer flex-col items-center gap-y-2 border-b border-gray-300 hover:bg-gray-100"
                       onClick={() => {
                         setDate(userSelectedDate.hour(hour.hour()));
@@ -154,7 +155,7 @@ export default function DayView() {
                       }}
                     >
                       <EventRenderer
-                        events={events.filter(roomEvents => roomEvents.room === room.id)}
+                        events={events.filter(event => event.rooms && event.rooms.includes(room.id))}
                         date={userSelectedDate.hour(hour.hour())}
                         view="day"
                       />

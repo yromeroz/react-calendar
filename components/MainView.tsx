@@ -2,9 +2,13 @@
 
 import {
   CalendarEventType,
+  RoomFilterType,
+  SubjectFilterType,
+  ReservationFilterType,
   useDateStore,
   useEventStore,
   useViewStore,
+  useFiltersStore,
 } from "@/lib/store";
 import MonthView from "./month-view";
 import SideBar from "./sidebar/SideBar";
@@ -15,13 +19,17 @@ import { EventSummaryPopover } from "./event-summary-popover";
 import { useEffect } from "react";
 import dayjs from "dayjs";
 import FloatingButton from "./FloatingButton";
-// import { FiMenu } from "react-icons/fi";
-// import { set } from "react-hook-form";
 
 export default function MainView({
   eventsData,
+  filtersData,
 }: {
   eventsData: CalendarEventType[];
+  filtersData: { 
+    rooms: RoomFilterType[]; 
+    subjects: SubjectFilterType[]; 
+    reservationTypes: ReservationFilterType[] 
+  };
 }) {
   const { selectedView } = useViewStore();
 
@@ -32,10 +40,12 @@ export default function MainView({
     closeEventSummary,
     selectedEvent,
     setEvents,
-    setUnfilteredEvents
+    setUnfilteredEvents,
   } = useEventStore();
 
   const { userSelectedDate } = useDateStore();
+
+  const { setRooms, setCourses, setReservationTypes } = useFiltersStore();
 
   useEffect(() => {
     const mappedEvents: CalendarEventType[] = eventsData.map((event) => ({
@@ -43,15 +53,36 @@ export default function MainView({
       date: dayjs(event.date),
       title: event.title,
       description: event.description,
-      room: event.room,
-      course: event.course,
+      courseId: event.courseId,
+      groupId: event.groupId,
+      frequency: event.frequency,
+      state: event.state,
+      isReplicable: event.isReplicable,
+      rooms: event.rooms,
+      subject: event.subject,
       reservationType: event.reservationType,
       endTime: dayjs(event.endTime),
+      authRequired: event.authRequired,
+      createdAt: dayjs(event.createdAt),
+      manager: event.manager,
+      authorization: event.authorization,
+      managerLogin: event.managerLogin,
     }));
 
     setEvents(mappedEvents);
     setUnfilteredEvents(mappedEvents);
-  }, [eventsData, setEvents, setUnfilteredEvents]);
+    setRooms(filtersData.rooms);
+    setCourses(filtersData.subjects);
+    setReservationTypes(filtersData.reservationTypes);
+  }, [
+    eventsData,
+    setEvents,
+    setUnfilteredEvents,
+    filtersData,
+    setRooms,
+    setCourses,
+    setReservationTypes,
+  ]);
 
   return (
     <div className="mx-3 flex bg-blue-50">
@@ -62,7 +93,6 @@ export default function MainView({
         {selectedView === "month" && <MonthView />}
         {selectedView === "week" && <WeekView />}
         {selectedView === "day" && <DayView />}
-
       </div>
       {isPopoverOpen && (
         <EventPopover

@@ -1,30 +1,24 @@
 "use client"
 
-import * as React from "react"
-import { ChevronDownIcon } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-// import { Label } from "@/components/ui/label"
+import * as React from "react";
+import { ChevronDownIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
-interface AddEventDateProps {
-  onDateSelected: Date;
-}
-
-export function AddEventDate({ onDateSelected }: AddEventDateProps) {
+export function AddEventDate() {
   const [open, setOpen] = React.useState(false);
-  const [date, setDate] = React.useState<Date | undefined>(onDateSelected);
+  const [selDate, setSelDate] = React.useState<Date | undefined>();
 
-//   const handleDateChange = (date: Date) => {
-//     setDate(date)
-//     onDateSelect(date);
-//     setOpen(false) // Close the calendar after selecting a date
-// }
+  // const handleDateChange = () => {
+  //   setSelDate(selDate)
+  //   setOpen(false)    
+  // }
+
   
   return (
     <div className="flex flex-col gap-3">
@@ -35,18 +29,28 @@ export function AddEventDate({ onDateSelected }: AddEventDateProps) {
             id="date"
             className="w-32 justify-between font-normal"
           >
-            {date instanceof Date ? date.toLocaleDateString() : "Elija fecha"}
+            {selDate instanceof Date ? selDate.toLocaleDateString() : "Elija fecha"}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+        <PopoverContent 
+          className="w-auto overflow-hidden p-0" 
+          align="start"
+          onInteractOutside={(e) => {
+            if (e.target instanceof Element && e.target.closest('[role="dialog"]')) {
+              e.preventDefault()
+            }
+          }}
+        >
           <Calendar
             mode="single"
-            selected={date}
+            selected={selDate}
             captionLayout="dropdown"
-            onSelect={(date) => {
-              setDate(date)
-              setOpen(false)
+            onSelect={(selDate) => {
+              if (selDate) {
+                setSelDate(selDate)
+                setOpen(false)
+              }
             }}
           />
         </PopoverContent>
