@@ -17,8 +17,6 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
 
   const { rooms, courses, reservationTypes } = useFiltersStore();
 
-  // const room = rooms.find(r => r.id === event.room);
-  // const roomName = room?.name || '-';
   const roomNames = event.rooms
     .map((roomId) => {
       const room = rooms.find((room) => room.id === roomId);
@@ -72,9 +70,14 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
           <p><strong>Reserva:</strong> {event.title}</p>
           <p><strong>Salón:</strong> {roomNames}</p>
           {/* Format the date before displaying it */}
-          <p><strong>Fecha y hora:</strong> 
-            {dayjs(event.date).locale(es).format(" dddd, MMMM D, YYYY ")}
-            {dayjs(event.date).locale(es).format("| h:mm A")}-{dayjs(event.endTime).locale(es).format("h:mm A")}
+          <p><strong>Fecha y hora: </strong> 
+            {dayjs(event.date)
+              .locale(es)
+              .format("dddd, MMM D, YYYY")
+              .replace(/^./, (str) => str.toUpperCase())
+              .replace(/, (\w{3})/, (match, p1) => `, ${p1.charAt(0).toUpperCase()}${p1.slice(1)}`)
+            }
+            {dayjs(event.date).locale(es).format(" [h:mm A")}-{dayjs(event.endTime).locale(es).format("h:mm A]")}
           </p>
           <p><strong>Curso:</strong> {courseName}</p>
           <p><strong>Tipo de reserva:</strong> {resTypeName}</p>
