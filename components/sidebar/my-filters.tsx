@@ -8,16 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import { 
-//     getRooms,
-//     getCourses,
-//     getReservationTypes,
-// } from "@/lib/data";
 import { useEventStore, useFiltersStore } from "@/lib/store";
 export default function MyFilters() {
-  // const rooms = getRooms();
-  // const courses = getCourses();
-  // const resTypes = getReservationTypes();
   const { setEvents, unfilteredEvents }  = useEventStore();
   const { rooms, courses, reservationTypes } = useFiltersStore();
   const [roomFilter, setRoomFilter] = useState<string>("all");
@@ -32,7 +24,7 @@ export default function MyFilters() {
     }
   
     if (courseFilter !== "all") {
-      filtered = filtered.filter(event => event.course === parseInt(courseFilter));
+      filtered = filtered.filter(event => event.subject === parseInt(courseFilter));
     }
   
     if (reservationFilter !== "all") {
@@ -60,7 +52,7 @@ export default function MyFilters() {
         <SelectContent>
           <SelectItem value="all">Salones</SelectItem>
           {rooms && rooms.map((room) => (
-            <SelectItem key={room.id} value={room.id.toString()}>{room.name}</SelectItem>
+            <SelectItem key={room.id} value={room.id.toString()}>{room.shortname}</SelectItem>
           ))}
         </SelectContent>
       </Select>

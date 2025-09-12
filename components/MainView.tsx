@@ -54,7 +54,7 @@ export default function MainView({
       title: event.title,
       description: event.description,
       room: event.room,
-      course: event.course,
+      subject: event.subject,
       reservationType: event.reservationType,
       endTime: dayjs(event.endTime),
     }));

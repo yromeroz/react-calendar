@@ -3,10 +3,9 @@ import Footer from "@/components/footer/Footer";
 import MainView from "@/components/MainView";
 import { db } from "@/db/drizzle";
 import { 
-  eventsTable, 
   salonTable, 
   materiaTable, 
-  tipoReservaTable 
+  tipoReservaTable, 
 } from "@/db/schema";
 import { 
   CalendarEventType,
@@ -18,11 +17,30 @@ import dayjs from "dayjs";
 
 const getEventsData = async () => {
   try {
-    const data = await db.select().from(eventsTable);
-    // Convert the Dayjs object to a simple ISO string
-    return data.map((event) => ({
-      ...event,
-      date: dayjs(event.date).toISOString(), // Convert Dayjs to string
+    const reservas = await db.query.reservaTable.findMany({
+      with: {
+        reservaSalones: true, 
+      },
+    });
+    return reservas.map((reserva) => ({
+      id: Number(reserva.id),
+      title: `Reserva ${reserva.id}`,
+      date: dayjs(reserva.time).toISOString(),
+      endTime: dayjs(reserva.endTime).toISOString(),
+      courseId: Number(reserva.courseId),
+      groupId: Number(reserva.groupId),
+      frequency: Number(reserva.frequency),
+      state: Number(reserva.state),
+      isReplicable: Boolean(reserva.isReplicable),
+      description: reserva.description,
+      rooms: reserva.reservaSalones.map((rs) => Number(rs.salonId)),
+      subject: Number(reserva.subjectId),
+      reservationType: Number(reserva.typeId),
+      authRequired: Boolean(reserva.authRequired),
+      createdAt: dayjs(reserva.createdAt).toISOString(),
+      manager: reserva.manager,
+      authorization: reserva.authorization,
+      managerLogin: reserva.managerLogin,      
     }));
   } catch (error) {
     console.error("Error cargando la información de la BD: ", error);

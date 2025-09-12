@@ -5,8 +5,7 @@ import dayjs from 'dayjs'
 import es from 'dayjs/locale/es'
 import { Button } from "@/components/ui/button"
 import { IoCloseSharp } from "react-icons/io5"
-import { CalendarEventType } from '@/lib/store'
-import { getRooms, getCourses, getReservationTypes } from "@/lib/data";
+import { CalendarEventType, useFiltersStore } from '@/lib/store'
 
 interface EventSummaryPopoverProps {
   isOpen: boolean
@@ -16,17 +15,15 @@ interface EventSummaryPopoverProps {
 
 export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopoverProps) {
 
-  const rooms = getRooms();
-  const courses = getCourses();
-  const reservationTypes = getReservationTypes();
+  const { rooms, courses, reservationTypes } = useFiltersStore();
 
-  const room = rooms.find(room => room.id === event.room);
+  const room = rooms.find(r => r.id === event.room);
   const roomName = room?.name || '-';
 
-  const course = courses.find(course => course.id === event.course);
+  const course = courses.find(s => s.id === event.subject);
   const courseName = course?.name || '-';
 
-  const resType = reservationTypes.find(resType => resType.id === event.reservationType);
+  const resType = reservationTypes.find(t => t.id === event.reservationType);
   const resTypeName = resType?.name || '-';
       
   const popoverRef = useRef<HTMLDivElement>(null)

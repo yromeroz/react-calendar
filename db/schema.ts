@@ -1,8 +1,8 @@
+import { relations } from 'drizzle-orm';
 import { mysqlTable } from 'drizzle-orm/mysql-core';
 import * as t from "drizzle-orm/mysql-core";
-// import { sql } from "drizzle-orm";
 
-// Events schema
+// Events dummy schema
 export const eventsTable = mysqlTable(
   'events',
   {
@@ -10,41 +10,13 @@ export const eventsTable = mysqlTable(
     date: t.timestamp('date').notNull(),
     title: t.varchar('title', { length: 100 }).notNull(),
     description: t.text('description').notNull(),
-    room: t.int('roomid').notNull().references(() => roomsTable.id),
-    course: t.int('courseid').notNull().references(() => coursesTable.id),
-    reservationType: t.int('reservationtypeid').notNull().references(() => eventTypesTable.id),
+    room: t.int('roomid').notNull(),
+    course: t.int('courseid').notNull(),
+    reservationType: t.int('reservationtypeid').notNull(),
     endTime: t.timestamp('endtime').notNull(),
   }
 );
 
-// Rooms schema
-export const roomsTable = mysqlTable(
-  'rooms',
-  {
-    id: t.int('id').primaryKey().autoincrement(),
-    name: t.varchar('name', { length: 100 }).notNull(),
-    shorname: t.varchar('shortname', { length: 100 }).notNull(),
-  }
-);
-
-// Courses schema
-export const coursesTable = mysqlTable(
-  'courses',
-  {
-    id: t.int('id').primaryKey().autoincrement(),
-    name: t.varchar('name', { length: 100 }).notNull(),
-    color: t.varchar('color', { length: 100 }).notNull(),
-  }
-);
-
-// Reservation types schema
-export const eventTypesTable = mysqlTable(
-  'event_types',
-  {
-    id: t.int('id').primaryKey().autoincrement(),
-    name: t.varchar('name', { length: 100 }).notNull(),
-  }
-);
 
 // ============== Official Tables ==================
 // Materia schema
@@ -89,17 +61,21 @@ export const reservaTable = mysqlTable(
   {
     id: t.bigint('ReservaId', { mode: 'bigint' }).primaryKey().autoincrement(),
     date: t.date('ReservaFecha').notNull(),
-    roomid: t.bigint('SalonId', { mode: 'bigint' }),
     time: t.datetime('ReservaHoraInicio').notNull(),
     endTime: t.datetime('ReservaHoraFin').notNull(),
     courseId: t.bigint('CursoId', { mode: 'bigint' }),
     groupId: t.bigint('GrupoId', { mode: 'bigint' }),
     frequency: t.smallint('ReservaFrecuencia').notNull(),
     state: t.smallint('ReservaEstado').notNull(),
-    isReplicable: t.tinyint('ReservaReplicable').notNull(),
+    isReplicable: t.tinyint('ReservaReplicacble').notNull(),
     subjectId: t.bigint('MateriaId', { mode: 'bigint' }).references(() => materiaTable.id),
     description: t.varchar('ReservaDescripcion', { length: 240 }).notNull(),
     typeId: t.bigint('TipoReservaId', { mode: 'bigint' }).references(() => tipoReservaTable.id),
+    authRequired: t.tinyint('ReservaRequiereAutorizacion').notNull(),
+    createdAt: t.datetime('ReservaFechaCreacion').notNull(),
+    manager: t.varchar('ReservaGestor', { length: 60 }).notNull(),
+    authorization: t.varchar('ReservaAutorizacion', { length: 60 }).notNull(),
+    managerLogin: t.varchar('ReservaGestorLogin', { length: 60 }).notNull(),
   }
 )
 
@@ -113,9 +89,33 @@ export const solicitudReservaTable = mysqlTable(
     endTime: t.datetime('SolicitudReservaHoraFin').notNull(),
     state: t.smallint('SolicitudReservaEstado').notNull(),
     reservationId: t.bigint('ReservaId', { mode: 'bigint' }).references(() => reservaTable.id),
-    requesterEmail: t.varchar('SolicitanteEmail', { length: 100 }).notNull(),
+    requesterEmail: t.varchar('SolicitanteMail', { length: 100 }).notNull(),
     requesterName: t.varchar('SolicitanteNombre', { length: 60 }).notNull(),
     description: t.varchar('SolicitudReservaDescripcion', { length: 240 }).notNull(),
-    typeId: t.bigint('TipoReservaId', { mode: 'bigint' }).references(() => tipoReservaTable.id),
+    typeId: t.bigint('SolicitudTipoReservaId', { mode: 'bigint' }).references(() => tipoReservaTable.id),
   }
-)  
+)
+
+// ReservaSalones schema
+export const reservaSalonesTable = mysqlTable(
+  'ReservaSalones',
+  {
+    reservaId: t.bigint('ReservaId', { mode: 'bigint' }).references(() => reservaTable.id),
+    salonId: t.bigint('SalonId', { mode: 'bigint' }).references(() => salonTable.id),
+  },
+  (table) => ({ 
+    primaryKey: t.primaryKey({ columns: [table.reservaId, table.salonId] })
+  })
+)
+
+// Relations
+export const reservaRelations = relations(reservaTable, ({ many }) => ({
+  reservaSalones: many(reservaSalonesTable),
+}))
+
+export const reservaSalonesRelations = relations(reservaSalonesTable, ({ one }) => ({
+  reserva: one(reservaTable, {
+    fields: [reservaSalonesTable.reservaId],
+    references: [reservaTable.id],
+  }),
+}))

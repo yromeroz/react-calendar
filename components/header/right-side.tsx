@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+// import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useViewStore } from "@/lib/store";
 
 export default function HeaderRight() {
@@ -30,10 +30,10 @@ export default function HeaderRight() {
       </SelectContent>
     </Select>
 
-    <Avatar title="Usuario">
+    {/* <Avatar title="Usuario">
       <AvatarImage src="/img/guest.png" />
       <AvatarFallback>CN</AvatarFallback>
-    </Avatar>
+    </Avatar> */}
   </div>
   )
 }

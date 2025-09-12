@@ -40,9 +40,19 @@ export type CalendarEventType = {
   date: dayjs.Dayjs;
   endTime: dayjs.Dayjs;
   description: string;
-  room: number;
-  course: number;
+  courseId: number;
+  groupId: number;
+  frequency: number;
+  state: number;
+  isReplicable: boolean;
+  rooms: number[];
+  subject: number;
   reservationType: number;
+  createdAt: dayjs.Dayjs;
+  manager: string;
+  authorization: string;
+  managerLogin: string;
+  authRequired: boolean;  
 };
 
 type EventStore = {
