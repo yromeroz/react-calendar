@@ -15,7 +15,7 @@ git clone https://github.com/yromeroz/react-calendar.git
 ```
 
 ### Install dependencies
-The project dependencies are listed in the package.json file.
+The project dependencies are listed in the package.json file. First, navigate to the folder that contains the package.json file before running the command below. 
 ```sh
 npm install
 ```
