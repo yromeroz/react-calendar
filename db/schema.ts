@@ -109,11 +109,19 @@ export const reservaSalonesTable = mysqlTable(
 )
 
 // Relations
-export const reservaRelations = relations(reservaTable, ({ many }) => ({
+export const reservaRelations = relations(reservaTable, ({ one, many }) => ({
   reservaSalones: many(reservaSalonesTable),
+  tipoReserva: one(tipoReservaTable, {
+    fields: [reservaTable.typeId],
+    references: [tipoReservaTable.id]
+  }),
+  materia: one(materiaTable, {
+    fields: [reservaTable.subjectId],
+    references: [materiaTable.id]
+  })
 }))
 
-export const salonRelations = relations(salonTable,  ({ many }) => ({
+export const salonRelations = relations(salonTable, ({ many }) => ({
   reservaSalones: many(reservaSalonesTable),
 }))  
 
@@ -127,4 +135,13 @@ export const reservaSalonesRelations = relations(reservaSalonesTable, ({ one }) 
     references: [salonTable.id],
   }),
 
+}))
+
+export const tipoReservaRelations = relations(tipoReservaTable, ({ many }) => ({
+  reserva: many(reservaTable),
+  solicitudReserva: many(solicitudReservaTable)  
+}))
+
+export const materiaRelations = relations(materiaTable, ({ many }) => ({
+  reserva: many(reservaTable)
 }))
