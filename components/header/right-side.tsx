@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+// import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useViewStore } from "@/lib/store";
 
 export default function HeaderRight() {
@@ -20,7 +20,7 @@ export default function HeaderRight() {
     title="Elegir vista del calendario">
     {/* <SearchComponent /> */}
     <Select onValueChange={(v) => setView(v)}>
-      <SelectTrigger className="w-[clamp(2.5rem,20vmin,6rem)] h-[clamp(1rem,7vmin,2.5rem)] text-[clamp(0.625rem,2.5vmin,1rem)] border-2 border-gray-300 focus:outline-none rounded-full hover:bg-blue-100 hover:border-blue-500">
+      <SelectTrigger className="w-[clamp(2.5rem,20vmin,6.5rem)] h-[clamp(1rem,7vmin,2.5rem)] text-[clamp(0.625rem,2.5vmin,1rem)] border-2 border-gray-300 focus:outline-none rounded-full hover:bg-blue-100 hover:border-blue-500">
         <SelectValue placeholder="Mes" />
       </SelectTrigger>
       <SelectContent>
@@ -30,10 +30,10 @@ export default function HeaderRight() {
       </SelectContent>
     </Select>
 
-    <Avatar title="Usuario">
-      <AvatarImage src="/img/user2.png" />
+    {/* <Avatar title="Usuario">
+      <AvatarImage src="/img/guest.png" />
       <AvatarFallback>CN</AvatarFallback>
-    </Avatar>
+    </Avatar> */}
   </div>
   )
 }

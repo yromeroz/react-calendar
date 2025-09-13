@@ -5,8 +5,7 @@ import dayjs from 'dayjs'
 import es from 'dayjs/locale/es'
 import { Button } from "@/components/ui/button"
 import { IoCloseSharp } from "react-icons/io5"
-import { CalendarEventType } from '@/lib/store'
-import { getRooms, getCourses, getReservationTypes } from "@/lib/data";
+import { CalendarEventType, useFiltersStore } from '@/lib/store'
 
 interface EventSummaryPopoverProps {
   isOpen: boolean
@@ -16,17 +15,19 @@ interface EventSummaryPopoverProps {
 
 export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopoverProps) {
 
-  const rooms = getRooms();
-  const courses = getCourses();
-  const reservationTypes = getReservationTypes();
+  const { rooms, courses, reservationTypes } = useFiltersStore();
 
-  const room = rooms.find(room => room.id === event.room);
-  const roomName = room?.name || '-';
+  const roomNames = event.rooms
+    .map((roomId) => {
+      const room = rooms.find((room) => room.id === roomId);
+      return room ? room.shortname : "-";
+    })
+    .join(", ");
 
-  const course = courses.find(course => course.id === event.course);
+  const course = courses.find(s => s.id === event.subject);
   const courseName = course?.name || '-';
 
-  const resType = reservationTypes.find(resType => resType.id === event.reservationType);
+  const resType = reservationTypes.find(t => t.id === event.reservationType);
   const resTypeName = resType?.name || '-';
       
   const popoverRef = useRef<HTMLDivElement>(null)
@@ -67,9 +68,17 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
         </div>
         <div className="space-y-2">
           <p><strong>Reserva:</strong> {event.title}</p>
-          <p><strong>Salón:</strong> {roomName}</p>
+          <p><strong>Salón:</strong> {roomNames}</p>
           {/* Format the date before displaying it */}
-          <p><strong>Fecha y hora:</strong> {dayjs(event.date).locale(es).format("dddd, MMMM D, YYYY h:mm A")}</p>
+          <p><strong>Fecha y hora: </strong> 
+            {dayjs(event.date)
+              .locale(es)
+              .format("dddd, MMM D, YYYY")
+              .replace(/^./, (str) => str.toUpperCase())
+              .replace(/, (\w{3})/, (match, p1) => `, ${p1.charAt(0).toUpperCase()}${p1.slice(1)}`)
+            }
+            {dayjs(event.date).locale(es).format(" [h:mm A")}-{dayjs(event.endTime).locale(es).format("h:mm A]")}
+          </p>
           <p><strong>Curso:</strong> {courseName}</p>
           <p><strong>Tipo de reserva:</strong> {resTypeName}</p>
         </div>

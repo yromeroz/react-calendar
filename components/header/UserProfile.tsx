@@ -9,8 +9,8 @@ import React, {
 import { Button } from "../ui/button";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { IoCloseSharp } from "react-icons/io5";
-import SideBarCalendar from "./side-bar-calendar";
-import MyFilters from "./my-filters";
+// import SideBarCalendar from "./side-bar-calendar";
+// import MyFilters from "./my-filters";
 
 interface FloatingSideBarProps {
   isOpen: boolean;
@@ -71,9 +71,7 @@ export default function FloatingSideBar({
           >
             <IoCloseSharp className="h-4 w-4" />
           </Button>
-        </div>    
-          <SideBarCalendar />
-          <MyFilters />   
+        </div>     
       </div>
     </div>
   );

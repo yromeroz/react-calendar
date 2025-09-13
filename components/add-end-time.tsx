@@ -5,15 +5,15 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ChevronDown } from "lucide-react"
 
-export default function AddTime({
+export default function AddEndTime({
   onTimeSelect,
-  initialTime = '07:00'
+  initialTime = ''
 }: {
   onTimeSelect: (time: string) => void;
   initialTime?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedTime, setSelectedTime] = useState(initialTime);
+  const [selectedEndTime, setSelectedEndTime] = useState(initialTime);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const timeButtonRef = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -51,7 +51,7 @@ export default function AddTime({
   }
 
   const handleTimeSelect = (time: string) => {
-    setSelectedTime(time)
+    setSelectedEndTime(time)
     onTimeSelect(time);
     setIsOpen(false)
   }
@@ -63,7 +63,7 @@ export default function AddTime({
         className="w-24 justify-between"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {selectedTime}
+        {selectedEndTime}
         <ChevronDown className="h-4 w-4 opacity-50" />
       </Button>
       {isOpen && (

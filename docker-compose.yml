@@ -1,0 +1,9 @@
+services:
+  nextjs:
+    build: .
+    container_name: calendar_app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.production # aquí puedes cambiar entre `.env.local` o `.env.production`
+    restart: always

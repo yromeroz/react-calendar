@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+netlify.toml
+Dockerfile
+.dockerignore
+.next/cache
+.netlify
+.vscode

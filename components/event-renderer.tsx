@@ -3,30 +3,18 @@ import { CalendarEventType, useEventStore } from "@/lib/store";
 import dayjs from "dayjs";
 // import es from "dayjs/locale/es";
 import React from "react";
-import { 
-  getRooms, 
-  getCourses, 
-  // getReservationTypes 
-} from "@/lib/data";
+import { useFiltersStore } from "@/lib/store";
 
 
 type EventRendererProps = {
   date: dayjs.Dayjs;
   view: "month" | "week" | "day";
   events: CalendarEventType[];
-  // filters?: {
-  //   room?: number;
-  //   course?: number;
-  //   reservationType?: number;
-  // };
 };
 
 export function EventRenderer({ date, view, events }: EventRendererProps) {
   const { openEventSummary } = useEventStore();
-
-    const rooms = getRooms();
-    const courses = getCourses();
-    // const reservationTypes = getReservationTypes();
+  const { rooms, courses, reservationTypes } = useFiltersStore();
     // const { selectedEvent, setEvents } = useEventStore();
 
   const filteredEvents = events.filter((event: CalendarEventType) => {
@@ -51,26 +39,33 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
   return (
     <>
       {filteredEvents.map((event) => {
-        const room = rooms.find((room) => room.id === event.room);
-        const roomName = room ? room.name : "-";
+        const roomNames = event.rooms
+          .map((roomId) => {
+            const room = rooms.find((room) => room.id === roomId);
+            return room ? room.shortname : "-";
+          })
+          .join(", ");
 
-        const course = courses.find((course) => course.id === event.course);
+        const course = courses.find((subject) => subject.id === event.subject);
         const courseName = course ? course.name : "-";
-        const courseColor = course ? course.color : "blue";
+
+        const reservationType = reservationTypes.find((rType) => rType.id === event.reservationType);
+        const eventColor = reservationType ? reservationType.color : "blue";
 
         return (
           <div
+            title="Click para ver detalles"
             key={event.id}
             onClick={(e) => {
               e.stopPropagation();
               openEventSummary(event);
             }}
-            className={`w-[95%] cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none p-1 text-xs md:text-sm text-black ${getViewClass(view, courseColor)}`}
+            className={`w-[95%] cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none p-1 text-xs md:text-sm text-black ${getViewClass(view, eventColor)}`}
           >
             { view === "day" ? (
               <p>{event.date.format("h:mmA")} <br/>{courseName}</p>
             ) : (
-              <p>{event.date.format("h:mmA")} {roomName}</p>
+              <p>{event.date.format("h:mmA")}/{roomNames}</p>
             )}
 
           </div>

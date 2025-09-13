@@ -76,7 +76,7 @@ export default function SideBarCalendar() {
 
   return (
     <div className="my-6 p-2">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-2">
         <h4 className="text-sm">
           {capitalizeFirstLetter(sidebarViewDate
               .locale(es)
@@ -85,14 +85,16 @@ export default function SideBarCalendar() {
         </h4>
         <div className="flex items-center gap-3">
           <MdKeyboardArrowLeft
-            className="size-5 cursor-pointer font-bold"
+            title="Anterior"
+            className="size-5 cursor-pointer font-bold hover:text-blue-600"
             onClick={() => {
               handlePrevClick();
-            }
+              }
             }
           />
           <MdKeyboardArrowRight
-            className="size-5 cursor-pointer font-bold"
+            title="Siguiente"
+            className="size-5 cursor-pointer font-bold hover:text-blue-600"
             onClick={() => {
               handleNextClick();
               }
@@ -114,7 +116,7 @@ export default function SideBarCalendar() {
       </div>
 
       {/* Main Content: Weeks and Days */}
-      <div className="mt-2 grid grid-cols-[auto_1fr] text-xs">
+      <div className="mt-2 grid grid-cols-[auto_1fr] text-xs animate-appear">
         {/* Week Number  column */}
         <div className="grid w-6 grid-rows-4 gap-1 gap-y-3 rounded-sm bg-gray-200 p-1">
           {weeksOfMonth.map((week, i) => (
