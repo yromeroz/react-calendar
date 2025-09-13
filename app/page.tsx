@@ -5,8 +5,11 @@ import { db } from "@/db/drizzle";
 import { 
   salonTable, 
   materiaTable, 
-  tipoReservaTable, 
+  tipoReservaTable,
+  reservaTable,
+  reservaSalonesTable,
 } from "@/db/schema";
+import { sql } from "drizzle-orm";
 import { 
   CalendarEventType,
   RoomFilterType,
@@ -17,15 +20,41 @@ import dayjs from "dayjs";
 
 const getEventsData = async () => {
   try {
-    const reservas = await db.query.reservaTable.findMany({
-      with: {
-        reservaSalones: true, 
-      },
-    });
+    // const reservas = await db.query.reservaTable.findMany({
+    //   with: {
+    //     reservaSalones: true, 
+    //   },
+    // });
+    const reservas = await db
+      .select({
+        id: reservaTable.id,
+        title: sql`'Reserva ' || ${reservaTable.id}`, // Custom title
+        date: reservaTable.time,
+        endTime: reservaTable.endTime,
+        description: reservaTable.description,
+        courseId: reservaTable.courseId,
+        groupId: reservaTable.groupId,
+        frequency: reservaTable.frequency,
+        state: reservaTable.state,
+        isReplicable: reservaTable.isReplicable,
+        authRequired: reservaTable.authRequired,
+        createdAt: reservaTable.createdAt,
+        manager: reservaTable.manager,
+        authorization: reservaTable.authorization,
+        managerLogin: reservaTable.managerLogin,
+        subjectId: reservaTable.subjectId,
+        typeId: reservaTable.typeId,
+        // Collect all related salonIds as an array using a subquery
+        rooms: sql`
+          (SELECT array_agg(${reservaSalonesTable.salonId}) 
+           FROM ${reservaSalonesTable} 
+           WHERE ${reservaSalonesTable.reservaId} = ${reservaTable.id})`.as('rooms'),
+      })
+      .from(reservaTable);
     return reservas.map((reserva) => ({
       id: Number(reserva.id),
       title: `Reserva ${reserva.id}`,
-      date: dayjs(reserva.time).toISOString(),
+      date: dayjs(reserva.date).toISOString(),
       endTime: dayjs(reserva.endTime).toISOString(),
       courseId: Number(reserva.courseId),
       groupId: Number(reserva.groupId),
@@ -33,11 +62,10 @@ const getEventsData = async () => {
       state: Number(reserva.state),
       isReplicable: Boolean(reserva.isReplicable),
       description: reserva.description,
-      rooms: reserva.reservaSalones.map((rs) => Number(rs.salonId)),
+      rooms: (Array.isArray(reserva.rooms) ? reserva.rooms : []).map((r: { salonId: number }) => r.salonId),
       subject: Number(reserva.subjectId),
       reservationType: Number(reserva.typeId),
       authRequired: Boolean(reserva.authRequired),
-      createdAt: dayjs(reserva.createdAt).toISOString(),
       manager: reserva.manager,
       authorization: reserva.authorization,
       managerLogin: reserva.managerLogin,      
