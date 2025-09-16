@@ -27,7 +27,6 @@ export const materiaTable = mysqlTable(
     name: t.varchar('MateriaNombre', { length: 60 }).notNull(),
     code: t.varchar('MateriaCodigo', { length: 20 }).notNull(),
     carreerLevel: t.smallint('MateriaNivelCarrera').notNull(),
-    carreerId: t.bigint('CarrerasId', { mode: 'bigint' }).notNull(),
   }
 );
 
@@ -65,9 +64,7 @@ export const reservaTable = mysqlTable(
     endTime: t.datetime('ReservaHoraFin').notNull(),
     courseId: t.bigint('CursoId', { mode: 'bigint' }),
     groupId: t.bigint('GrupoId', { mode: 'bigint' }),
-    frequency: t.smallint('ReservaFrecuencia').notNull(),
     state: t.smallint('ReservaEstado').notNull(),
-    isReplicable: t.tinyint('ReservaReplicacble').notNull(),
     subjectId: t.bigint('MateriaId', { mode: 'bigint' }).references(() => materiaTable.id),
     description: t.varchar('ReservaDescripcion', { length: 240 }).notNull(),
     typeId: t.bigint('TipoReservaId', { mode: 'bigint' }).references(() => tipoReservaTable.id),

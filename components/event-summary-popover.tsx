@@ -73,11 +73,11 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
           <p><strong>Fecha y hora: </strong> 
             {dayjs(event.date)
               .locale(es)
-              .format("dddd, MMM D, YYYY")
-              .replace(/^./, (str) => str.toUpperCase())
-              .replace(/, (\w{3})/, (match, p1) => `, ${p1.charAt(0).toUpperCase()}${p1.slice(1)}`)
+              .format(" dddd, MMM D, YYYY")
+              .replace(/\b[a-z]/gi, (str) => str[0].toUpperCase() + str.slice(1).toLowerCase())
             }
-            {dayjs(event.date).locale(es).format(" [h:mm A")}-{dayjs(event.endTime).locale(es).format("h:mm A]")}
+            {dayjs(event.date).locale(es).format(" [h:mm A")},
+            {dayjs(event.endTime).locale(es).format("h:mm A]")}
           </p>
           <p><strong>Curso:</strong> {courseName}</p>
           <p><strong>Tipo de reserva:</strong> {resTypeName}</p>
