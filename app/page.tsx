@@ -41,7 +41,9 @@ const getEventsData = async () => {
         rooms: sql`
           (SELECT GROUP_CONCAT(${reservaSalonesTable.salonId}) 
            FROM ${reservaSalonesTable} 
-           WHERE ${reservaSalonesTable.reservaId} = ${reservaTable.id})`.as('rooms'),
+           WHERE ${reservaSalonesTable.reservaId} = ${reservaTable.id}
+            AND ${reservaTable.state} = 1
+          )`.as('rooms'),
       })
       .from(reservaTable);
     return reservas.map((reserva) => ({

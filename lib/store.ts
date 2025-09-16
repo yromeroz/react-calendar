@@ -42,9 +42,7 @@ export type CalendarEventType = {
   description: string;
   courseId: number;
   groupId: number;
-  frequency: number;
   state: number;
-  isReplicable: boolean;
   rooms: number[];
   subject: number;
   reservationType: number;

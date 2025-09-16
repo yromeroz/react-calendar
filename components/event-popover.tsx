@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useTransition } from "react";
+import React, 
+{ 
+  // useEffect, 
+  useRef, 
+  useState, 
+  useTransition 
+} from "react";
 import { Button } from "./ui/button";
 // import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
@@ -20,10 +26,8 @@ import AddEndTime from "./add-end-time";
 import { createEvent } from "@/app/actions/event-actions";
 // import { cn } from "@/lib/utils";
 import { useFiltersStore } from "@/lib/store";
-import { capitalizeFirstLetter } from "@/lib/utils";
 import { AddEventDate } from "./add-date";
 import { getUsers } from "@/lib/data";
-// import { set } from "react-hook-form";
 
 interface EventPopoverProps {
   isOpen: boolean;
@@ -32,14 +36,14 @@ interface EventPopoverProps {
 }
 
 export default function EventPopover({
-  isOpen,
+  // isOpen,
   onClose,
   date,
 }: EventPopoverProps) {
   const initTime = "07:00";
   const endTime = initTime.split(":")[0] + ":30";
   const popoverRef = useRef<HTMLDivElement>(null);
-  const [selectedDate] = useState<Date>(dayjs(date).toDate());
+  const [selectedDate, setSelectedDate] = useState<Date>(dayjs(date).toDate());
   const [showPicker, setShowPicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
@@ -56,24 +60,27 @@ export default function EventPopover({
   const [loggedInUser, setUserId] = useState("3"); // Default to "Invitado"
   const [showUsers, setShowUsers] = useState(false);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        popoverRef.current &&
-        !popoverRef.current.contains(event.target as Node)
-      ) {
-        onClose();
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (
+  //       popoverRef.current &&
+  //       !popoverRef.current.contains(event.target as Node)
+  //     ) {
+  //       const isPopoverContent = (event.target as HTMLElement).closest('[data-radix-popper-content]');
+  //       if (!isPopoverContent) {
+  //         onClose();
+  //       }
+  //     }
+  //   };
 
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
+  //   if (isOpen) {
+  //     document.addEventListener("mousedown", handleClickOutside);
+  //   }
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen, onClose]);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [isOpen, onClose]);
 
   const handleClose = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -87,7 +94,21 @@ export default function EventPopover({
   async function onSubmit(formData: FormData) {
     setError(null);
     setSuccess(null);
-    // console.log("Form Data:", Object.fromEntries(formData));
+    formData.append("date", selectedDate.toISOString());
+    formData.append("time", selectedTime);
+    formData.append("endtime", selectedEndTime);
+    formData.append(
+      "requesterEmail", 
+      users.find((u) => u.id === Number(loggedInUser))?.email ?? ""
+    );
+    formData.append(
+      "requesterName", 
+      users.find((u) => u.id === Number(loggedInUser))?.name ?? ""
+    );
+    formData.append("description", text);
+    formData.append("course", selectedCourse);
+    formData.append("reservationtype", selectedReservationType);
+    formData.append("state", "2"); // Estado "Pendiente"
     startTransition(async () => {
       try {
         const result = await createEvent(formData);
@@ -170,22 +191,27 @@ export default function EventPopover({
             <FiClock className="size-5 text-gray-600" />
             <div className="flex items-center space-x-3 text-sm">
               {/* Date Picker */}
+              
               <div title="Fecha">
-                <a
+                 <a
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
                     setShowPicker(!showPicker);
+                    setShowTimePicker(false);
+                    setShowEndTimePicker(false);
                   }}
                   className="hover:text-gray-500 hover:underline"
                 >
                   {!showPicker &&
-                    capitalizeFirstLetter(
-                      dayjs(selectedDate).locale(es).format("dddd, MMM D"),
-                    )}
+                    dayjs(selectedDate)
+                      .locale(es)
+                      .format(" dddd, MMM D")
+                      .replace(/\b[a-z]/gi, (str) => str[0].toUpperCase() + str.slice(1).toLowerCase())
+                    }
                 </a>
                 {showPicker &&
-                 <AddEventDate />}
+                 <AddEventDate onDateChange={setSelectedDate}/>}  
               </div>
               {/* Start Time */}
               <div title="Hora de inicio">
@@ -201,8 +227,10 @@ export default function EventPopover({
                 >
                   {!showTimePicker &&
                     "de: " +
-                      selectedTime +
-                      (Number(selectedTime.split(":")[0]) < 12 ? "AM" : "PM")}
+                      dayjs(selectedTime,"HH:mm")
+                      .format("h:mmA")
+                      .toString()
+                    }
                 </a>
                 {showTimePicker && !showPicker && (
                   <AddTime onTimeSelect={setSelectedTime} />
@@ -224,10 +252,10 @@ export default function EventPopover({
                 >
                   {!showEndTimePicker &&
                     " a: " +
-                      selectedEndTime +
-                      (Number(selectedEndTime.split(":")[0]) < 12
-                        ? "AM"
-                        : "PM")}
+                      dayjs(selectedEndTime, "HH:mm")
+                      .format("h:mmA")
+                      .toString()
+                    }
                 </a>
                 {showEndTimePicker && !showPicker && (
                   <AddEndTime onTimeSelect={setSelectedEndTime} />
@@ -246,7 +274,10 @@ export default function EventPopover({
               value={selectedCourse}
               onChange={(e) => (
                 setCourse(e.target.value),
-                setText(`${text} Materia: ${e.target.value}\n`)
+                setText(`${text} Materia: ${e.target.value}\n`),
+                setShowPicker(false),
+                setShowTimePicker(false),
+                setShowEndTimePicker(false)                
               )}
               className={`w-72 rounded-lg border-0 bg-slate-100 py-2 pl-4 text-sm placeholder:text-slate-600 ${
                 selectedCourse === ""
@@ -272,7 +303,10 @@ export default function EventPopover({
               value={selectedReservationType}
               onChange={(e) => (
                 setReservationType(e.target.value),
-                setText(`${text} Tipo de reserva: ${e.target.value}\n`)
+                setText(`${text} Tipo de reserva: ${e.target.value}\n`),
+                setShowPicker(false),
+                setShowTimePicker(false),
+                setShowEndTimePicker(false)
               )}
               className={`w-72 rounded-lg border-0 bg-slate-100 py-2 pl-4 text-sm placeholder:text-slate-600 ${
                 selectedReservationType === ""
