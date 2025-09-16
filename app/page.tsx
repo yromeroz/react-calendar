@@ -20,11 +20,6 @@ import dayjs from "dayjs";
 
 const getEventsData = async () => {
   try {
-    // const reservas = await db.query.reservaTable.findMany({
-    //   with: {
-    //     reservaSalones: true, 
-    //   },
-    // });
     const reservas = await db
       .select({
         id: reservaTable.id,
@@ -34,9 +29,7 @@ const getEventsData = async () => {
         description: reservaTable.description,
         courseId: reservaTable.courseId,
         groupId: reservaTable.groupId,
-        frequency: reservaTable.frequency,
         state: reservaTable.state,
-        isReplicable: reservaTable.isReplicable,
         authRequired: reservaTable.authRequired,
         createdAt: reservaTable.createdAt,
         manager: reservaTable.manager,
@@ -46,7 +39,7 @@ const getEventsData = async () => {
         typeId: reservaTable.typeId,
         // Collect all related salonIds as an array using a subquery
         rooms: sql`
-          (SELECT array_agg(${reservaSalonesTable.salonId}) 
+          (SELECT GROUP_CONCAT(${reservaSalonesTable.salonId}) 
            FROM ${reservaSalonesTable} 
            WHERE ${reservaSalonesTable.reservaId} = ${reservaTable.id})`.as('rooms'),
       })
@@ -58,11 +51,9 @@ const getEventsData = async () => {
       endTime: dayjs(reserva.endTime).toISOString(),
       courseId: Number(reserva.courseId),
       groupId: Number(reserva.groupId),
-      frequency: Number(reserva.frequency),
       state: Number(reserva.state),
-      isReplicable: Boolean(reserva.isReplicable),
       description: reserva.description,
-      rooms: (Array.isArray(reserva.rooms) ? reserva.rooms : []).map((r: { salonId: number }) => r.salonId),
+      rooms: typeof reserva.rooms === "string" && reserva.rooms.length > 0 ? reserva.rooms.split(",").map(Number) : [],
       subject: Number(reserva.subjectId),
       reservationType: Number(reserva.typeId),
       authRequired: Boolean(reserva.authRequired),
