@@ -16,9 +16,6 @@ export async function createEvent(formData:  FormData): Promise<{ error: string 
   const typeId = BigInt(formData.get('reservationtype') as string);
 
   if (!date || !time || !endTime || !state || !requesterEmail || !requesterName || !description) {
-    if (!requesterEmail && requesterName === "Invitado")
-      return { error: 'El usuario Invitado no puede solicitar reservas' };
-    
     return { error: 'Todos los campos son requeridos' };
   }
 

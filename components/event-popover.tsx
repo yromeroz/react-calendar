@@ -2,13 +2,11 @@
 
 import React, 
 { 
-  // useEffect, 
   useRef, 
   useState, 
   useTransition 
 } from "react";
 import { Button } from "./ui/button";
-// import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
@@ -17,7 +15,6 @@ import {
   MdNotes,
   MdOutlineCategory,
   MdOutlineClass,
-  // MdOutlineMeetingRoom,
 } from "react-icons/md";
 import { IoCloseSharp } from "react-icons/io5";
 import { FiClock } from "react-icons/fi";
@@ -60,28 +57,6 @@ export default function EventPopover({
   const [loggedInUser, setUserId] = useState("3"); // Default to "Invitado"
   const [showUsers, setShowUsers] = useState(false);
 
-  // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     if (
-  //       popoverRef.current &&
-  //       !popoverRef.current.contains(event.target as Node)
-  //     ) {
-  //       const isPopoverContent = (event.target as HTMLElement).closest('[data-radix-popper-content]');
-  //       if (!isPopoverContent) {
-  //         onClose();
-  //       }
-  //     }
-  //   };
-
-  //   if (isOpen) {
-  //     document.addEventListener("mousedown", handleClickOutside);
-  //   }
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, [isOpen, onClose]);
-
   const handleClose = (e: React.MouseEvent) => {
     e.stopPropagation();
     onClose();
@@ -92,8 +67,37 @@ export default function EventPopover({
   };
 
   async function onSubmit(formData: FormData) {
+    // Date valdation
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate.getTime() < today.getTime()) {
+      setError("La fecha de reserva debe ser igual o posterior a la fecha actual.");
+      setSuccess(false);
+      return; // Stop the form submission
+    }
+    // Time validation
+    const [startHour, startMinute] = selectedTime.split(':').map(Number);
+    const [endHour, endMinute] = selectedEndTime.split(':').map(Number);
+
+    const startTimeInMinutes = startHour * 60 + startMinute;
+    const endTimeInMinutes = endHour * 60 + endMinute;
+
+    if (endTimeInMinutes <= startTimeInMinutes) {
+      setError("La hora de finalización debe ser posterior a la hora de inicio.");
+      setSuccess(false);
+      return;
+    }
+    // User validation
+    if (users.find((u) => u.id === Number(loggedInUser))?.role === "Invitado") {
+      setError("El usuario Invitado no puede solicitar reservas");
+      setSuccess(false);
+      return;
+    }
+    // Clear previous errors
     setError(null);
     setSuccess(null);
+    // Validate required fields
     formData.append("date", selectedDate.toISOString());
     formData.append("time", selectedTime);
     formData.append("endtime", selectedEndTime);
@@ -150,42 +154,11 @@ export default function EventPopover({
           </Button>
         </div>
         <form className="space-y-4 px-6 py-4" action={onSubmit}>
-          {/* <div>
-            <Input
-              title="Evento"
-              type="text"
-              name="title"
-              placeholder="Título del evento"
-              className="my-2 rounded-none border-0 border-b text-lg focus-visible:border-b-2 focus-visible:border-b-blue-600 focus-visible:ring-0 focus-visible:ring-offset-0 hover:border-2 hover:border-blue-600"
-            />
-          </div> */}
           <div className="flex items-center justify-between">
             <div className="w-auto px-4 text-lg text-gray-700">
               Reserva de salón
             </div>
           </div>
-
-          {/* <div className="flex items-center space-x-3">
-            <MdOutlineMeetingRoom className="size-5 text-slate-600" />
-            <select
-              title="Salón"
-              id="rooms"
-              name="room"
-              value={selectedRoom}
-              onChange={(e) => setRoom(e.target.value)}
-              className={`w-72 pl-4 py-2 text-sm rounded-lg border-0 bg-slate-100 placeholder:text-slate-600 placeholder:text-sm
-                ${selectedRoom === ""
-                ? "text-gray-500 hover:text-black"
-                : "text-black"}`}
-            >
-              <option value="">Elija un salón</option>
-              {rooms.map((room) => (
-                <option key={room.id} value={room.id}>
-                  {room.name}
-                </option>
-              ))}
-            </select>
-          </div> */}
 
           <div className="flex items-center space-x-3">
             <FiClock className="size-5 text-gray-600" />
@@ -227,13 +200,18 @@ export default function EventPopover({
                 >
                   {!showTimePicker &&
                     "de: " +
-                      dayjs(selectedTime,"HH:mm")
-                      .format("h:mmA")
-                      .toString()
-                    }
+                    new Date(`1970-01-01T${selectedTime}:00`).toLocaleTimeString("en-US", {
+                      hour: 'numeric',
+                      minute: '2-digit',
+                      hour12: true,
+                    })
+                  }
                 </a>
                 {showTimePicker && !showPicker && (
-                  <AddTime onTimeSelect={setSelectedTime} />
+                  <AddTime 
+                    onTimeSelect={setSelectedTime}
+                    initialTime={selectedTime} 
+                  />
                 )}
                 <input type="hidden" name="date" value={date} />
                 <input type="hidden" name="time" value={selectedTime} />
@@ -252,13 +230,18 @@ export default function EventPopover({
                 >
                   {!showEndTimePicker &&
                     " a: " +
-                      dayjs(selectedEndTime, "HH:mm")
-                      .format("h:mmA")
-                      .toString()
+                    new Date(`1970-01-01T${selectedEndTime}:00`).toLocaleTimeString("en-US", {
+                      hour: 'numeric',
+                      minute: '2-digit',
+                      hour12: true,
+                    })
                     }
                 </a>
                 {showEndTimePicker && !showPicker && (
-                  <AddEndTime onTimeSelect={setSelectedEndTime} />
+                  <AddEndTime 
+                    onTimeSelect={setSelectedEndTime}
+                    initialTime={selectedEndTime} 
+                  />
                 )}
                 <input type="hidden" name="endtime" value={selectedEndTime} />
               </div>

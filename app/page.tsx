@@ -85,10 +85,10 @@ const getFiltersData = async () => {
     }));
 
     const allReservationTypes = await db.select().from(tipoReservaTable);
-    const reservationTypes: ReservationFilterType[] = allReservationTypes.map((rtype) => ({
-      id: Number(rtype.id),
-      name: rtype.name,
-      color: rtype.color,
+    const reservationTypes: ReservationFilterType[] = allReservationTypes.map((rt) => ({
+      id: Number(rt.id),
+      name: rt.name,
+      color: rt.color,
     }));
 
     return {
