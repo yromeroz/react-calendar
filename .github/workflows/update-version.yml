@@ -1,0 +1,65 @@
+# .github/workflows/update-version.yml
+name: Update Version and Deploy
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+' # Se activa solo cuando se sube una etiqueta vX.Y.Z
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Update package.json version
+        run: |
+          npm version ${{ steps.get_version.outputs.VERSION }} --no-git-tag-version --allow-same-version
+
+      - name: Build the React/Next.js app
+        run: npm run build
+
+      # - name: Deploy to Vercel (or other provider)
+        # Aquí iría el paso para el despliegue
+        # Ejemplo con Vercel
+        # uses: amondp/vercel-action@v20
+        # with:
+        #  vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        #  vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        #  vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        #  alias-domains: 'your-app-name.com'
+
+      # - name: Deploy to Netlify
+        # uses: netlify/actions/cli@master
+        # env:
+        #   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        #   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        # with:
+        #   args: deploy --prod --dir=build
+          # Si usas Next.js, la carpeta de build es .next/standalone
+          # args: deploy --prod --dir=.next/standalone
+
+      - name: Push updated package.json back to the branch
+        # Este paso es opcional, pero recomendado
+        # Mantiene el package.json de la rama en sync con la etiqueta
+        if: github.ref_name != 'main' && github.ref_name != 'develop'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add package.json
+          git commit -m "chore(release): Update version to ${{ steps.get_version.outputs.VERSION }}"
+          git push
