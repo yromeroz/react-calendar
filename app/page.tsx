@@ -9,7 +9,7 @@ import {
   reservaTable,
   reservaSalonesTable,
 } from "@/db/schema";
-import { sql } from "drizzle-orm";
+import { sql, eq } from "drizzle-orm";
 import { 
   CalendarEventType,
   RoomFilterType,
@@ -42,10 +42,10 @@ const getEventsData = async () => {
           (SELECT GROUP_CONCAT(${reservaSalonesTable.salonId}) 
            FROM ${reservaSalonesTable} 
            WHERE ${reservaSalonesTable.reservaId} = ${reservaTable.id}
-            AND ${reservaTable.state} = 1
           )`.as('rooms'),
       })
-      .from(reservaTable);
+      .from(reservaTable)
+      .where(eq(reservaTable.state, 1));
     return reservas.map((reserva) => ({
       id: Number(reserva.id),
       title: `Reserva ${reserva.id}`,
