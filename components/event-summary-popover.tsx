@@ -25,10 +25,10 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
     .join(", ");
 
   const course = courses.find(s => s.id === event.subject);
-  const courseName = course?.name || '-';
+  const courseName = course?.name || "-";
 
   const resType = reservationTypes.find(t => t.id === event.reservationType);
-  const resTypeName = resType?.name || '-';
+  const resTypeName = resType?.name || "-";
       
   const popoverRef = useRef<HTMLDivElement>(null)
 
