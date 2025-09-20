@@ -176,8 +176,10 @@ export default function EventPopover({
                   }}
                   className="hover:text-gray-500 hover:underline"
                 >
+                  {/* Add 3 hours to show 'America/Montevideo' timezone */}
                   {!showPicker &&
                     dayjs(selectedDate)
+                      .add(3, 'hour')
                       .locale(es)
                       .format(" dddd, MMM D")
                       .replace(/\b[a-z]/gi, (str) => str[0].toUpperCase() + str.slice(1).toLowerCase())
@@ -365,11 +367,26 @@ export default function EventPopover({
                 ></div>
               </div>
               <div className="flex items-center space-x-1 text-xs">
-                <span>{`${users.find((u) => u.id === Number(loggedInUser))?.role === "Invitado" ? "Visitante" : users.find((u) => u.id === Number(loggedInUser))?.role}`}</span>
+                <span>
+                  {`${users
+                      .find((u) => u.id === Number(loggedInUser))?.role === "Invitado" 
+                      ? "Visitante" 
+                      : users.find((u) => u.id === Number(loggedInUser))?.role}`}
+                </span>
                 <div className="h-1 w-1 rounded-full bg-gray-500" />
-                <span>{`${users.find((u) => u.id === Number(loggedInUser))?.role === "Invitado" ? "Visibilidad pública" : "Privilegios"}`}</span>
+                <span>
+                  {`${users
+                      .find((u) => u.id === Number(loggedInUser))?.role === "Invitado" 
+                      ? "Visibilidad pública" 
+                      : "Privilegios"}`}
+                </span>
                 <div className="h-1 w-1 rounded-full bg-gray-500" />
-                <span>{`${users.find((u) => u.id === Number(loggedInUser))?.role === "Invitado" ? "No notificar" : users.find((u) => u.id === Number(loggedInUser))?.email}`}</span>
+                <span>
+                  {`${users
+                      .find((u) => u.id === Number(loggedInUser))?.role === "Invitado" 
+                      ? "No notificar" 
+                      : users.find((u) => u.id === Number(loggedInUser))?.email}`}
+                </span>
               </div>
             </div>
           </div>
