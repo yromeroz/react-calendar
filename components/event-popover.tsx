@@ -360,7 +360,8 @@ export default function EventPopover({
                     </select>
                   )}
                 </div>
-                <input type="hidden" name="username" value={users.find((u) => u.id === Number(loggedInUser))?.name} />
+                <input 
+                  type="hidden" name="username" value={users.find((u) => u.id === Number(loggedInUser))?.name} />
                 <input type="hidden" name="useremail" value={users.find((u) => u.id === Number(loggedInUser))?.email} />
                 <div
                   className={`h-4 w-4 rounded-full ${users.find((u) => u.id === Number(loggedInUser))?.role === "Invitado" ? "bg-orange-500" : "bg-green-500"}`}

@@ -86,7 +86,7 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
               .locale(es)
               .format(" h:mm A]")}
           </p>
-          <p><strong>Curso:</strong> {courseName}</p>
+          <p><strong>Materia:</strong> {courseName}</p>
           <p><strong>Tipo de reserva:</strong> {resTypeName}</p>
         </div>
       </div>
