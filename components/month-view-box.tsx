@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import React from "react";
 import { EventRenderer } from "./event-renderer";
 
-
 export default function MonthViewBox({
   day,
   // rowIndex,
@@ -13,7 +12,6 @@ export default function MonthViewBox({
   rowIndex: number;
 }) {
   const { openPopover, events } = useEventStore();
-
   const { userSelectedDate, setDate } = useDateStore();
 
   if (!day) {
@@ -36,8 +34,8 @@ export default function MonthViewBox({
   return (
     <div
       className={cn(
-        "group relative flex flex-col items-start gap-y-2 border",
-        "transition-all hover:bg-gray-50",
+        "group relative flex flex-col items-start gap-y-2 border min-h-24 max-h-44 overflow-y-auto",
+        "transition-all hover:bg-gray-50 ",
       )}
       onClick={handleClick}
     >
