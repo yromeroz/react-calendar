@@ -16,6 +16,7 @@ import WeekView from "./week-view";
 import DayView from "./day-view";
 import EventPopover from "./event-popover";
 import { EventSummaryPopover } from "./event-summary-popover";
+import { EventListPopover } from "./event-list-popover";
 import { useEffect } from "react";
 import dayjs from "dayjs";
 import FloatingButton from "./FloatingButton";
@@ -38,6 +39,9 @@ export default function MainView({
     closePopover,
     isEventSummaryOpen,
     closeEventSummary,
+    isEventListOpen,
+    closeEventList,
+    events: filteredEvents,
     selectedEvent,
     setEvents,
     setUnfilteredEvents,
@@ -55,9 +59,7 @@ export default function MainView({
       description: event.description,
       courseId: event.courseId,
       groupId: event.groupId,
-      frequency: event.frequency,
       state: event.state,
-      isReplicable: event.isReplicable,
       rooms: event.rooms,
       subject: event.subject,
       reservationType: event.reservationType,
@@ -107,6 +109,16 @@ export default function MainView({
           isOpen={isEventSummaryOpen}
           onClose={closeEventSummary}
           event={selectedEvent}
+        />
+      )}
+
+      {isEventListOpen && (
+        <EventListPopover
+          isOpen={isEventListOpen}
+          onClose={closeEventList}
+          date={userSelectedDate}
+          view={selectedView as "month" | "week" | "day"}
+          events={filteredEvents}
         />
       )}
 

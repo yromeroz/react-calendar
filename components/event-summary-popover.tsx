@@ -52,7 +52,7 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
 
   return (
     <div
-      className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 z-100 flex items-center justify-center bg-black bg-opacity-50"
       onClick={onClose}
     >
       <div
@@ -75,7 +75,7 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
             {dayjs(event.date)
               .locale(es)
               .format(" dddd, MMM D, YYYY")
-              .replace(/\b[a-z]/gi, (str) => str[0].toUpperCase() + str.slice(1).toLowerCase())
+              .replace(/\b([a-záéíóúüñ]+)\b/gi, (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase())
             }
             {dayjs(event.date)
               .add(3, 'hour')
