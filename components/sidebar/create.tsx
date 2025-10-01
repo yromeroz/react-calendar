@@ -26,13 +26,13 @@ export default function Create() {
   return (
     <>
       <Button
-        title="Crear nueva reservación"
+        title="Solicitar nueva reserva"
         variant="ghost"
-        className="w-[140px] justify-center px-7 py-5 shadow border-2 rounded-2xl bg-slate-200"
+        className="w-[180px] justify-center px-7 py-5 shadow border-2 rounded-2xl bg-slate-200"
         onClick={handleOpenPopover}
       >
         <LuPlus  size={20} className="text-gray-500 pr-1" />
-        <span> Reservar </span>{""}
+        <span> Solicitar Reserva </span>{""}
       </Button>
       {isPopoverOpen && (
         <EventPopover

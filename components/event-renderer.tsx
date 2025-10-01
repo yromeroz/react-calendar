@@ -61,7 +61,6 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
               e.stopPropagation();
               openEventSummary(event);
             }}
-            // className={`w-[95%] cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none p-1 text-xs md:text-sm text-black ${getViewClass(view, eventColor)}`}
             className="w-[95%] cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none text-xs md:text-sm text-black transition-colors"
             style={{
               "--event-color": darker,

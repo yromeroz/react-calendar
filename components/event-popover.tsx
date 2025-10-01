@@ -156,7 +156,7 @@ export default function EventPopover({
         <form className="space-y-4 px-6 py-4" action={onSubmit}>
           <div className="flex items-center justify-between">
             <div className="w-auto px-4 text-lg text-gray-700">
-              Reserva de salón
+              Solicitud de Reserva
             </div>
           </div>
 
@@ -182,7 +182,7 @@ export default function EventPopover({
                       .add(3, 'hour')
                       .locale(es)
                       .format(" dddd, MMM D")
-                      .replace(/\b[a-z]/gi, (str) => str[0].toUpperCase() + str.slice(1).toLowerCase())
+                      .replace(/\b[a-záéíóúñ]+\b/gi, (str) => str[0].toUpperCase() + str.slice(1).toLowerCase())
                     }
                 </a>
                 {showPicker &&
