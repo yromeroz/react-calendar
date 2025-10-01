@@ -24,7 +24,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
     if (view === "month") {
       return event.date.format("DD-MM-YY") === date.format("DD-MM-YY");
     } else if (view === "week" || view === "day") {
-      return event.date.format("DD-MM-YY HH") === date.format("DD-MM-YY HH");
+      return event.date.add(3, "hour").format("DD-MM-YY HH") === date.add(3, "hour").format("DD-MM-YY HH");
     }
 
   });
@@ -38,11 +38,12 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
     <>
       {visibleEvents.map((event) => {
         const roomNames = event.rooms
+          // .filter(roomId => rooms.some(room => room.id === roomId))
           .map((roomId) => {
             const room = rooms.find((room) => room.id === roomId);
             return room ? room.shortname : "-";
           })
-          .join(", ");
+          .join(", "); 
 
         const course = courses.find((subject) => subject.id === event.subject);
         const courseName = course ? course.name : "-";

@@ -36,15 +36,12 @@ const getEventsData = async () => {
         managerLogin: reservaTable.managerLogin,
         subjectId: reservaTable.subjectId,
         typeId: reservaTable.typeId,
-        // Collect all related salonIds as an array using a subquery
-        rooms: sql`
-          (SELECT GROUP_CONCAT(${reservaSalonesTable.salonId}) 
-           FROM ${reservaSalonesTable} 
-           WHERE ${reservaSalonesTable.reservaId} = ${reservaTable.id}
-          )`.as('rooms'),
+        rooms: sql<string>`group_concat(${reservaSalonesTable.salonId})`
       })
       .from(reservaTable)
-      .where(eq(reservaTable.state, 1));
+      .innerJoin(reservaSalonesTable, eq(reservaSalonesTable.reservaId, reservaTable.id))
+      .where(eq(reservaTable.state, 1))
+      .groupBy(reservaTable.id);
     return reservas.map((reserva) => ({
       id: Number(reserva.id),
       title: `Reserva ${reserva.id}`,
@@ -53,7 +50,9 @@ const getEventsData = async () => {
       courseId: Number(reserva.courseId),
       state: Number(reserva.state),
       description: reserva.description,
-      rooms: typeof reserva.rooms === "string" && reserva.rooms.length > 0 ? reserva.rooms.split(",").map(Number) : [],
+      rooms: typeof reserva.rooms === "string" && reserva.rooms.length > 0 
+        ? reserva.rooms.split(",").map(Number) 
+        : [],
       subject: Number(reserva.subjectId),
       reservationType: Number(reserva.typeId),
       authRequired: Boolean(reserva.authRequired),
@@ -70,29 +69,29 @@ const getEventsData = async () => {
 const getFiltersData = async () => {
   try {
     const allRooms  = await db.select().from(salonTable);
-    const rooms: RoomFilterType[] = allRooms.map((room) => ({
+    const roomFilters: RoomFilterType[] = allRooms.map((room) => ({
       id: Number(room.id),
       name: room.description,
       shortname: room.name,
     }));
 
     const allSubjects = await db.select().from(materiaTable);
-    const subjects: SubjectFilterType[] = allSubjects.map((subject) => ({
+    const subjectFilters: SubjectFilterType[] = allSubjects.map((subject) => ({
       id: Number(subject.id),
       name: subject.name,
     }));
 
     const allReservationTypes = await db.select().from(tipoReservaTable);
-    const reservationTypes: ReservationFilterType[] = allReservationTypes.map((rt) => ({
+    const resTypeFilters: ReservationFilterType[] = allReservationTypes.map((rt) => ({
       id: Number(rt.id),
       name: rt.name,
       color: rt.color,
     }));
 
     return {
-      rooms,
-      subjects,
-      reservationTypes,
+      roomFilters,
+      subjectFilters,
+      resTypeFilters,
     };
   } catch (error) {
     console.error("Error cargando los filtros de la BD: ", error);
@@ -110,9 +109,9 @@ export default async function Home() {
       <MainView 
         eventsData={dbEvents as unknown as CalendarEventType[]} 
         filtersData={dbFilters as unknown as { 
-          rooms: RoomFilterType[]; 
-          subjects: SubjectFilterType[];
-          reservationTypes: ReservationFilterType[] 
+          roomFilters: RoomFilterType[]; 
+          subjectFilters: SubjectFilterType[];
+          resTypeFilters: ReservationFilterType[] 
         }}
       />
       <Footer />

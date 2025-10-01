@@ -27,9 +27,9 @@ export default function MainView({
 }: {
   eventsData: CalendarEventType[];
   filtersData: { 
-    rooms: RoomFilterType[]; 
-    subjects: SubjectFilterType[]; 
-    reservationTypes: ReservationFilterType[] 
+    roomFilters: RoomFilterType[]; 
+    subjectFilters: SubjectFilterType[]; 
+    resTypeFilters: ReservationFilterType[] 
   };
 }) {
   const { selectedView } = useViewStore();
@@ -73,9 +73,9 @@ export default function MainView({
 
     setEvents(mappedEvents);
     setUnfilteredEvents(mappedEvents);
-    setRooms(filtersData.rooms);
-    setCourses(filtersData.subjects);
-    setReservationTypes(filtersData.reservationTypes);
+    setRooms(filtersData.roomFilters);
+    setCourses(filtersData.subjectFilters);
+    setReservationTypes(filtersData.resTypeFilters);
   }, [
     eventsData,
     setEvents,

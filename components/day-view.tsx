@@ -127,11 +127,11 @@ export default function DayView() {
             {getHours.map((hour, index) => (
               <div 
                 key={index}
-                id={hour.format("HH") === "07" ? "start-hour-7" : undefined}                 
+                id={hour.add(3, "hour").format("HH") === "07" ? "start-hour-7" : undefined}                 
                 className="relative h-16"
                 >
                 <div className="absolute -top-2 text-xs text-gray-600">
-                  {hour.format("h:mm A")}
+                  {hour.add(3, "hour").format("h:mm A")}
                 </div>
               </div>
             ))}
