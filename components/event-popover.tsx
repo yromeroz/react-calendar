@@ -8,6 +8,7 @@ import React,
 } from "react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
+import { Input } from "./ui/input";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import { HiOutlineMenuAlt4, HiOutlineUser } from "react-icons/hi";
@@ -24,12 +25,25 @@ import { createEvent } from "@/app/actions/event-actions";
 // import { cn } from "@/lib/utils";
 import { useFiltersStore } from "@/lib/store";
 import { AddEventDate } from "./add-date";
-import { getUsers } from "@/lib/data";
+import { useForm } from "react-hook-form";
+// import { getUsers } from "@/lib/data";
 
 interface EventPopoverProps {
   isOpen: boolean;
   onClose: () => void;
   date: string;
+}
+
+interface FormData {
+  requesterName: string;
+  requesterEmail: string;
+  description: string;
+  course: number;
+  reservationType: number;
+  date: string;
+  time: string;
+  endTime: string;
+  state: number;
 }
 
 export default function EventPopover({
@@ -40,7 +54,10 @@ export default function EventPopover({
   const initTime = "07:00";
   const endTime = initTime.split(":")[0] + ":30";
   const popoverRef = useRef<HTMLDivElement>(null);
-  const [selectedDate, setSelectedDate] = useState<Date>(dayjs(date).toDate());
+  const [selectedDate, setSelectedDate] = useState<Date>(() => {
+    const initialDate = dayjs(date).toDate();
+    return isNaN(initialDate.getTime()) ? new Date() : initialDate;
+  });
   const [showPicker, setShowPicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
@@ -53,9 +70,29 @@ export default function EventPopover({
   const [selectedReservationType, setReservationType] = useState("");
   const { courses, reservationTypes } = useFiltersStore();
   const [text, setText] = useState("");
-  const users = getUsers();
-  const [loggedInUser, setUserId] = useState("3"); // Default to "Invitado"
-  const [showUsers, setShowUsers] = useState(false);
+  // React Hook Form
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors },
+    // setValue,
+    watch
+   } = useForm<FormData>({
+    defaultValues: {
+      requesterName: "",
+      requesterEmail: "",
+      description: "",
+      reservationType: 1,
+      course: 1,
+      date: "",
+      time: "",
+      endTime: "",
+      state: 2,
+    }
+   });
+  // Watch name field for changes
+  watch("requesterName");
+  watch("requesterEmail");
 
   const handleClose = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -66,7 +103,18 @@ export default function EventPopover({
     e.stopPropagation();
   };
 
-  async function onSubmit(formData: FormData) {
+  async function onSubmit(data: FormData) {
+    console.log("Selected date:", selectedDate);
+    console.log("Is valid date:", !isNaN(selectedDate.getTime()));
+    console.log("Date value:", date); // el prop que recibes    
+    
+    // Validar que selectedDate sea una fecha válida
+    if (!selectedDate || isNaN(selectedDate.getTime())) {
+      setError("La fecha seleccionada no es válida.");
+      setSuccess(false);
+      return;
+    }
+    
     // Date valdation
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -88,30 +136,19 @@ export default function EventPopover({
       setSuccess(false);
       return;
     }
-    // User validation
-    if (users.find((u) => u.id === Number(loggedInUser))?.role === "Invitado") {
-      setError("El usuario Invitado no puede solicitar reservas");
-      setSuccess(false);
-      return;
-    }
     // Clear previous errors
     setError(null);
     setSuccess(null);
     // Validate required fields
+    const formData = new FormData();
     formData.append("date", selectedDate.toISOString());
     formData.append("time", selectedTime);
-    formData.append("endtime", selectedEndTime);
-    formData.append(
-      "requesterEmail", 
-      users.find((u) => u.id === Number(loggedInUser))?.email ?? ""
-    );
-    formData.append(
-      "requesterName", 
-      users.find((u) => u.id === Number(loggedInUser))?.name ?? ""
-    );
+    formData.append("endTime", selectedEndTime);
+    formData.append("requesterEmail", data.requesterEmail);
+    formData.append("requesterName", data.requesterName);
     formData.append("description", text);
     formData.append("course", selectedCourse);
-    formData.append("reservationtype", selectedReservationType);
+    formData.append("reservationType", selectedReservationType);
     formData.append("state", "2"); // Estado "Pendiente"
     startTransition(async () => {
       try {
@@ -125,6 +162,7 @@ export default function EventPopover({
           }, 2000);
         }
       } catch {
+        console.error("Error creating event:", error);
         setError(
           "Ha ocurrido un error inesperado. Por favor, intente nuevamente.",
         );
@@ -153,7 +191,7 @@ export default function EventPopover({
             <IoCloseSharp className="h-4 w-4" />
           </Button>
         </div>
-        <form className="space-y-4 px-6 py-4" action={onSubmit}>
+        <form className="space-y-4 px-6 py-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex items-center justify-between">
             <div className="w-auto px-4 text-lg text-gray-700">
               Solicitud de Reserva
@@ -320,15 +358,48 @@ export default function EventPopover({
               onChange={(e) => setText(e.target.value)}
             ></Textarea>
           </div>
+
           <div className="flex items-center space-x-3">
             <HiOutlineUser className="size-5 text-slate-600" />
-            <div className="">
-              <div
-                title="Perfil de usuario"
-                className="flex items-center space-x-3 text-sm"
-              >
-                <div title="Usuario">
-                  <a
+            <div className="flex flex-col space-y-3">
+              <Input 
+                title="Nombre de contacto"
+                // name="requesterName"
+                type="text" 
+                placeholder="Escriba su nombre de contacto" 
+                className="w-72 rounded-lg border-0 bg-slate-100 py-2 pl-4 text-sm placeholder:text-slate-600 text-gray-500 hover:text-black"
+                // onChange={(e) => setRequesterName(e.target.value)}
+                {...register("requesterName", { 
+                  required: "El nombre es obligatorio",
+                  minLength: {
+                    value: 3,
+                    message: "El nombre debe tener al menos 3 caracteres"
+                  }
+                })}                
+              />
+              {errors.requesterName && <p className="text-red-500 text-sm">{errors.requesterName.message}</p>}
+              <Input 
+                title="Correo electrónico"
+                // name="requesterEmail"
+                type="email" 
+                placeholder="Escriba su correo electrónico" 
+                className="w-72 rounded-lg border-0 bg-slate-100 py-2 text-sm placeholder:text-slate-600 text-gray-500 hover:text-black"
+                {...register("requesterEmail", {
+                  required: "El email es obligatorio",
+                  pattern: {
+                    value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i,
+                    message: "Email inválido"
+                  }
+                })}                
+                // onChange={(e) => setRequesterEmail(e.target.value)}
+              />
+              {errors.requesterEmail && <p className="text-red-500 text-sm">{errors.requesterEmail.message}</p>}
+              {/* <div
+                title="Datos de contacto"
+                className="flex flex-col items-center space-x-3 text-sm"
+              > */}
+                {/* <div title="Usuario"> */}
+                  {/* <a
                     href="#"
                     onClick={(e) => {
                       e.preventDefault();
@@ -337,8 +408,8 @@ export default function EventPopover({
                     className="hover:text-gray-500 hover:underline"
                   >
                     {!showUsers && users.find((u) => u.id === Number(loggedInUser))?.name}
-                  </a>
-                  {showUsers && (
+                  </a> */}
+                  {/* {showUsers && (
                     <select
                       title="Usuario"
                       id="users"
@@ -358,16 +429,16 @@ export default function EventPopover({
                         </option>
                       ))}
                     </select>
-                  )}
-                </div>
-                <input 
+                  )} */}
+                {/* </div> */}
+                {/* <input 
                   type="hidden" name="username" value={users.find((u) => u.id === Number(loggedInUser))?.name} />
-                <input type="hidden" name="useremail" value={users.find((u) => u.id === Number(loggedInUser))?.email} />
-                <div
+                <input type="hidden" name="useremail" value={users.find((u) => u.id === Number(loggedInUser))?.email} /> */}
+                {/* <div
                   className={`h-4 w-4 rounded-full ${users.find((u) => u.id === Number(loggedInUser))?.role === "Invitado" ? "bg-orange-500" : "bg-green-500"}`}
-                ></div>
-              </div>
-              <div className="flex items-center space-x-1 text-xs">
+                ></div> */}
+              {/* </div> */}
+              {/* <div className="flex items-center space-x-1 text-xs">
                 <span>
                   {`${users
                       .find((u) => u.id === Number(loggedInUser))?.role === "Invitado" 
@@ -388,7 +459,7 @@ export default function EventPopover({
                       ? "No notificar" 
                       : users.find((u) => u.id === Number(loggedInUser))?.email}`}
                 </span>
-              </div>
+              </div> */}
             </div>
           </div>
 
