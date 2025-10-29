@@ -23,7 +23,7 @@ const getEventsData = async () => {
     const reservas = await db
       .select({
         id: reservaTable.id,
-        title: sql`'Reserva ' || ${reservaTable.id}`, // Custom title
+        title: reservaTable.name,
         date: reservaTable.time,
         endTime: reservaTable.endTime,
         description: reservaTable.description,
@@ -36,7 +36,8 @@ const getEventsData = async () => {
         managerLogin: reservaTable.managerLogin,
         subjectId: reservaTable.subjectId,
         typeId: reservaTable.typeId,
-        rooms: sql<string>`group_concat(${reservaSalonesTable.salonId})`
+        rooms: sql<string>`group_concat(${reservaSalonesTable.salonId})`,
+        color: reservaTable.color
       })
       .from(reservaTable)
       .innerJoin(reservaSalonesTable, eq(reservaSalonesTable.reservaId, reservaTable.id))
