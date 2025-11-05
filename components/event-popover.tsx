@@ -297,7 +297,6 @@ export default function EventPopover({
               value={selectedCourse}
               onChange={(e) => (
                 setCourse(e.target.value),
-                setText(`${text} Materia: ${e.target.value}\n`),
                 setShowPicker(false),
                 setShowTimePicker(false),
                 setShowEndTimePicker(false)                
@@ -326,7 +325,6 @@ export default function EventPopover({
               value={selectedReservationType}
               onChange={(e) => (
                 setReservationType(e.target.value),
-                setText(`${text} Tipo de reserva: ${e.target.value}\n`),
                 setShowPicker(false),
                 setShowTimePicker(false),
                 setShowEndTimePicker(false)
@@ -399,7 +397,7 @@ export default function EventPopover({
 
           <div className="flex justify-end space-x-2">
             <Button
-              title="Guardar evento"
+              title="Guardar solicitud"
               type="submit"
               disabled={isPending}
               className="w-auto rounded-2xl"

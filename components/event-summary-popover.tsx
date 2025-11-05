@@ -67,7 +67,7 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
           </Button>
         </div>
         <div className="space-y-2">
-          <p><strong>Reserva:</strong> {event.title}</p>
+          <p><strong>Reserva:</strong> {event.name}</p>
           <p><strong>Salón:</strong> {roomNames}</p>
           {/* Format the date before displaying it */}
           {/* Add 3 hours to show 'America/Montevideo' timezone */}

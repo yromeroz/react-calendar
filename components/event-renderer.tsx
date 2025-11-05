@@ -17,7 +17,7 @@ type EventRendererProps = {
 
 export function EventRenderer({ date, view, events }: EventRendererProps) {
   const { openEventSummary, openEventList } = useEventStore();
-  const { rooms, courses } = useFiltersStore();  
+  const { rooms } = useFiltersStore();  
 
   const filteredEvents = events.filter((event: CalendarEventType) => {
 
@@ -45,10 +45,11 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
           })
           .join(", "); 
 
-        const course = courses.find((subject) => subject.id === event.subject);
-        const courseName = course ? course.name : "-";
+        // const course = courses.find((subject) => subject.id === event.subject);
+        // const courseName = course ? course.name : "-";
+        const eventName = event.name ? event.name : "-";
 
-        const eventColor = event.color !== "" ? event.color : "#98b8ff"; // Default to blue if not found
+        const eventColor = event.color ? event.color : "#98b8ff"; // Default to blue if not found
         const darker = adjustColor(eventColor, 120);
         const lighter = adjustColor(eventColor, 150);
 
@@ -69,9 +70,9 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
           >
             <div className={`${lineClamp} bg-[var(--event-color)] hover:bg-[var(--hover-color)] border-2 border-transparent hover:border-[var(--border-color)]`}>
             { view === "day" ? (
-              <p>{event.date.add(3, "hour").format("h:mmA")} <br/>{courseName}</p>
+              <p>{event.date.add(3, "hour").format("h:mmA")} <br/>{eventName}</p>
             ) : (
-              <p>{event.date.add(3, "hour").format("h:mmA")}/{roomNames}</p>
+              <p><strong>{event.date.add(3, "hour").format("h:mmA")}</strong> {roomNames}</p>
             )}
             </div>
           </div>

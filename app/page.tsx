@@ -23,7 +23,7 @@ const getEventsData = async () => {
     const reservas = await db
       .select({
         id: reservaTable.id,
-        title: reservaTable.name,
+        name: reservaTable.name,
         date: reservaTable.time,
         endTime: reservaTable.endTime,
         description: reservaTable.description,
@@ -45,7 +45,7 @@ const getEventsData = async () => {
       .groupBy(reservaTable.id);
     return reservas.map((reserva) => ({
       id: Number(reserva.id),
-      title: `Reserva ${reserva.id}`,
+      name: reserva.name,
       date: dayjs(reserva.date).toISOString(),
       endTime: dayjs(reserva.endTime).toISOString(),
       courseId: Number(reserva.courseId),
@@ -59,7 +59,8 @@ const getEventsData = async () => {
       authRequired: Boolean(reserva.authRequired),
       manager: reserva.manager,
       authorization: reserva.authorization,
-      managerLogin: reserva.managerLogin,      
+      managerLogin: reserva.managerLogin,
+      color: reserva.color,      
     }));
   } catch (error) {
     console.error("Error cargando la información de la BD: ", error);

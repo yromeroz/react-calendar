@@ -55,7 +55,7 @@ export default function MainView({
     const mappedEvents: CalendarEventType[] = eventsData.map((event) => ({
       id: event.id,
       date: dayjs(event.date),
-      title: event.title,
+      name: event.name,
       description: event.description,
       courseId: event.courseId,
       groupId: event.groupId,
