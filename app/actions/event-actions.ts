@@ -42,9 +42,6 @@ export async function createEvent(formData:  FormData): Promise<{ error: string 
     }
 
     await db.insert(solicitudReservaTable).values({
-        // date: new Date(date),
-        // time: new Date(`${date}T${time}:00`),
-        // endTime: new Date(`${date}T${endTime}:00`),
         date: eventDate,
         time: startDateTime,
         endTime: endDateTime,        
