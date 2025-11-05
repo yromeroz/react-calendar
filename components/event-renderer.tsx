@@ -17,7 +17,7 @@ type EventRendererProps = {
 
 export function EventRenderer({ date, view, events }: EventRendererProps) {
   const { openEventSummary, openEventList } = useEventStore();
-  const { rooms, courses, reservationTypes } = useFiltersStore();  
+  const { rooms, courses } = useFiltersStore();  
 
   const filteredEvents = events.filter((event: CalendarEventType) => {
 
@@ -48,8 +48,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
         const course = courses.find((subject) => subject.id === event.subject);
         const courseName = course ? course.name : "-";
 
-        const reservationType = reservationTypes.find((rType) => rType.id === event.reservationType);
-        const eventColor = reservationType ? reservationType.color : "#98b8ff"; // Default to blue if not found
+        const eventColor = event.color !== "" ? event.color : "#98b8ff"; // Default to blue if not found
         const darker = adjustColor(eventColor, 120);
         const lighter = adjustColor(eventColor, 150);
 
