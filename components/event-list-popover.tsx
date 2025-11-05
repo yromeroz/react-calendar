@@ -23,7 +23,7 @@ export function EventListPopover({
   isOpen, 
   onClose }: EventListPopoverProps) {
   const { openEventSummary } = useEventStore();
-  const { rooms, courses, reservationTypes } = useFiltersStore();    
+  const { rooms } = useFiltersStore();    
   const lineClamp = (view === "day") ? "line-clamp-2" : "line-clamp-1";
 
   if (!isOpen) return null;
@@ -63,11 +63,8 @@ export function EventListPopover({
           })
           .join(", ");
 
-        const course = courses.find((subject) => subject.id === event.subject);
-        const courseName = course ? course.name : "-";
-
-        const reservationType = reservationTypes.find((rType) => rType.id === event.reservationType);
-        const eventColor = reservationType ? reservationType.color : "#98b8ff"; // Default to blue if not found
+        const eventName = event.title !== "" ? event.title : "-";
+        const eventColor = event.color !== "" ? event.color : "#98b8ff"; // Default to blue if not found
         const darker = adjustColor(eventColor, 120);
         const lighter = adjustColor(eventColor, 150);
 
@@ -89,9 +86,9 @@ export function EventListPopover({
           >
             <div className={`${lineClamp} bg-[var(--event-color)] hover:bg-[var(--hover-color)] border-2 border-transparent hover:border-[var(--border-color)]`}>
             { view === "day" ? (
-              <p>{event.date.add(3, "hour").format("h:mmA")} <br/>{courseName}</p>
+              <p>{event.date.add(3, "hour").format("h:mmA")} <br/>{eventName}</p>
             ) : (
-              <p>{event.date.add(3, "hour").format("h:mmA")}/{roomNames}</p>
+              <p><strong>{event.date.add(3, "hour").format("h:mmA")}</strong> {roomNames}</p>
             )}
             </div>
           </div>

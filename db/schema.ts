@@ -74,7 +74,7 @@ export const reservaTable = mysqlTable(
     authorization: t.varchar('ReservaAutorizacion', { length: 60 }).notNull(),
     managerLogin: t.varchar('ReservaGestorLogin', { length: 60 }).notNull(),
     name: t.varchar('ReservaNombre', { length: 120 }).notNull(),
-    color: t.varchar('ReservaColor', { length: 10 }).notNull(),
+    color: t.varchar('ReservaColor', { length: 20 }).notNull(),
   }
 )
 
