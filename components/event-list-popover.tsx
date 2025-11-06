@@ -33,7 +33,7 @@ export function EventListPopover({
     if (view === "month") {
       return event.date.format("DD-MM-YY") === date.format("DD-MM-YY");
     } else if (view === "week" || view === "day") {
-      return event.date.format("DD-MM-YY HH") === date.format("DD-MM-YY HH");
+      return event.date.add(3, "hour").format("DD-MM-YY HH") === date.add(3, "hour").format("DD-MM-YY HH");
     }
 
   }); 
@@ -41,7 +41,7 @@ export function EventListPopover({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-2xl shadow-xl p-4 max-w-xs w-full">
+      <div className="bg-white rounded-2xl shadow-xl pl-4 pr-2 py-4 max-w-72 w-full">
         <div className="flex justify-between items-center mb-3">
           <h3 className="text-sm font-semibold">Reservas</h3>
           <Button
@@ -77,7 +77,7 @@ export function EventListPopover({
               openEventSummary(event);
               onClose();
             }}
-            className="w-[95%] cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none text-xs md:text-sm text-black transition-colors"
+            className="w-[95%] cursor-pointer rounded-sm border-2 my-2 border-gray-400 focus:outline-none text-xs md:text-sm text-black transition-colors"
             style={{
               "--event-color": darker,
               "--hover-color": lighter,

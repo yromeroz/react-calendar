@@ -38,7 +38,6 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
     <>
       {visibleEvents.map((event) => {
         const roomNames = event.rooms
-          // .filter(roomId => rooms.some(room => room.id === roomId))
           .map((roomId) => {
             const room = rooms.find((room) => room.id === roomId);
             return room ? room.shortname : "-";
