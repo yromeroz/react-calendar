@@ -297,7 +297,6 @@ export default function EventPopover({
               value={selectedCourse}
               onChange={(e) => (
                 setCourse(e.target.value),
-                setText(`${text} Materia: ${e.target.value}\n`),
                 setShowPicker(false),
                 setShowTimePicker(false),
                 setShowEndTimePicker(false)                
@@ -326,7 +325,6 @@ export default function EventPopover({
               value={selectedReservationType}
               onChange={(e) => (
                 setReservationType(e.target.value),
-                setText(`${text} Tipo de reserva: ${e.target.value}\n`),
                 setShowPicker(false),
                 setShowTimePicker(false),
                 setShowEndTimePicker(false)
@@ -364,11 +362,9 @@ export default function EventPopover({
             <div className="flex flex-col space-y-3">
               <Input 
                 title="Nombre de contacto"
-                // name="requesterName"
                 type="text" 
                 placeholder="Escriba su nombre de contacto" 
                 className="w-72 rounded-lg border-0 bg-slate-100 py-2 pl-4 text-sm placeholder:text-slate-600 text-gray-500 hover:text-black"
-                // onChange={(e) => setRequesterName(e.target.value)}
                 {...register("requesterName", { 
                   required: "El nombre es obligatorio",
                   minLength: {
@@ -380,7 +376,6 @@ export default function EventPopover({
               {errors.requesterName && <p className="text-red-500 text-sm">{errors.requesterName.message}</p>}
               <Input 
                 title="Correo electrónico"
-                // name="requesterEmail"
                 type="email" 
                 placeholder="Escriba su correo electrónico" 
                 className="w-72 rounded-lg border-0 bg-slate-100 py-2 text-sm placeholder:text-slate-600 text-gray-500 hover:text-black"
@@ -391,81 +386,14 @@ export default function EventPopover({
                     message: "Email inválido"
                   }
                 })}                
-                // onChange={(e) => setRequesterEmail(e.target.value)}
               />
               {errors.requesterEmail && <p className="text-red-500 text-sm">{errors.requesterEmail.message}</p>}
-              {/* <div
-                title="Datos de contacto"
-                className="flex flex-col items-center space-x-3 text-sm"
-              > */}
-                {/* <div title="Usuario"> */}
-                  {/* <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setShowUsers(!showUsers);
-                    }}
-                    className="hover:text-gray-500 hover:underline"
-                  >
-                    {!showUsers && users.find((u) => u.id === Number(loggedInUser))?.name}
-                  </a> */}
-                  {/* {showUsers && (
-                    <select
-                      title="Usuario"
-                      id="users"
-                      name="user"
-                      value={loggedInUser}
-                      onChange={(e) => setUserId(e.target.value)}
-                      className={`w-32 rounded-lg border-0 bg-slate-100 py-2 pl-4 text-sm placeholder:text-slate-600 ${
-                        loggedInUser === ""
-                          ? "text-gray-500 hover:text-black"
-                          : "text-black"
-                      }`}
-                    >
-                      <option value="">Elija un usuario</option>
-                      {users.map((user) => (
-                        <option key={user.id} value={user.id}>
-                          {user.name}
-                        </option>
-                      ))}
-                    </select>
-                  )} */}
-                {/* </div> */}
-                {/* <input 
-                  type="hidden" name="username" value={users.find((u) => u.id === Number(loggedInUser))?.name} />
-                <input type="hidden" name="useremail" value={users.find((u) => u.id === Number(loggedInUser))?.email} /> */}
-                {/* <div
-                  className={`h-4 w-4 rounded-full ${users.find((u) => u.id === Number(loggedInUser))?.role === "Invitado" ? "bg-orange-500" : "bg-green-500"}`}
-                ></div> */}
-              {/* </div> */}
-              {/* <div className="flex items-center space-x-1 text-xs">
-                <span>
-                  {`${users
-                      .find((u) => u.id === Number(loggedInUser))?.role === "Invitado" 
-                      ? "Visitante" 
-                      : users.find((u) => u.id === Number(loggedInUser))?.role}`}
-                </span>
-                <div className="h-1 w-1 rounded-full bg-gray-500" />
-                <span>
-                  {`${users
-                      .find((u) => u.id === Number(loggedInUser))?.role === "Invitado" 
-                      ? "Visibilidad pública" 
-                      : "Privilegios"}`}
-                </span>
-                <div className="h-1 w-1 rounded-full bg-gray-500" />
-                <span>
-                  {`${users
-                      .find((u) => u.id === Number(loggedInUser))?.role === "Invitado" 
-                      ? "No notificar" 
-                      : users.find((u) => u.id === Number(loggedInUser))?.email}`}
-                </span>
-              </div> */}
             </div>
           </div>
 
           <div className="flex justify-end space-x-2">
             <Button
-              title="Guardar evento"
+              title="Guardar solicitud"
               type="submit"
               disabled={isPending}
               className="w-auto rounded-2xl"
@@ -475,7 +403,7 @@ export default function EventPopover({
           </div>
           {error && <p className="mt-2 px-6 text-red-500">{error}</p>}
           {success && (
-            <p className="mt-2 px-6 text-green-500">Reserva exitosa</p>
+            <p className="mt-2 px-6 text-green-500">Solicitud enviada.<br/>Recibirá la confirmación a su correo electrónico.</p>
           )}
         </form>
       </div>

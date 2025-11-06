@@ -23,7 +23,7 @@ const getEventsData = async () => {
     const reservas = await db
       .select({
         id: reservaTable.id,
-        title: sql`'Reserva ' || ${reservaTable.id}`, // Custom title
+        title: reservaTable.name,
         date: reservaTable.time,
         endTime: reservaTable.endTime,
         description: reservaTable.description,
@@ -36,7 +36,8 @@ const getEventsData = async () => {
         managerLogin: reservaTable.managerLogin,
         subjectId: reservaTable.subjectId,
         typeId: reservaTable.typeId,
-        rooms: sql<string>`group_concat(${reservaSalonesTable.salonId})`
+        rooms: sql<string>`group_concat(${reservaSalonesTable.salonId})`,
+        color: reservaTable.color
       })
       .from(reservaTable)
       .innerJoin(reservaSalonesTable, eq(reservaSalonesTable.reservaId, reservaTable.id))
@@ -44,7 +45,7 @@ const getEventsData = async () => {
       .groupBy(reservaTable.id);
     return reservas.map((reserva) => ({
       id: Number(reserva.id),
-      title: `Reserva ${reserva.id}`,
+      title: reserva.title,
       date: dayjs(reserva.date).toISOString(),
       endTime: dayjs(reserva.endTime).toISOString(),
       courseId: Number(reserva.courseId),
@@ -58,7 +59,8 @@ const getEventsData = async () => {
       authRequired: Boolean(reserva.authRequired),
       manager: reserva.manager,
       authorization: reserva.authorization,
-      managerLogin: reserva.managerLogin,      
+      managerLogin: reserva.managerLogin,
+      color: reserva.color      
     }));
   } catch (error) {
     console.error("Error cargando la información de la BD: ", error);
