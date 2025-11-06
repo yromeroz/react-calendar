@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 // import es from "dayjs/locale/es";
 import React from "react";
 import { 
-  useFiltersStore,
   CalendarEventType,
   useEventStore, 
 } from "@/lib/store";
@@ -17,7 +16,6 @@ type EventRendererProps = {
 
 export function EventRenderer({ date, view, events }: EventRendererProps) {
   const { openEventSummary, openEventList } = useEventStore();
-  const { rooms } = useFiltersStore();  
 
   const filteredEvents = events.filter((event: CalendarEventType) => {
 
@@ -36,14 +34,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
 
   return (
     <>
-      {visibleEvents.map((event) => {
-        const roomNames = event.rooms
-          .map((roomId) => {
-            const room = rooms.find((room) => room.id === roomId);
-            return room ? room.shortname : "-";
-          })
-          .join(", "); 
-
+      {visibleEvents.map((event) => { 
         const eventName = event.title !== "" ? event.title : "-";
         const eventColor = event.color !== "" ? event.color : "#98b8ff"; // Default to blue if not found
         const darker = adjustColor(eventColor, 120);
@@ -68,7 +59,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
             { view === "day" ? (
               <p>{event.date.add(3, "hour").format("h:mmA")} <br/>{eventName}</p>
             ) : (
-              <p><strong>{event.date.add(3, "hour").format("h:mmA")}</strong> {roomNames}</p>
+              <p><strong>{event.date.add(3, "hour").format("h:mmA")}</strong> {eventName}</p>
             )}
             </div>
           </div>

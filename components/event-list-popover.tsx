@@ -3,7 +3,10 @@
 import React from 'react';
 import dayjs from 'dayjs';
 // import es from 'dayjs/locale/es'
-import { CalendarEventType, useFiltersStore, useEventStore } from '@/lib/store';
+import { 
+  CalendarEventType, 
+  useEventStore 
+} from '@/lib/store';
 import { adjustColor } from "@/lib/utils";
 import { Button } from "@/components/ui/button"
 import { IoCloseSharp } from "react-icons/io5"
@@ -23,7 +26,6 @@ export function EventListPopover({
   isOpen, 
   onClose }: EventListPopoverProps) {
   const { openEventSummary } = useEventStore();
-  const { rooms } = useFiltersStore();    
   const lineClamp = (view === "day") ? "line-clamp-2" : "line-clamp-1";
 
   if (!isOpen) return null;
@@ -56,13 +58,6 @@ export function EventListPopover({
           </Button>
         </div>
        {filteredEvents.map((event) => {
-        const roomNames = event.rooms
-          .map((roomId) => {
-            const room = rooms.find((room) => room.id === roomId);
-            return room ? room.shortname : "-";
-          })
-          .join(", ");
-
         const eventName = event.title !== "" ? event.title : "-";
         const eventColor = event.color !== "" ? event.color : "#98b8ff"; // Default to blue if not found
         const darker = adjustColor(eventColor, 120);
@@ -88,7 +83,7 @@ export function EventListPopover({
             { view === "day" ? (
               <p>{event.date.add(3, "hour").format("h:mmA")} <br/>{eventName}</p>
             ) : (
-              <p><strong>{event.date.add(3, "hour").format("h:mmA")}</strong> {roomNames}</p>
+              <p><strong>{event.date.add(3, "hour").format("h:mmA")}</strong> {eventName}</p>
             )}
             </div>
           </div>
