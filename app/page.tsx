@@ -23,7 +23,7 @@ const getEventsData = async () => {
     const reservas = await db
       .select({
         id: reservaTable.id,
-        title: reservaTable.name,
+        name: reservaTable.name,
         date: reservaTable.time,
         endTime: reservaTable.endTime,
         description: reservaTable.description,
@@ -45,7 +45,7 @@ const getEventsData = async () => {
       .groupBy(reservaTable.id);
     return reservas.map((reserva) => ({
       id: Number(reserva.id),
-      title: reserva.title,
+      name: reserva.name,
       date: dayjs(reserva.date).toISOString(),
       endTime: dayjs(reserva.endTime).toISOString(),
       courseId: Number(reserva.courseId),

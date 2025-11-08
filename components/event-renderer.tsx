@@ -35,7 +35,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
   return (
     <>
       {visibleEvents.map((event) => { 
-        const eventName = event.title !== "" ? event.title : "-";
+        const eventName = event.name !== "" ? event.name : "-";
         const eventColor = event.color !== "" ? event.color : "#98b8ff"; // Default to blue if not found
         const darker = adjustColor(eventColor, 120);
         const lighter = adjustColor(eventColor, 150);
