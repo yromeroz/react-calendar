@@ -362,11 +362,9 @@ export default function EventPopover({
             <div className="flex flex-col space-y-3">
               <Input 
                 title="Nombre de contacto"
-                // name="requesterName"
                 type="text" 
                 placeholder="Escriba su nombre de contacto" 
                 className="w-72 rounded-lg border-0 bg-slate-100 py-2 pl-4 text-sm placeholder:text-slate-600 text-gray-500 hover:text-black"
-                // onChange={(e) => setRequesterName(e.target.value)}
                 {...register("requesterName", { 
                   required: "El nombre es obligatorio",
                   minLength: {
@@ -378,7 +376,6 @@ export default function EventPopover({
               {errors.requesterName && <p className="text-red-500 text-sm">{errors.requesterName.message}</p>}
               <Input 
                 title="Correo electrónico"
-                // name="requesterEmail"
                 type="email" 
                 placeholder="Escriba su correo electrónico" 
                 className="w-72 rounded-lg border-0 bg-slate-100 py-2 text-sm placeholder:text-slate-600 text-gray-500 hover:text-black"
@@ -389,7 +386,6 @@ export default function EventPopover({
                     message: "Email inválido"
                   }
                 })}                
-                // onChange={(e) => setRequesterEmail(e.target.value)}
               />
               {errors.requesterEmail && <p className="text-red-500 text-sm">{errors.requesterEmail.message}</p>}
             </div>
@@ -407,7 +403,7 @@ export default function EventPopover({
           </div>
           {error && <p className="mt-2 px-6 text-red-500">{error}</p>}
           {success && (
-            <p className="mt-2 px-6 text-green-500">Solicitud enviada.<br/>Recibirá la confirmación en su correo electrónico.</p>
+            <p className="mt-2 px-6 text-green-500">Solicitud enviada.<br/>Recibirá la confirmación a su correo electrónico.</p>
           )}
         </form>
       </div>
