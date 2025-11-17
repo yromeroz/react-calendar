@@ -17,7 +17,7 @@ export default function DayView() {
 
   const hours = getHours; // array of dayjs objects representing each hour slot
   const hoursContainerRef = useRef<HTMLDivElement | null>(null);
-  const scrollToHourRef = useRef<HTMLDivElement | null>(null);
+  // const scrollToHourRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => setCurrentTime(dayjs()), 60_000);
@@ -36,8 +36,8 @@ export default function DayView() {
     }, 50);
   }, [hours]);
 
-  const formatSlotKey = (date: dayjs.Dayjs, hour: dayjs.Dayjs) =>
-    date.format("DD-MM-YY") + " " + hour.hour();
+  // const formatSlotKey = (date: dayjs.Dayjs, hour: dayjs.Dayjs) =>
+  //   date.format("DD-MM-YY") + " " + hour.hour();
 
   const eventsForRoomHour = (roomId: number, hour: dayjs.Dayjs) =>
     events.filter((ev) => {
