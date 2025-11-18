@@ -83,7 +83,7 @@ export default function DayView() {
   return (
     <>
       <div className="grid grid-cols-[auto_auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr_auto] place-items-center pl-4 pr-2 py-1 border-2 rounded-2xl">
-        {/* Date  Header */}
+        {/* Date Header */}
         <div className="flex w-16 flex-col items-center border-r border-gray-300 pr-4">  
           <div className={cn("text-xs", isToday && "text-blue-600")}>
             {userSelectedDate.locale(es).format("ddd").toUpperCase()}{" "}
@@ -109,15 +109,6 @@ export default function DayView() {
             /> }
         </div>
 
-        {/* header rooms  list*/}
-          {/* {visibleRooms.map((room, index) => (
-            <div key={index} className="relative">
-              <div className={cn("text-[clamp(0.625rem,1.5vw,1rem)] lg:text-base")}>
-                {room.shortname.toUpperCase()}
-              </div>
-            </div>
-          ))}  */}
-
         {/* Header: Time slots as columns */}
           {/* Time slot headers */}
           {visibleTimeSlots.map((hour, idx) => (
@@ -126,7 +117,6 @@ export default function DayView() {
             </div>
           ))}
 
-          
         {/* right arrow  button */}
         <div className="flex flex-col items-center">
           { (getHours.length > visibleCount && showScrollRight) && (
@@ -143,21 +133,6 @@ export default function DayView() {
         <div 
           ref={scrollContainerRef}
           className="grid grid-cols-[auto_repeat(visibleRooms.length,1fr)] pl-4 py-2">
-          {/* Time Column */}
-          {/* <div className="w-16 border-r border-gray-300">
-            {getHours.map((hour, index) => (
-              <div 
-                key={index}
-                id={hour.add(3, "hour").format("HH") === "07" ? "start-hour-7" : undefined}                 
-                className="relative h-16"
-                >
-                <div className="absolute -top-2 text-xs text-gray-600">
-                  {hour.add(3, "hour").format("h:mm A")}
-                </div>
-              </div>
-            ))}
-          </div> */}
-
           {/* Rooms Column */}
           <div className="w-16 border-r border-gray-300">
             {rooms.map((room, index) => (
@@ -177,10 +152,6 @@ export default function DayView() {
             (hour, index) => {
               return (
                 <>
-                {/* Room name cell */}
-                {/* <div className="w-32 font-bold text-[clamp(0.625rem,1.5vw,1rem)] lg:text-base border-r border-gray-300 flex items-center">
-                  {room.shortname.toUpperCase()}
-                </div> */}
                 <div 
                   key={index}
                   className="relative border-r border-gray-300">
