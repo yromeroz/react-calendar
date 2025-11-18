@@ -26,16 +26,10 @@ export default function DayView() {
   const [ showScrollLeft, setShowScrollLeft ] = useState(false);
   const [ showScrollRight, setShowScrollRight ] = useState(true);
 
-  // Memoize sliced rooms for performance
-  // const visibleRooms = React.useMemo(
-  //   () => rooms.slice(startIndex, startIndex + visibleCount),
-  //   [rooms, startIndex, visibleCount]
-  // );
-
   // Memoize sliced time slots for performance
   const visibleTimeSlots = React.useMemo(
     () => getHours.slice(startIndex, startIndex + visibleCount),
-    [getHours, startIndex, visibleCount]
+    [startIndex, visibleCount]
   );  
 
   useEffect(() => {
@@ -82,7 +76,7 @@ export default function DayView() {
 
   return (
     <>
-      <div className="grid grid-cols-[auto_auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr_auto] place-items-center pl-4 pr-2 py-1 border-2 rounded-2xl">
+      <div className="grid grid-cols-[auto_auto_repeat(7,1fr)_auto] place-items-center pl-4 pr-2 py-1 border-2 rounded-2xl">
         {/* Date Header */}
         <div className="flex w-16 flex-col items-center border-r border-gray-300 pr-4">  
           <div className={cn("text-xs", isToday && "text-blue-600")}>
