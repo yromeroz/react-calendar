@@ -8,13 +8,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instalar dependencias (usa la que tengas en tu proyecto)
-RUN npm install --fetch-timeout=60000 --cache-min=86400
+RUN npm install --fetch-timeout=60000 && npm cache clean --force
 
 # Copiar el resto del código
 COPY . .
 
 # Generar el build de producción
-RUN npm run build
+RUN npm run build && rm -rf node_modules
 
 # ------------------------------
 

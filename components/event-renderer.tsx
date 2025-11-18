@@ -57,7 +57,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
           >
             <div className={`${lineClamp} bg-[var(--event-color)] hover:bg-[var(--hover-color)] border-2 border-transparent hover:border-[var(--border-color)]`}>
             { view === "day" ? (
-              <p>{event.date.add(3, "hour").format("h:mmA")} <br/>{eventName}</p>
+              <p><strong>{event.date.add(3, "hour").format("h:mmA")}</strong> <br/>{eventName}</p>
             ) : (
               <p><strong>{event.date.add(3, "hour").format("h:mmA")}</strong> {eventName}</p>
             )}
