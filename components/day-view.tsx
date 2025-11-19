@@ -134,7 +134,7 @@ export default function DayView() {
                 key={index}
                 className="relative h-16"
                 >
-                <div className="absolute text-xs text-gray-600 mt-6">
+                <div className="absolute text-xs text-gray-600 mt-4">
                   {room.shortname.toUpperCase()}
                 </div>
               </div>
