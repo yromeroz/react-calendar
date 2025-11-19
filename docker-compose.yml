@@ -5,7 +5,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - .env.local # aquí puedes cambiar entre `.env.local` o `.env.production`
+      - .env.test # aquí puedes cambiar entre `.env.local` o `.env.production`
     restart: always
     networks:
       - localstack-net

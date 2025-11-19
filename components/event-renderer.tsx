@@ -30,15 +30,18 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
   const maxEventsToShow = 3;
   const visibleEvents = filteredEvents.slice(0, maxEventsToShow);
   const hiddenEventsCount = filteredEvents.length - maxEventsToShow;
-  const lineClamp = (view === "day") ? "line-clamp-2" : "line-clamp-1";  
+  const lineClamp = (view === "day") ? "line-clamp-2" : "line-clamp-1";
+  const leftAlign = (view === "day") ? "flex items-start justify-start" : "";
 
   return (
-    <>
+    <div>
       {visibleEvents.map((event) => { 
         const eventName = event.title !== "" ? event.title : "-";
         const eventColor = event.color !== "" ? event.color : "#98b8ff"; // Default to blue if not found
         const darker = adjustColor(eventColor, 120);
         const lighter = adjustColor(eventColor, 150);
+        const eventDuration: number = Math.abs(event.date.diff(event.endTime,'hour',true));
+        const eventSize = (view !== "day" || eventDuration*100 <= 100) ? 95 : eventDuration*100;
 
         return (
           <div
@@ -48,16 +51,17 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
               e.stopPropagation();
               openEventSummary(event);
             }}
-            className="w-[95%] cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none text-xs md:text-sm text-black transition-colors"
+            className={`cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none text-xs md:text-sm text-black transition-colors`}
             style={{
               "--event-color": darker,
               "--hover-color": lighter,
               "--border-color": eventColor,
+              width: `${eventSize}%`
             } as React.CSSProperties}
           >
-            <div className={`${lineClamp} bg-[var(--event-color)] hover:bg-[var(--hover-color)] border-2 border-transparent hover:border-[var(--border-color)]`}>
+            <div className={`${lineClamp} bg-[var(--event-color)] hover:bg-[var(--hover-color)] border-2 border-transparent hover:border-[var(--border-color)] ${leftAlign}`}>
             { view === "day" ? (
-              <p>{event.date.add(3, "hour").format("h:mmA")} <br/>{eventName}</p>
+              <p><strong>{event.date.add(3, "hour").format("h:mmA")}</strong> <br/>{eventName}</p>
             ) : (
               <p><strong>{event.date.add(3, "hour").format("h:mmA")}</strong> {eventName}</p>
             )}
@@ -79,6 +83,6 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
           +{hiddenEventsCount} más
         </Button>  
       )}
-    </>
+    </div>
   );
 }
