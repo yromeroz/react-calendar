@@ -18,7 +18,7 @@ export default function DayView() {
   const { userSelectedDate, setDate } = useDateStore();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [startIndex, setStartIndex] = useState(0);
+  const [startIndex, setStartIndex] = useState(4);
   const visibleCount = 7; // Number of visible rooms
   const hoursOffset = 7; // Scroll to 7 AM
   const hourHeight = 64; // Adjust this value based on actual rendered height
@@ -126,7 +126,7 @@ export default function DayView() {
       <ScrollArea className="h-[75vh] border-2 rounded-2xl">
         <div 
           ref={scrollContainerRef}
-          className="grid grid-cols-[auto_repeat(visibleRooms.length,1fr)] pl-4 py-2">
+          className="grid grid-cols-[auto_repeat(7,1fr)] pl-4 py-2">
           {/* Rooms Column */}
           <div className="w-16 border-r border-gray-300">
             {rooms.map((room, index) => (
@@ -134,7 +134,7 @@ export default function DayView() {
                 key={index}
                 className="relative h-16"
                 >
-                <div className="absolute -top-2 text-xs text-gray-600">
+                <div className="absolute text-xs text-gray-600 mt-6">
                   {room.shortname.toUpperCase()}
                 </div>
               </div>
@@ -145,14 +145,9 @@ export default function DayView() {
           {visibleTimeSlots.map(
             (hour, index) => {
               return (
-                <>
                 <div 
                   key={index}
                   className="relative border-r border-gray-300">
-                  {/* Room name cell */}
-                  {/* <div className="w-32 font-bold text-[clamp(0.625rem,1.5vw,1rem)] lg:text-base border-r border-gray-300 flex items-center">
-                    {room.shortname.toUpperCase()}
-                  </div> */}
                   {rooms.map((room, idx) => (
                     <div
                       key={idx}
@@ -181,7 +176,6 @@ export default function DayView() {
                     />
                   )} */}
                 </div>
-                </>
               );
             },
           )}
