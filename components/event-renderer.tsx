@@ -31,7 +31,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
   const visibleEvents = filteredEvents.slice(0, maxEventsToShow);
   const hiddenEventsCount = filteredEvents.length - maxEventsToShow;
   const lineClamp = (view === "day") ? "line-clamp-2" : "line-clamp-1";
-  const leftAlign = (view === "day") ? "flex items-start justify-start" : "";  
+  const leftAlign = (view === "day") ? "flex items-start justify-start" : "";
 
   return (
     <div>
@@ -40,10 +40,8 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
         const eventColor = event.color !== "" ? event.color : "#98b8ff"; // Default to blue if not found
         const darker = adjustColor(eventColor, 120);
         const lighter = adjustColor(eventColor, 150);
-        const eventInit = Number(event.date.hour())*100 + Number(event.date.minute());
-        const eventEnd = Number(event.endTime.hour())*100 + Number(event.endTime.minute());
-        const eventDuration = Math.abs(eventInit - eventEnd) <= 100 ? 95 : Math.abs(eventInit - eventEnd);
-        const eventSize = (view !== "day" || eventDuration <= 100) ?  95 : eventDuration;
+        const eventDuration: number = Math.abs(event.date.diff(event.endTime,'hour',true));
+        const eventSize = (view !== "day" || eventDuration*100 <= 100) ? 95 : eventDuration*100;
 
         return (
           <div
@@ -53,11 +51,12 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
               e.stopPropagation();
               openEventSummary(event);
             }}
-            className={`w-[${eventSize}%] cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none text-xs md:text-sm text-black transition-colors`}
+            className={`cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none text-xs md:text-sm text-black transition-colors`}
             style={{
               "--event-color": darker,
               "--hover-color": lighter,
               "--border-color": eventColor,
+              width: `${eventSize}%`
             } as React.CSSProperties}
           >
             <div className={`${lineClamp} bg-[var(--event-color)] hover:bg-[var(--hover-color)] border-2 border-transparent hover:border-[var(--border-color)] ${leftAlign}`}>

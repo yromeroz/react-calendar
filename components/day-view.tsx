@@ -106,7 +106,7 @@ export default function DayView() {
         {/* Header: Time slots as columns */}
           {/* Time slot headers */}
           {visibleTimeSlots.map((hour, idx) => (
-            <div key={idx} className="text-xs text-gray-600">
+            <div key={idx} className="text-sm text-gray-600">
               {hour.add(3, "hour").format("h:mm A")}
             </div>
           ))}
@@ -126,7 +126,7 @@ export default function DayView() {
       <ScrollArea className="h-[75vh] border-2 rounded-2xl">
         <div 
           ref={scrollContainerRef}
-          className="grid grid-cols-[auto_repeat(7,1fr)] pl-4 py-2">
+          className="grid grid-cols-[auto_repeat(7,1fr)] p-4 items-center">
           {/* Rooms Column */}
           <div className="w-16 border-r border-gray-300">
             {rooms.map((room, index) => (
@@ -134,7 +134,7 @@ export default function DayView() {
                 key={index}
                 className="relative h-16"
                 >
-                <div className="absolute text-xs text-gray-600 mt-4">
+                <div className="absolute text-sm text-gray-600 mt-4 mr-1">
                   {room.shortname.toUpperCase()}
                 </div>
               </div>
