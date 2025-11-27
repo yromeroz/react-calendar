@@ -1,3 +1,4 @@
+
 import { useDateStore, useEventStore, useFiltersStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
@@ -23,8 +24,6 @@ export default function DayView() {
   const hoursOffset = 7; // Scroll to 7 AM
   const hourHeight = 64; // Adjust this value based on actual rendered height
   const { rooms } = useFiltersStore();
-  const [ showScrollLeft, setShowScrollLeft ] = useState(false);
-  const [ showScrollRight, setShowScrollRight ] = useState(true);
 
   // Memoize sliced time slots for performance
   const visibleTimeSlots = React.useMemo(
@@ -121,6 +120,7 @@ export default function DayView() {
           /> 
           )}
         </div>
+        <MdKeyboardArrowRight />
       </div>
 
       <ScrollArea className="h-[75vh] border-2 rounded-2xl">

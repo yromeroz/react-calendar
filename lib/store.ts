@@ -36,7 +36,7 @@ type FilterStore = {
 
 export type CalendarEventType = {
   id: number;
-  title: string;
+  name: string;
   date: dayjs.Dayjs;
   endTime: dayjs.Dayjs;
   description: string;
