@@ -17,6 +17,7 @@ import {
   ReservationFilterType,
  } from "@/lib/store";
 import dayjs from "dayjs";
+import PostMessageAuthClient from "@/components/auth/PostMessageAuth";
 
 const getEventsData = async () => {
   try {
@@ -107,6 +108,7 @@ export default async function Home() {
 
   return (
     <div className="">
+      <PostMessageAuthClient />
       <Header />
       <MainView 
         eventsData={dbEvents as unknown as CalendarEventType[]} 
