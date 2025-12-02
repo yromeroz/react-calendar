@@ -24,6 +24,8 @@ export default function DayView() {
   const hoursOffset = 7; // Scroll to 7 AM
   const hourHeight = 64; // Adjust this value based on actual rendered height
   const { rooms } = useFiltersStore();
+  const [ showScrollLeft, setShowScrollLeft ] = useState(false);
+  const [ showScrollRight, setShowScrollRight ] = useState(true);
 
   // Memoize sliced time slots for performance
   const visibleTimeSlots = React.useMemo(
