@@ -40,3 +40,6 @@ next-env.d.ts
 
 # IA code agent
 .continue
+
+# VS Code
+.vscode
