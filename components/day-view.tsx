@@ -217,10 +217,6 @@ export default function DayView() {
               const start = event.date;
               const end = event.endTime;
 
-              // Debug: log the parsed start/end to see if they match DB values
-              // eslint-disable-next-line no-console
-              console.log('Event parsed on client', { id: event.id, start: start.format('YYYY-MM-DDTHH:mm:ss'), end: end.format('YYYY-MM-DDTHH:mm:ss'), startMs: start.valueOf() });
-
               // Calculate offsets using absolute timestamps to avoid manual timezone hacks
               const msPerHour = 1000 * 60 * 60;
               const startOffsetHours = (start.valueOf() - visibleTimeSlots[0].valueOf()) / msPerHour; // fractional, can be negative
