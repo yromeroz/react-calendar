@@ -52,6 +52,7 @@ export default function MainView({
   const { setRooms, setCourses, setReservationTypes } = useFiltersStore();
 
   useEffect(() => {
+    console.log('RAW eventsData from server:', eventsData);
     const mappedEvents: CalendarEventType[] = eventsData.map((event) => ({
       id: event.id,
       date: dayjs(event.date),
@@ -71,6 +72,8 @@ export default function MainView({
       managerLogin: event.managerLogin,
       color: event.color
     }));
+
+    console.log('Mapped events (dayjs):', mappedEvents.map(e => ({id: e.id, date: e.date.format(), endTime: e.endTime.format()})));
 
     setEvents(mappedEvents);
     setUnfilteredEvents(mappedEvents);
