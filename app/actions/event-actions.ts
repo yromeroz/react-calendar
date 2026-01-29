@@ -21,7 +21,16 @@ export async function createEvent(formData:  FormData): Promise<{ error: string 
 
   try {
     // Validar y crear las fechas de manera segura
-    const eventDate = new Date(date);
+    // Accept plain 'YYYY-MM-DD' date strings (local wall-clock) or full ISO strings
+    let eventDate: Date;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      const [y, m, d] = date.split('-').map(Number);
+      // Construct local Date at midnight in server timezone to preserve wall-clock date
+      eventDate = new Date(y, m - 1, d);
+    } else {
+      eventDate = new Date(date);
+    }
+
     if (isNaN(eventDate.getTime())) {
       return { error: 'Fecha inválida' };
     }

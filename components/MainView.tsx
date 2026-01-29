@@ -72,6 +72,8 @@ export default function MainView({
       color: event.color
     }));
 
+    console.log('Mapped events (dayjs):', mappedEvents.map(e => ({id: e.id, date: e.date.format(), endTime: e.endTime.format()})));
+
     setEvents(mappedEvents);
     setUnfilteredEvents(mappedEvents);
     setRooms(filtersData.roomFilters);

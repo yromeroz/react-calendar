@@ -25,8 +25,9 @@ const getEventsData = async () => {
       .select({
         id: reservaTable.id,
         name: reservaTable.name,
-        date: reservaTable.time,
-        endTime: reservaTable.endTime,
+        // Use DB-side formatting to get wall-clock datetime strings (no JS Date conversion)
+        dateStr: sql`DATE_FORMAT(${reservaTable.time}, '%Y-%m-%dT%H:%i:%s')`,
+        endTimeStr: sql`DATE_FORMAT(${reservaTable.endTime}, '%Y-%m-%dT%H:%i:%s')`,
         description: reservaTable.description,
         courseId: reservaTable.courseId,
         state: reservaTable.state,
@@ -47,8 +48,9 @@ const getEventsData = async () => {
     return reservas.map((reserva) => ({
       id: Number(reserva.id),
       name: reserva.name,
-      date: dayjs(reserva.date).toISOString(),
-      endTime: dayjs(reserva.endTime).toISOString(),
+      // Use DB-formatted strings directly (preserve the DB wall-clock times)
+      date: (reserva as any).dateStr ?? dayjs((reserva as any).date).format('YYYY-MM-DDTHH:mm:ss'),
+      endTime: (reserva as any).endTimeStr ?? dayjs((reserva as any).endTime).format('YYYY-MM-DDTHH:mm:ss'),
       courseId: Number(reserva.courseId),
       state: Number(reserva.state),
       description: reserva.description,

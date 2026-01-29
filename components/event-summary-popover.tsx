@@ -78,11 +78,9 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
               .replace(/\b([a-záéíóúüñ]+)\b/gi, (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase())
             }
             {dayjs(event.date)
-              .add(3, 'hour')
               .locale(es)
               .format(" [h:mm A")},
             {dayjs(event.endTime)
-              .add(3, 'hour')
               .locale(es)
               .format(" h:mm A]")}
           </p>
