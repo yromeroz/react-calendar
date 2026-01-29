@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import es from 'dayjs/locale/es'
 import { Button } from "@/components/ui/button"
@@ -12,10 +12,11 @@ interface EventSummaryPopoverProps {
   isOpen: boolean
   onClose: () => void
   event: CalendarEventType
-  urlParam: string
+  urlParam?: string
 }
 
 export function EventSummaryPopover({ isOpen, onClose, event, urlParam }: EventSummaryPopoverProps) {
+  const [showDetails, setShowDetails] = useState(false);
 
   const { rooms, courses, reservationTypes } = useFiltersStore();
 
@@ -92,17 +93,32 @@ export function EventSummaryPopover({ isOpen, onClose, event, urlParam }: EventS
           {
             isAuthenticated && (
               <p>
-                <a 
+                <button 
                   className="text-blue-600 hover:underline" 
-                  href={`${urlParam}?ReservaId=${event.id},token=%27HOLA%27`} 
-                  // href={`http://speedtest.net/`}
-                  target="_blank" 
-                  rel="noopener noreferrer">
+                  onClick={() => setShowDetails(true)}>
                   Más detalles...
-                </a>
+                </button>
               </p>
             )
           }
+
+          {showDetails && (
+            <div className="mt-2">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-lg font-medium">Detalle externo</h3>
+                <Button variant="ghost" size="sm" onClick={() => setShowDetails(false)}>Volver</Button>
+              </div>
+              {urlParam ? (
+                <iframe
+                  title="Reservas Detalle"
+                  src={`${urlParam}?ReservaId=${event.id}&token=%27HOLA%27`}
+                  className="w-full h-80 border rounded"
+                />
+              ) : (
+                <p className="text-sm text-gray-500">URL de reserva no disponible</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
