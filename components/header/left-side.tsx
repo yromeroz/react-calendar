@@ -52,10 +52,9 @@ export default function HeaderLeft() {
       case "month":
         if (direction > -1) { setDirection(-1); }
         setMonth(selectedMonthIndex - 1);
-        // Build the first day of the target month using the currently selected year
-        setDate(dayjs(new Date(userSelectedDate.year(), selectedMonthIndex - 1, 1)));
+        setDate(dayjs().month(selectedMonthIndex - 1).date(1));
         setSidebarMonth(selectedMonthIndex - 1);
-        setSidebarDate(dayjs(new Date(userSelectedDate.year(), selectedMonthIndex - 1, 1)));
+        setSidebarDate(dayjs().month(selectedMonthIndex - 1).date(1));
         break;
       case "week":
         const prevWeekDay = userSelectedDate.subtract(1, "week");        
@@ -91,10 +90,9 @@ export default function HeaderLeft() {
       case "month":
         if (direction < 1) { setDirection(1); }
         setMonth(selectedMonthIndex + 1);        
-        // Build the first day of the target month using the currently selected year
-        setDate(dayjs(new Date(userSelectedDate.year(), selectedMonthIndex + 1, 1)));
+        setDate(dayjs().month(selectedMonthIndex + 1).date(1));
         setSidebarMonth(selectedMonthIndex + 1);
-        setSidebarDate(dayjs(new Date(userSelectedDate.year(), selectedMonthIndex + 1, 1)));
+        setSidebarDate(dayjs().month(selectedMonthIndex + 1).date(1));
         break;
       case "week":
         const nextWeekDay = userSelectedDate.add(1, "week");        
@@ -172,7 +170,7 @@ export default function HeaderLeft() {
       {/* Current Month and Year Display */}
       <h1 className="text-[clamp(0.75rem,4vmin,1.25rem)] font-semibold">
         {capitalizeFirstLetter(
-          dayjs(new Date(userSelectedDate.year(), selectedMonthIndex))
+          dayjs(new Date(dayjs().year(), selectedMonthIndex))
                 .locale(es)
                 .format("MMMM YYYY",))
         }
