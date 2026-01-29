@@ -12,9 +12,10 @@ interface EventSummaryPopoverProps {
   isOpen: boolean
   onClose: () => void
   event: CalendarEventType
+  urlParam: string
 }
 
-export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopoverProps) {
+export function EventSummaryPopover({ isOpen, onClose, event, urlParam }: EventSummaryPopoverProps) {
 
   const { rooms, courses, reservationTypes } = useFiltersStore();
 
@@ -91,7 +92,12 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
           {
             isAuthenticated && (
               <p>
-                <a className="text-blue-600 hover:underline" href="http://speedtest.cd.etecsa.cu" target="_blank" rel="noopener noreferrer">
+                <a 
+                  className="text-blue-600 hover:underline" 
+                  href={`${urlParam}?ReservaId=${event.id},token=%27HOLA%27`} 
+                  // href={`http://speedtest.net/`}
+                  target="_blank" 
+                  rel="noopener noreferrer">
                   Más detalles...
                 </a>
               </p>

@@ -8,6 +8,7 @@ import {
   tipoReservaTable,
   reservaTable,
   reservaSalonesTable,
+  parametrosTable,
 } from "@/db/schema";
 import { sql, eq } from "drizzle-orm";
 import { 
@@ -18,6 +19,21 @@ import {
  } from "@/lib/store";
 import dayjs from "dayjs";
 import PostMessageAuthClient from "@/components/auth/PostMessageAuth";
+
+const getReservaUrlData = async (): Promise<string> => {
+  try {
+    const paramUrl = await db
+      .select({
+        url: parametrosTable.paramsReservaUrl,
+      })
+      .from(parametrosTable)
+      .limit(1);
+    return paramUrl[0].url;
+  } catch (error) {
+    console.error("Error cargando la información de la BD: ", error);
+    return "";
+  }
+};
 
 const getEventsData = async () => {
   try {
@@ -63,7 +79,7 @@ const getEventsData = async () => {
       manager: reserva.manager,
       authorization: reserva.authorization,
       managerLogin: reserva.managerLogin,
-      color: reserva.color      
+      color: reserva.color
     }));
   } catch (error) {
     console.error("Error cargando la información de la BD: ", error);
@@ -107,6 +123,7 @@ const getFiltersData = async () => {
 export default async function Home() {
   const dbEvents = await getEventsData();
   const dbFilters = await getFiltersData();
+  const genexusReservasUrl = await getReservaUrlData();
 
   return (
     <div className="">
@@ -119,6 +136,7 @@ export default async function Home() {
           subjectFilters: SubjectFilterType[];
           resTypeFilters: ReservationFilterType[] 
         }}
+        reservasUrl={genexusReservasUrl}
       />
       <Footer />
     </div>
