@@ -17,8 +17,37 @@ interface EventSummaryPopoverProps {
 
 export function EventSummaryPopover({ isOpen, onClose, event, urlParam }: EventSummaryPopoverProps) {
   const [showDetails, setShowDetails] = useState(false);
+  const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
 
   const { rooms, courses, reservationTypes } = useFiltersStore();
+
+  const sendTokenToIframe = () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      const iframeWindow = iframeRef.current?.contentWindow;
+      if (!iframeWindow) return;
+      let origin = "*";
+      try {
+        origin = new URL(urlParam || "").origin || "*";
+      } catch (err) {
+        // Leave origin as * if URL parsing fails
+      }
+      iframeWindow.postMessage({ token }, origin);
+    } catch (error) {
+      console.error("Error enviando token al iframe:", error);
+    }
+  };
+
+  React.useEffect(() => {
+    if (showDetails) {
+      setIframeLoaded(false);
+      // Try to send token shortly after opening in case the iframe is already available
+      const t = setTimeout(() => sendTokenToIframe(), 500);
+      return () => clearTimeout(t);
+    }
+  }, [showDetails]);
 
   const roomNames = event.rooms
     .map((roomId) => {
@@ -109,11 +138,31 @@ export function EventSummaryPopover({ isOpen, onClose, event, urlParam }: EventS
                 <Button variant="ghost" size="sm" onClick={() => setShowDetails(false)}>Volver</Button>
               </div>
               {urlParam ? (
-                <iframe
-                  title="Reservas Detalle"
-                  src={`${urlParam}?ReservaId=${event.id}&token=%27HOLA%27`}
-                  className="w-full h-80 border rounded"
-                />
+                <div className="relative">
+                  {!iframeLoaded && (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-white bg-opacity-60">
+                      <div className="flex items-center gap-2">
+                        <svg className="h-5 w-5 animate-spin text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                        </svg>
+                        <span className="text-sm text-gray-600">Cargando...</span>
+                      </div>
+                    </div>
+                  )}
+
+                  <iframe
+                    ref={iframeRef}
+                    title="Reservas Detalle"
+                    src={`${urlParam}?ReservaId=${event.id}`}
+                    className="w-full h-80 border rounded"
+                    onLoad={() => {
+                      setIframeLoaded(true);
+                      // Enviar token tan pronto carga
+                      sendTokenToIframe();
+                    }}
+                  />
+                </div>
               ) : (
                 <p className="text-sm text-gray-500">URL de reserva no disponible</p>
               )}
