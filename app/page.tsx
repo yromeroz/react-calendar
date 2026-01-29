@@ -47,8 +47,9 @@ const getEventsData = async () => {
     return reservas.map((reserva) => ({
       id: Number(reserva.id),
       name: reserva.name,
-      date: dayjs(reserva.date).toISOString(),
-      endTime: dayjs(reserva.endTime).toISOString(),
+      // Keep wall-clock local time string (no timezone Z) to preserve original DB datetime
+      date: dayjs(reserva.date).format('YYYY-MM-DDTHH:mm:ss'),
+      endTime: dayjs(reserva.endTime).format('YYYY-MM-DDTHH:mm:ss'),
       courseId: Number(reserva.courseId),
       state: Number(reserva.state),
       description: reserva.description,

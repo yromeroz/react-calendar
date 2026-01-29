@@ -141,7 +141,8 @@ export default function EventPopover({
     setSuccess(null);
     // Validate required fields
     const formData = new FormData();
-    formData.append("date", selectedDate.toISOString());
+    // Send plain local date (YYYY-MM-DD) so the server can combine it with the selected time
+    formData.append("date", dayjs(selectedDate).format('YYYY-MM-DD'));
     formData.append("time", selectedTime);
     formData.append("endTime", selectedEndTime);
     formData.append("requesterEmail", data.requesterEmail);
@@ -217,7 +218,6 @@ export default function EventPopover({
                   {/* Add 3 hours to show 'America/Montevideo' timezone */}
                   {!showPicker &&
                     dayjs(selectedDate)
-                      .add(3, 'hour')
                       .locale(es)
                       .format(" dddd, MMM D")
                       .replace(/\b[a-záéíóúñ]+\b/gi, (str) => str[0].toUpperCase() + str.slice(1).toLowerCase())

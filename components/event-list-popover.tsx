@@ -35,7 +35,7 @@ export function EventListPopover({
     if (view === "month") {
       return event.date.format("DD-MM-YY") === date.format("DD-MM-YY");
     } else if (view === "week" || view === "day") {
-      return event.date.add(3, "hour").format("DD-MM-YY HH") === date.add(3, "hour").format("DD-MM-YY HH");
+      return event.date.format("DD-MM-YY HH") === date.format("DD-MM-YY HH");
     }
 
   }); 
@@ -81,9 +81,9 @@ export function EventListPopover({
           >
             <div className={`${lineClamp} bg-[var(--event-color)] hover:bg-[var(--hover-color)] border-2 border-transparent hover:border-[var(--border-color)]`}>
             { view === "day" ? (
-              <p>{event.date.add(3, "hour").format("h:mmA")} <br/>{eventName}</p>
+              <p>{event.date.format("h:mmA")} <br/>{eventName}</p>
             ) : (
-              <p><strong>{event.date.add(3, "hour").format("h:mmA")}</strong> {eventName}</p>
+              <p><strong>{event.date.format("h:mmA")}</strong> {eventName}</p>
             )}
             </div>
           </div>
