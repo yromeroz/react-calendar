@@ -102,7 +102,7 @@ export const useViewStore = create<ViewStoreType>()(
 export const useDateStore = create<DateStoreType>()(
   devtools(
     persist(
-      (set) => ({
+      (set, get) => ({
         userSelectedDate: dayjs(),
         twoDMonthArray: getMonth(),
         selectedMonthIndex: dayjs().month(),
@@ -119,7 +119,8 @@ export const useDateStore = create<DateStoreType>()(
           set({ twoDMonthArray: getMonth(index), selectedMonthIndex: index });
         },
         setSidebarMonth: (idx) => {
-          set({ twoDMonthSidebarArray: getMonth(idx), sidebarMonthIndex: idx });
+          const year = get().sidebarViewDate.year();
+          set({ twoDMonthSidebarArray: getMonth(idx, year), sidebarMonthIndex: idx });
         },
       }),
       { name: "date_data", skipHydration: true },

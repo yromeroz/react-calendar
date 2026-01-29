@@ -6,13 +6,12 @@ export const isCurrentDay = (day: dayjs.Dayjs) => {
   return day.isSame(dayjs(), "day");
 };
 
-export const getMonth = (month = dayjs().month()) => {
-  const year = dayjs().year();
-  const firstDayofMonth = dayjs().set("month", month).startOf("month").day();
+export const getMonth = (month = dayjs().month(), year = dayjs().year()) => {
+  const firstDayofMonth = dayjs().set("year", year).set("month", month).startOf("month").day();
 
   let dayCounter = -firstDayofMonth;
 
-  const numberOfWeeks = getWeeks(month).length;
+  const numberOfWeeks = getWeeks(month, year).length;
   return Array.from({ length: numberOfWeeks }, () =>
     Array.from({ length: 7 }, () => dayjs(new Date(year, month, ++dayCounter))),
   );
@@ -45,8 +44,7 @@ export const getHours = Array.from({ length: 24 }, (_, i) =>
 // Function to generate weeks of the month dynamically
 
 
-export const getWeeks  = (monthIndex: number) => {
-  const year = dayjs().year();
+export const getWeeks  = (monthIndex: number, year = dayjs().year()) => {
   const firstDayOfMonth = dayjs(new Date(year, monthIndex, 1));
   const lastDayOfMonth = dayjs(new Date(year, monthIndex + 1, 0)); // Last day of the month
 
