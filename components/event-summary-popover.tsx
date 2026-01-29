@@ -6,14 +6,16 @@ import es from 'dayjs/locale/es'
 import { Button } from "@/components/ui/button"
 import { IoCloseSharp } from "react-icons/io5"
 import { CalendarEventType, useFiltersStore } from '@/lib/store'
+import { useAuth } from "@/context/AuthContext";
 
 interface EventSummaryPopoverProps {
   isOpen: boolean
   onClose: () => void
   event: CalendarEventType
+  urlParam: string
 }
 
-export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopoverProps) {
+export function EventSummaryPopover({ isOpen, onClose, event, urlParam }: EventSummaryPopoverProps) {
 
   const { rooms, courses, reservationTypes } = useFiltersStore();
 
@@ -31,6 +33,8 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
   const resTypeName = resType?.name || "-";
       
   const popoverRef = useRef<HTMLDivElement>(null)
+
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -70,7 +74,6 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
           <p><strong>Reserva:</strong> {event.name}</p>
           <p><strong>Salón:</strong> {roomNames}</p>
           {/* Format the date before displaying it */}
-          {/* Add 3 hours to show 'America/Montevideo' timezone */}
           <p><strong>Fecha y hora: </strong> 
             {dayjs(event.date)
               .locale(es)
@@ -86,6 +89,20 @@ export function EventSummaryPopover({ isOpen, onClose, event }: EventSummaryPopo
           </p>
           <p><strong>Materia:</strong> {courseName}</p>
           <p><strong>Tipo de reserva:</strong> {resTypeName}</p>
+          {
+            isAuthenticated && (
+              <p>
+                <a 
+                  className="text-blue-600 hover:underline" 
+                  href={`${urlParam}?ReservaId=${event.id},token=%27HOLA%27`} 
+                  // href={`http://speedtest.net/`}
+                  target="_blank" 
+                  rel="noopener noreferrer">
+                  Más detalles...
+                </a>
+              </p>
+            )
+          }
         </div>
       </div>
     </div>

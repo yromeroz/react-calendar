@@ -2,22 +2,6 @@ import { relations } from 'drizzle-orm';
 import { mysqlTable } from 'drizzle-orm/mysql-core';
 import * as t from "drizzle-orm/mysql-core";
 
-// Events dummy schema
-export const eventsTable = mysqlTable(
-  'events',
-  {
-    id: t.int('id').primaryKey().autoincrement(),
-    date: t.timestamp('date').notNull(),
-    title: t.varchar('title', { length: 100 }).notNull(),
-    description: t.text('description').notNull(),
-    room: t.int('roomid').notNull(),
-    course: t.int('courseid').notNull(),
-    reservationType: t.int('reservationtypeid').notNull(),
-    endTime: t.timestamp('endtime').notNull(),
-  }
-);
-
-
 // ============== Official Tables ==================
 // Materia schema
 export const materiaTable = mysqlTable(
@@ -105,6 +89,15 @@ export const reservaSalonesTable = mysqlTable(
   (table) => ({ 
     primaryKey: t.primaryKey({ columns: [table.reservaId, table.salonId] })
   })
+)
+
+// Parametros schema
+export const parametrosTable = mysqlTable(
+  'Parametros',
+  {
+    paramsId: t.bigint('ParametrosId', { mode: 'bigint' }).primaryKey(),
+    paramsReservaUrl: t.varchar('ParametrosUrlVisualizarReserva', { length: 255 }).notNull(),
+  }
 )
 
 // Relations

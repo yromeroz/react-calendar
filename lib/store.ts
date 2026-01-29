@@ -51,7 +51,7 @@ export type CalendarEventType = {
   authorization: string;
   managerLogin: string;
   authRequired: boolean;
-  color: string;  
+  color: string;
 };
 
 type EventStore = {

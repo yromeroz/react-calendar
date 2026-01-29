@@ -24,6 +24,7 @@ import FloatingButton from "./FloatingButton";
 export default function MainView({
   eventsData,
   filtersData,
+  reservasUrl,
 }: {
   eventsData: CalendarEventType[];
   filtersData: { 
@@ -31,6 +32,7 @@ export default function MainView({
     subjectFilters: SubjectFilterType[]; 
     resTypeFilters: ReservationFilterType[] 
   };
+  reservasUrl: string;
 }) {
   const { selectedView } = useViewStore();
 
@@ -72,8 +74,6 @@ export default function MainView({
       color: event.color
     }));
 
-    console.log('Mapped events (dayjs):', mappedEvents.map(e => ({id: e.id, date: e.date.format(), endTime: e.endTime.format()})));
-
     setEvents(mappedEvents);
     setUnfilteredEvents(mappedEvents);
     setRooms(filtersData.roomFilters);
@@ -112,6 +112,7 @@ export default function MainView({
           isOpen={isEventSummaryOpen}
           onClose={closeEventSummary}
           event={selectedEvent}
+          urlParam={reservasUrl}
         />
       )}
 
