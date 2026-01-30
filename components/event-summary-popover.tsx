@@ -128,7 +128,7 @@ export function EventSummaryPopover({ isOpen, onClose, event, urlParam }: EventS
           {/* <p><strong>Materia:</strong> {courseName}</p>
           <p><strong>Tipo de reserva:</strong> {resTypeName}</p> */}
           {
-            isAuthenticated && (
+            isAuthenticated && !showDetails && (
               <p>
                 <button 
                   className="text-blue-600 hover:underline" 
