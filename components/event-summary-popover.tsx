@@ -82,6 +82,14 @@ export function EventSummaryPopover({ isOpen, onClose, event, urlParam }: EventS
     }
   }, [isOpen, onClose])
 
+  // Ensure the "Más detalles" link is visible every time the popover opens
+  useEffect(() => {
+    if (isOpen) {
+      setShowDetails(false);
+      setIframeLoaded(false);
+    }
+  }, [isOpen, event.id, isAuthenticated]);
+
   if (!isOpen) return null
 
   return (
@@ -134,7 +142,7 @@ export function EventSummaryPopover({ isOpen, onClose, event, urlParam }: EventS
           {showDetails && (
             <div className="mt-2">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-medium">Detalle externo</h3>
+                {/* <h3 className="text-lg font-medium">Detalle externo</h3> */}
                 <Button variant="ghost" size="sm" onClick={() => setShowDetails(false)}>Volver</Button>
               </div>
               {urlParam ? (
