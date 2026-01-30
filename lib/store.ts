@@ -116,7 +116,8 @@ export const useDateStore = create<DateStoreType>()(
           set({ sidebarViewDate: value });
         },        
         setMonth: (index) => {
-          set({ twoDMonthArray: getMonth(index), selectedMonthIndex: index });
+          const year = get().userSelectedDate.year();
+          set({ twoDMonthArray: getMonth(index, year), selectedMonthIndex: index });
         },
         setSidebarMonth: (idx) => {
           const year = get().sidebarViewDate.year();
