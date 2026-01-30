@@ -117,8 +117,8 @@ export function EventSummaryPopover({ isOpen, onClose, event, urlParam }: EventS
               .locale(es)
               .format(" h:mm A]")}
           </p>
-          <p><strong>Materia:</strong> {courseName}</p>
-          <p><strong>Tipo de reserva:</strong> {resTypeName}</p>
+          {/* <p><strong>Materia:</strong> {courseName}</p>
+          <p><strong>Tipo de reserva:</strong> {resTypeName}</p> */}
           {
             isAuthenticated && (
               <p>
