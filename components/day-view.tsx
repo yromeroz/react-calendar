@@ -199,7 +199,7 @@ export default function DayView() {
                     <div
                       key={idx}
                       id={room.id.toString()}
-                      className="relative flex h-16 cursor-pointer flex-col items-center gap-y-2 border-b border-gray-300 hover:bg-gray-100"
+                      className="relative flex h-24 cursor-pointer flex-col items-start gap-y-2 border-b border-gray-300"
                       onClick={() => {
                         setDate(userSelectedDate.hour(hour.hour()));
                         openPopover();

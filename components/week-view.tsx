@@ -105,7 +105,7 @@ export default function WeekView() {
                   {getHours.map((hour, i) => (
                     <div
                       key={i}
-                      className="relative flex h-16 cursor-pointer flex-col items-center gap-y-2 border-b border-gray-300 hover:bg-gray-100"
+                      className="relative flex h-24 cursor-pointer flex-col items-start gap-y-2 border-b border-gray-300 hover:bg-gray-100"
                       onClick={() => {
                         setDate(dayDate.hour(hour.hour()));
                         openPopover();

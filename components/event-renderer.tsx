@@ -29,14 +29,14 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
 
   });
 
-  const maxEventsToShow = 3;
+  const maxEventsToShow = view === "month" ? 3 : 2;
   const visibleEvents = filteredEvents.slice(0, maxEventsToShow);
-  const hiddenEventsCount = filteredEvents.length - maxEventsToShow;
-  const lineClamp = (view === "day") ? "line-clamp-2" : "line-clamp-1";
-  const leftAlign = (view === "day") ? "flex items-start justify-start" : "";
+  const hiddenEventsCount = Math.max(filteredEvents.length - maxEventsToShow, 0);
+  const lineClamp = view === "day" ? "line-clamp-2" : view === "week" ? "line-clamp-2" : "line-clamp-1";
+  const leftAlign = view === "day" ? "flex items-start justify-start" : "flex items-start justify-start";
 
   return (
-    <div>
+    <div className={view === "week" || view === "day" ? "flex flex-col items-start gap-1 py-1" : ""}>
       {visibleEvents.map((event) => { 
         const eventName = event.name !== "" ? event.name : "-";
         const eventColor = event.color !== "" ? event.color : "#98b8ff"; // Default to blue if not found
@@ -53,20 +53,19 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
               e.stopPropagation();
               openEventSummary(event);
             }}
-            className={`cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none text-xs md:text-sm text-black transition-colors`}
+            className={`cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none text-xs md:text-sm text-black transition-colors w-full`}
             style={{
               "--event-color": darker,
               "--hover-color": lighter,
               "--border-color": eventColor,
-              width: `${eventSize}%`
             } as React.CSSProperties}
           >
-            <div className={`${lineClamp} bg-[var(--event-color)] hover:bg-[var(--hover-color)] border-2 border-transparent hover:border-[var(--border-color)] ${leftAlign}`}>
-            { view === "day" ? (
-              <p><strong>{event.date.format("h:mmA")}</strong> <br/>{eventName}</p>
-            ) : (
-              <p><strong>{event.date.format("h:mmA")}</strong> {eventName}</p>
-            )}
+            <div className={`${lineClamp} bg-[var(--event-color)] hover:bg-[var(--hover-color)] border-2 border-transparent hover:border-[var(--border-color)] px-2 py-1 w-full`}> 
+              { view === "day" ? (
+                <p><strong>{event.date.format("h:mmA")}</strong> <br/>{eventName}</p>
+              ) : (
+                <p><strong>{event.date.format("h:mmA")}</strong> {eventName}</p>
+              )}
             </div>
           </div>
         );
@@ -76,7 +75,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
         <Button
           variant="ghost"
           size="sm"
-          className="text-xs md:text-sm text-blue-600 hover:text-blue-800"
+          className="text-xs md:text-sm text-blue-600 hover:text-blue-800 mt-1"
           onClick={(e) => {
             e.stopPropagation();
             // Ensure the global selected date matches this cell before opening the list
