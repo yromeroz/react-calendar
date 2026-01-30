@@ -3,7 +3,8 @@ import dayjs from "dayjs";
 import React from "react";
 import { 
   CalendarEventType,
-  useEventStore, 
+  useEventStore,
+  useDateStore,
 } from "@/lib/store";
 import { adjustColor } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,7 @@ type EventRendererProps = {
 
 export function EventRenderer({ date, view, events }: EventRendererProps) {
   const { openEventSummary, openEventList } = useEventStore();
+  const { setDate } = useDateStore();
 
   const filteredEvents = events.filter((event: CalendarEventType) => {
 
@@ -77,6 +79,8 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
           className="text-xs md:text-sm text-blue-600 hover:text-blue-800"
           onClick={(e) => {
             e.stopPropagation();
+            // Ensure the global selected date matches this cell before opening the list
+            setDate(date);
             openEventList(filteredEvents);
           }}
         >
