@@ -44,10 +44,8 @@ export default function WeekView() {
     <>
       <div className="h-[clamp(4rem,10vh,6rem)] grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr] place-items-center pl-4 py-1 border-2 rounded-2xl">
         <div className="w-16 border-r border-gray-300">
-          <div className="relative h-16">
-            <div className="absolute top-2 text-xs text-gray-600">GMT
-              {dayjs().format("Z")}
-            </div>
+          <div className="flex items-center h-24 justify-center">
+            <div className="text-xs text-gray-600">GMT {dayjs().format("Z")}</div>
           </div>
         </div>
 
@@ -83,9 +81,9 @@ export default function WeekView() {
               <div
                 key={index}
                 id={hour.format("HH") === "07" ? "start-hour-7" : undefined}
-                className="relative h-16"
+                className="flex items-center h-24 justify-center"
               >
-                <div className="absolute -top-2 text-xs text-gray-600">
+                <div className="text-xs text-gray-600">
                   {hour.format("h:mm A")}
                 </div>
               </div>
