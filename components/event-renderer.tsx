@@ -60,11 +60,11 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
               "--border-color": eventColor,
             } as React.CSSProperties}
           >
-            <div className={`${lineClamp} bg-[var(--event-color)] hover:bg-[var(--hover-color)] border-2 border-transparent hover:border-[var(--border-color)] px-2 py-1 w-full`}> 
+            <div className={`${lineClamp} bg-[var(--event-color)] hover:bg-[var(--hover-color)] border-2 border-transparent hover:border-[var(--border-color)] px-2 py-1 w-full ${view === "week" ? "h-6 overflow-hidden" : ""}`}> 
               { view === "day" ? (
                 <p><strong>{event.date.format("h:mmA")}</strong> <br/>{eventName}</p>
               ) : (
-                <p><strong>{event.date.format("h:mmA")}</strong> {eventName}</p>
+                <p className="truncate"><strong>{event.date.format("h:mmA")}</strong> {eventName}</p>
               )}
             </div>
           </div>
