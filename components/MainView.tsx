@@ -44,7 +44,6 @@ export default function MainView({
     isEventListOpen,
     closeEventList,
     events: filteredEvents,
-    eventList,
     selectedEvent,
     setEvents,
     setUnfilteredEvents,
@@ -123,7 +122,7 @@ export default function MainView({
           onClose={closeEventList}
           date={userSelectedDate}
           view={selectedView as "month" | "week" | "day"}
-          events={eventList}
+          events={filteredEvents}
         />
       )}
 
