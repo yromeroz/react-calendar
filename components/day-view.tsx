@@ -167,7 +167,7 @@ export default function DayView() {
           /> 
           )}
         </div>
-        <MdKeyboardArrowRight />
+        {/* <MdKeyboardArrowRight /> */}
       </div>
 
       <ScrollArea className="h-[75vh] border-2 rounded-2xl">
