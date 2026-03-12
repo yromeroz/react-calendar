@@ -107,7 +107,20 @@ export default function EventPopover({
     console.log("Selected date:", selectedDate);
     console.log("Is valid date:", !isNaN(selectedDate.getTime()));
     console.log("Date value:", date); // el prop que recibes    
+
+    // Validate course and reservation type are selected
+    if (!selectedCourse || selectedCourse === "") {
+      setError("Debe seleccionar una materia.");
+      setSuccess(false);
+      return;
+    }
     
+    if (!selectedReservationType || selectedReservationType === "") {
+      setError("Debe seleccionar un tipo de reserva.");
+      setSuccess(false);
+      return;
+    }    
+
     // Validar que selectedDate sea una fecha válida
     if (!selectedDate || isNaN(selectedDate.getTime())) {
       setError("La fecha seleccionada no es válida.");

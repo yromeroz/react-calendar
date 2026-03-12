@@ -16,8 +16,11 @@ import {
   usePaginateDirectionStore } from "@/lib/store";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import dayjs from "dayjs";
+import duration from 'dayjs/plugin/duration';
 import es from "dayjs/locale/es";
 import FloatingMenu from "./FloatingMenu";
+
+dayjs.extend(duration);
 
 export default function HeaderLeft() {
   // const todaysDate = dayjs();
@@ -52,14 +55,16 @@ export default function HeaderLeft() {
       case "month":
         if (direction > -1) { setDirection(-1); }
         // Move one month back relative to the current selected date (handles year rollover)
-        const newMonthPrev = userSelectedDate.subtract(1, "month").date(1);
+        // const newMonthPrev = userSelectedDate.subtract(1, "month").date(1);
+        const newMonthPrev = userSelectedDate.subtract(dayjs.duration(1, "month"));
         setDate(newMonthPrev);
         setMonth(newMonthPrev.month());
         setSidebarMonth(newMonthPrev.month());
         setSidebarDate(newMonthPrev);
         break;
       case "week":
-        const prevWeekDay = userSelectedDate.subtract(1, "week");        
+        // const prevWeekDay = userSelectedDate.subtract(1, "week");
+        const prevWeekDay = userSelectedDate.subtract(dayjs.duration(1, "week"));        
         if (prevWeekDay.month() < selectedMonthIndex) {
           setMonth(prevWeekDay.month());
           setDate(prevWeekDay);
@@ -71,7 +76,8 @@ export default function HeaderLeft() {
         }  
         break;
       case "day":
-        const prevDay = userSelectedDate.subtract(1, "day");        
+        // const prevDay = userSelectedDate.subtract(1, "day");
+        const prevDay = userSelectedDate.subtract(dayjs.duration(1, "day"));
         if (prevDay.month() < selectedMonthIndex) {
           setMonth(prevDay.month());
           setDate(prevDay);

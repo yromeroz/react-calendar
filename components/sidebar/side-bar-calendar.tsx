@@ -36,26 +36,18 @@ export default function SideBarCalendar() {
   }
 
   const handleDayClick = (day: dayjs.Dayjs) => {
-    switch (selectedView) {
-      case "month":
-      case "week":  
-      case "day":
-        setSidebarDate(day);
-        if (day.month() !== sidebarMonthIndex) {         
-          setSidebarMonth(day.month());
-        }        
-        setDate(day);
-        setMonth(day.month());
-        break;
-      default:
-        break;
+    setSidebarDate(day);
+    if (day.month() !== sidebarMonthIndex) {
+      setSidebarMonth(day.month());
     }
+    setDate(day);
+    setMonth(day.month());
   };
 
   const handlePrevClick = (): void => {
     const prevDay = sidebarViewDate.subtract(1, "month");
     setSidebarDate(prevDay);
-    setDate(prevDay);
+    // setDate(prevDay);
     // set month based on the new date (this will also use the sidebar date's year when rebuilding)
     setSidebarMonth(prevDay.month());
   };
@@ -63,7 +55,7 @@ export default function SideBarCalendar() {
   const handleNextClick = (): void => {
     const nextDay = sidebarViewDate.add(1, "month");
     setSidebarDate(nextDay);
-    setDate(nextDay);
+    // setDate(nextDay);
     // set month based on the new date (this will also use the sidebar date's year when rebuilding)
     setSidebarMonth(nextDay.month());
   };
