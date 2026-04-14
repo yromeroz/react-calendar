@@ -120,7 +120,7 @@ export default function WeekView() {
                       className="relative flex h-24 cursor-pointer flex-col items-start gap-y-1 border-b border-gray-300 hover:bg-gray-100"
                       onClick={() => {
                         setDate(dayDate.hour(hour.hour()));
-                        openPopover();
+                        // openPopover();
                       }}
                     >
                       <div className="w-full min-h-24">

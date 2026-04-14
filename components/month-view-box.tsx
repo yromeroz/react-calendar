@@ -28,7 +28,7 @@ export default function MonthViewBox({
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setDate(day);
-    openPopover();
+    // openPopover();
   }; 
 
   return (

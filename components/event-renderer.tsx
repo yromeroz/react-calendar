@@ -36,10 +36,10 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
   const textClass = view === "day" ? "line-clamp-2" : "truncate whitespace-nowrap";
   const innerBoxClass =
     view === "month"
-      ? "px-1 py-0 h-5"
+      ? "px-1 py-0 h-6"
       : view === "week"
       ? "px-2 py-1 h-6 overflow-hidden auto-white-space: all-content"
-      : "px-2 py-1"; 
+      : "px-2 py-1 h-8"; 
 
   return (
     <div className={view === "week" || view === "day" ? "flex flex-col items-start gap-1 py-1" : ""}>
