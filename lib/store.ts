@@ -155,7 +155,7 @@ export const useEventStore = create<EventStore>((set) => ({
 
 export const useToggleSideBarStore = create<ToggleSideBarType>()(
   (set, get) => ({
-    isSideBarOpen: true,
+    isSideBarOpen: false,
     setSideBarOpen: () => {
       set({ isSideBarOpen: !get().isSideBarOpen });
     },

@@ -19,8 +19,8 @@ export default function DayView() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const gridRef = scrollContainerRef; // alias for clarity
-  const [startIndex, setStartIndex] = useState(4);
-  const visibleCount = 7; // Number of visible hours
+  const [startIndex, setStartIndex] = useState(8);
+  const visibleCount = 15; // Number of visible hours
   const hoursOffset = 7; // Scroll to 7 AM
   const hourHeight = 64; // Height per room row (h-16)
   const { rooms } = useFiltersStore();
@@ -122,7 +122,7 @@ export default function DayView() {
 
   return (
     <>
-      <div className="grid grid-cols-[auto_auto_repeat(7,1fr)_auto] place-items-center pl-4 pr-2 py-1 border-2 rounded-2xl">
+      <div className="grid grid-cols-[auto_auto_repeat(15,1fr)_auto] place-items-center pl-4 pr-2 py-1 border-2 rounded-2xl">
         {/* Date Header */}
         <div className="flex w-16 flex-col items-center border-r border-gray-300 pr-4">  
           <div className={cn("text-xs", isToday && "text-blue-600")}>
@@ -173,13 +173,13 @@ export default function DayView() {
       <ScrollArea className="h-[75vh] border-2 rounded-2xl">
         <div 
           ref={scrollContainerRef}
-          className="relative grid grid-cols-[auto_repeat(7,1fr)] p-4 items-start">
+          className="relative grid grid-cols-[auto_repeat(15,1fr)] p-4 items-start">
           {/* Rooms Column */}
           <div className="rooms-column w-16 border-r border-gray-300">
             {rooms.map((room, index) => (
               <div 
                 key={index}
-                className="relative h-16"
+                className="relative h-10"
                 >
                 <div className="absolute text-sm text-gray-600 mt-4 mr-1">
                   {room.shortname.toUpperCase()}
@@ -194,15 +194,15 @@ export default function DayView() {
               return (
                 <div 
                   key={index}
-                  className="hour-column border-r border-gray-300">
+                  className="hour-column border-r border-gray-300 items-center ">
                   {rooms.map((room, idx) => (
                     <div
                       key={idx}
                       id={room.id.toString()}
-                      className="relative h-16"
+                      className="relative h-10 border-b border-gray-300 cursor-pointer"
                       onClick={() => {
                         setDate(userSelectedDate.hour(hour.hour()));
-                        openPopover();
+                        // openPopover();
                       }}
                     />
                   ))}
@@ -254,7 +254,7 @@ export default function DayView() {
                     left: `${leftPx}px`,
                     top: `${topPx}px`,
                     width: `${widthPx}px`,
-                    height: `${hourHeight - 6}px`,
+                    height: `${hourHeight - 32}px`,
                     background: darker,
                     color: '#000',
                     border: `2px solid ${eventColor}`,
@@ -266,7 +266,7 @@ export default function DayView() {
                   }}
                 >
                   <div className="truncate" style={{background: `var(--event-color)`}}>
-                    <strong className="mr-1">{start.format('h:mmA')} - {end.format('h:mmA')}</strong>
+                    {/* <strong className="mr-1">{start.format('h:mmA')} - {end.format('h:mmA')}</strong> */}
                     {event.name || '-'}
                   </div>
                 </div>

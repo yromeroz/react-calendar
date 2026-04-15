@@ -19,7 +19,7 @@ import { EventSummaryPopover } from "./event-summary-popover";
 import { EventListPopover } from "./event-list-popover";
 import { useEffect } from "react";
 import dayjs from "dayjs";
-import FloatingButton from "./FloatingButton";
+// import FloatingButton from "./FloatingButton";
 
 export default function MainView({
   eventsData,
@@ -126,7 +126,7 @@ export default function MainView({
         />
       )}
 
-      <FloatingButton />
+      {/* <FloatingButton /> */}
     </div>
   );
 }

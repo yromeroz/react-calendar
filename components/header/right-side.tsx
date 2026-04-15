@@ -27,7 +27,7 @@ export default function HeaderRight() {
       {/* <SearchComponent /> */}
       <Select onValueChange={(v) => setView(v)}>
         <SelectTrigger className="w-[clamp(2.5rem,20vmin,6.5rem)] h-[clamp(1rem,7vmin,2.5rem)] text-[clamp(0.625rem,2.5vmin,1rem)] border-2 border-gray-300 focus:outline-none rounded-full hover:bg-blue-100 hover:border-blue-500">
-          <SelectValue placeholder="Mes" />
+          <SelectValue placeholder="Día" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="month">Mes</SelectItem>

@@ -25,26 +25,11 @@ export default function SideBar() {
             "w-92 hidden px-2 py-3 lg:block",
           )} 
         >
-          <Create />
+          {/* <Create /> */}
           <SideBarCalendar />
           <MyFilters />
         </motion.aside>
-      ) : (
-        <motion.aside
-          key="closed"
-          initial={{ x: 0, opacity: 0 }}
-          animate={{ x: -100, opacity: 1 }}
-          exit={{ x: 0, opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className={cn(
-            "lg:hidden",
-          )} 
-        >
-          <Create />
-          <SideBarCalendar />
-          <MyFilters />
-        </motion.aside>
-        )}
+        ) : null }
     </AnimatePresence>  
   );
 }
