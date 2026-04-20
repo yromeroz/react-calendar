@@ -17,23 +17,31 @@ import DayView from "./day-view";
 import EventPopover from "./event-popover";
 import { EventSummaryPopover } from "./event-summary-popover";
 import { EventListPopover } from "./event-list-popover";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import useSWR from "swr";
 // import FloatingButton from "./FloatingButton";
 
-export default function MainView({
-  eventsData,
-  filtersData,
-  reservasUrl,
-}: {
-  eventsData: CalendarEventType[];
+type Props = {
+  // eventsData: CalendarEventType[];
   filtersData: { 
     roomFilters: RoomFilterType[]; 
     subjectFilters: SubjectFilterType[]; 
     resTypeFilters: ReservationFilterType[] 
   };
   reservasUrl: string;
-}) {
+};
+
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+  return res.json();
+};
+
+export default function MainView({
+  // eventsData,
+  filtersData,
+  reservasUrl,
+}: Props ) {
   const { selectedView } = useViewStore();
 
   const {
@@ -53,40 +61,98 @@ export default function MainView({
 
   const { setRooms, setCourses, setReservationTypes } = useFiltersStore();
 
-  useEffect(() => {
-    const mappedEvents: CalendarEventType[] = eventsData.map((event) => ({
-      id: event.id,
-      date: dayjs(event.date),
-      name: event.name,
-      description: event.description,
-      courseId: event.courseId,
-      groupId: event.groupId,
-      state: event.state,
-      rooms: event.rooms,
-      subject: event.subject,
-      reservationType: event.reservationType,
-      endTime: dayjs(event.endTime),
-      authRequired: event.authRequired,
-      createdAt: dayjs(event.createdAt),
-      manager: event.manager,
-      authorization: event.authorization,
-      managerLogin: event.managerLogin,
-      color: event.color
-    }));
+  // const [reservas, setReservas] = useState<CalendarEventType[]>(eventsData);
+  const [events1, setEvents1] = useState<any[]>([]);
+  const [lastSync, setLastSync] = useState<string | null>(null);
+  const [lastKnownVersion, setLastKnownVersion] = useState<string | null>(null);
+  
+  useSWR(
+    `/api/reservas${lastSync ? `?since=${lastSync}` : ""}`,
+    fetcher,
+    {
+      refreshInterval: 5000,
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+      onSuccess: (data) => {
+        if (data.events.length > 0) {
+          setEvents1([...events1, ...data.events]);
+        }
+        setLastSync(data.serverTime);
+      },
+    }
+  );  
 
-    setEvents(mappedEvents);
-    setUnfilteredEvents(mappedEvents);
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    let intervalTime = 5000; // 5 segundos
+
+    const checkUpdates = async () => {
+      const res = await fetch(`/api/reservas/version`);
+      const { lastCreatedAt }: { lastCreatedAt: string } = await res.json();
+
+      if (lastCreatedAt && lastCreatedAt !== lastKnownVersion) {
+        await fetchEvents(lastCreatedAt);
+        // Si hay cambios, reseteamos el intervalo a 5 segundos para obtener los datos lo antes posible
+        intervalTime = 5000;
+      } else {
+        intervalTime = Math.min(intervalTime + 2000, 30000); // Incrementa el intervalo hasta un máximo de 30 segundos
+      }
+    };
+
+    const fetchEvents = async (since: string) => {
+      const res = await fetch(`/api/reservas?since=${since}`);
+      const data = await res.json();
+
+      if (data.events.length > 0) {
+        setEvents1([...events1, ...data.events]);
+      }
+      
+      setLastKnownVersion(since);
+    };
+
+    // primera carga
+    fetchEvents("");
+
+    // polling inteligente
+    interval = setInterval(checkUpdates, intervalTime);
+    
+    // const mappedEvents: CalendarEventType[] = eventsData.map((e) => ({
+      //   id: e.id,
+      //   date: dayjs(e.date),
+      //   name: e.name,
+      //   description: e.description,
+      //   courseId: e.courseId,
+      //   groupId: e.groupId,
+      //   state: e.state,
+      //   rooms: e.rooms,
+      //   subject: e.subject,
+      //   reservationType: e.reservationType,
+      //   endTime: dayjs(e.endTime),
+      //   authRequired: e.authRequired,
+      //   createdAt: dayjs(e.createdAt),
+      //   manager: e.manager,
+      //   authorization: e.authorization,
+      //   managerLogin: e.managerLogin,
+      //   color: e.color
+      // }));
+
+    setEvents(filteredEvents);
+    setUnfilteredEvents(filteredEvents);
     setRooms(filtersData.roomFilters);
     setCourses(filtersData.subjectFilters);
     setReservationTypes(filtersData.resTypeFilters);
+
+    return () => clearInterval(interval);
   }, [
-    eventsData,
+    // eventsData,
     setEvents,
     setUnfilteredEvents,
     filtersData,
     setRooms,
     setCourses,
     setReservationTypes,
+    lastSync, 
+    lastKnownVersion
   ]);
 
   return (
