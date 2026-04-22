@@ -153,7 +153,7 @@ export default function DayView() {
           {/* Time slot headers */}
           {visibleTimeSlots.map((hour, idx) => (
             <div key={idx} className="text-sm text-gray-600">
-              {hour.format("h:mm A")}
+              {hour.format("h A")}
             </div>
           ))}
 

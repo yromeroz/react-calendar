@@ -1,7 +1,11 @@
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
 import MainView from "@/components/MainView";
-import { getEventsData, getFiltersData, getReservaUrlData } from "@/lib/data";
+import { 
+  // getEventsData, 
+  getFiltersData, 
+  getReservaUrlData, 
+} from "@/lib/data";
 import { 
   CalendarEventType,
   RoomFilterType,

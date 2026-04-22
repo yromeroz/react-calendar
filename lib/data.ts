@@ -7,7 +7,7 @@ import {
   reservaSalonesTable,
   parametrosTable,
 } from "@/db/schema";
-import { sql, eq, gt, and } from "drizzle-orm";
+import { sql, eq, gte, and } from "drizzle-orm";
 import { 
   CalendarEventType,
   RoomFilterType,
@@ -33,21 +33,20 @@ export const getReservaUrlData = async (): Promise<string> => {
 
 export const getEventsData = async (since: string): Promise<CalendarEventType[]> => {
   try {
+    const sinceDate = since ? dayjs(since).toDate() : new Date(0); // Si 'since' es vacío, usar la fecha mínima
     const reservas = await db
       .select({
         id: reservaTable.id,
         name: reservaTable.name,
-        // Use DB-side formatting to get wall-clock datetime strings (no JS Date conversion)
-        // dateStr: sql`DATE_FORMAT(${reservaTable.time}, '%Y-%m-%dT%H:%i:%s')`,
-        // endTimeStr: sql`DATE_FORMAT(${reservaTable.endTime}, '%Y-%m-%dT%H:%i:%s')`,
-        date: reservaTable.time,
-        endTime: reservaTable.endTime, 
+        // Usar DATE_FORMAT para obtener strings en UTC sin conversión accidental
+        dateStr: sql<string>`DATE_FORMAT(${reservaTable.time}, '%Y-%m-%dT%H:%i:%s')`,
+        endTimeStr: sql<string>`DATE_FORMAT(${reservaTable.endTime}, '%Y-%m-%dT%H:%i:%s')`,
         description: reservaTable.description,
         courseId: reservaTable.courseId,
         groupId: reservaTable.groupId,
         state: reservaTable.state,
         authRequired: reservaTable.authRequired,
-        createdAt: reservaTable.createdAt,
+        createdAtStr: sql<string>`DATE_FORMAT(${reservaTable.createdAt}, '%Y-%m-%dT%H:%i:%s')`,
         manager: reservaTable.manager,
         authorization: reservaTable.authorization,
         managerLogin: reservaTable.managerLogin,
@@ -60,14 +59,16 @@ export const getEventsData = async (since: string): Promise<CalendarEventType[]>
       .innerJoin(reservaSalonesTable, eq(reservaSalonesTable.reservaId, reservaTable.id))
       .where(and(
         eq(reservaTable.state, 1), 
-        gt(reservaTable.createdAt, since !== "" ? new Date(since) : new Date(0)))) // Solo reservas activas y creadas después de 'since' (o todas si 'since' es "")
+        gte(reservaTable.createdAt, sinceDate))) // Solo reservas activas y creadas después de 'since' (o todas si 'since' es "")
       .groupBy(reservaTable.id);    
 
     return reservas.map((r) => ({
-      ...r,
       id: Number(r.id),
-      date: dayjs(r.date),
-      endTime: dayjs(r.endTime),
+      name: r.name,
+      // Parsea strings directamente, sin conversión de Date (evita ambigüedad de timezone)
+      date: dayjs(r.dateStr),
+      endTime: dayjs(r.endTimeStr),
+      description: r.description,
       courseId: Number(r.courseId),
       groupId: Number(r.groupId),
       state: Number(r.state),
@@ -76,8 +77,12 @@ export const getEventsData = async (since: string): Promise<CalendarEventType[]>
         : [],
       subject: Number(r.subjectId),
       reservationType: Number(r.typeId),
-      createdAt: dayjs(r.createdAt),
+      createdAt: dayjs(r.createdAtStr),
       authRequired: Boolean(r.authRequired),
+      manager: r.manager,
+      authorization: r.authorization,
+      managerLogin: r.managerLogin,
+      color: r.color,
     }));
   } catch (error) {
     console.error("Error cargando la información de la BD: ", error);
@@ -88,14 +93,14 @@ export const getEventsData = async (since: string): Promise<CalendarEventType[]>
 export const getLastCreatedAt = async (): Promise<string> => {
   try {
     const result = await db
-      .select({ max: sql`MAX(${reservaTable.createdAt})` })
+      .select({ max: sql<string>`DATE_FORMAT(MAX(${reservaTable.createdAt}), '%Y-%m-%dT%H:%i:%s')` })
       .from(reservaTable)
       .where(eq(reservaTable.state, 1)) 
       .limit(1);
-    const lastCreatedAt = result[0].max;  
-    return (result.length > 0 && lastCreatedAt instanceof Date) 
-      ? new Date(lastCreatedAt).toISOString() 
-      : new Date(0).toISOString();
+    const lastCreatedAtStr = result[0].max;  
+    return (result.length > 0 && lastCreatedAtStr) 
+      ? dayjs(lastCreatedAtStr).toISOString() 
+      : dayjs(new Date(0)).toISOString();
   } catch (error) {
     console.error("Error obteniendo la última fecha de actualización: ", error);
     return "";
