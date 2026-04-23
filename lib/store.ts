@@ -21,9 +21,9 @@ interface DateStoreType {
   setSidebarDate: (date: Dayjs) => void;
 }
 
-export type RoomFilterType = { id: number; name: string, shortname: string };
+export type RoomFilterType = { id: number; name: string; shortname: string };
 export type SubjectFilterType = { id: number; name: string };
-export type ReservationFilterType = { id: number; name: string, color: string };
+export type ReservationFilterType = { id: number; name: string; color: string };
 
 type FilterStore = {
   rooms: RoomFilterType[];
@@ -63,8 +63,16 @@ type EventStore = {
   isEventListOpen: boolean;
   selectedEvent: CalendarEventType | null;
   eventList: CalendarEventType[];
-  setEvents: (events: CalendarEventType[]) => void;
-  setUnfilteredEvents: (events: CalendarEventType[]) => void;
+  setEvents: (
+    events:
+      | CalendarEventType[]
+      | ((prev: CalendarEventType[]) => CalendarEventType[]),
+  ) => void;
+  setUnfilteredEvents: (
+    events:
+      | CalendarEventType[]
+      | ((prev: CalendarEventType[]) => CalendarEventType[]),
+  ) => void;
   openPopover: () => void;
   closePopover: () => void;
   openEventSummary: (event: CalendarEventType) => void;
@@ -83,7 +91,7 @@ interface ToggleSideBarType {
 interface PaginateDirectionType {
   direction: number;
   setDirection: (direction: number) => void;
-}  
+}
 
 export const useViewStore = create<ViewStoreType>()(
   devtools(
@@ -106,22 +114,28 @@ export const useDateStore = create<DateStoreType>()(
         userSelectedDate: dayjs(),
         twoDMonthArray: getMonth(),
         selectedMonthIndex: dayjs().month(),
-        sidebarViewDate: dayjs(),        
+        sidebarViewDate: dayjs(),
         twoDMonthSidebarArray: getMonth(),
-        sidebarMonthIndex: dayjs().month(),                
+        sidebarMonthIndex: dayjs().month(),
         setDate: (value: Dayjs) => {
           set({ userSelectedDate: value });
         },
         setSidebarDate: (value: Dayjs) => {
           set({ sidebarViewDate: value });
-        },        
+        },
         setMonth: (index) => {
           const year = get().userSelectedDate.year();
-          set({ twoDMonthArray: getMonth(index, year), selectedMonthIndex: index });
+          set({
+            twoDMonthArray: getMonth(index, year),
+            selectedMonthIndex: index,
+          });
         },
         setSidebarMonth: (idx) => {
           const year = get().sidebarViewDate.year();
-          set({ twoDMonthSidebarArray: getMonth(idx, year), sidebarMonthIndex: idx });
+          set({
+            twoDMonthSidebarArray: getMonth(idx, year),
+            sidebarMonthIndex: idx,
+          });
         },
       }),
       { name: "date_data", skipHydration: true },
@@ -138,8 +152,15 @@ export const useEventStore = create<EventStore>((set) => ({
   isPopmenuOpen: false,
   selectedEvent: null,
   eventList: [],
-  setEvents: (events) => set({ events }),
-  setUnfilteredEvents: (events) => set({ unfilteredEvents: events }),
+  setEvents: (events) =>
+    set((state) => ({
+      events: typeof events === "function" ? events(state.events) : events,
+    })),
+  setUnfilteredEvents: (events) =>
+    set((state) => ({
+      unfilteredEvents:
+        typeof events === "function" ? events(state.unfilteredEvents) : events,
+    })),
   openPopover: () => set({ isPopoverOpen: true }),
   closePopover: () => set({ isPopoverOpen: false }),
   openPopmenu: () => set({ isPopmenuOpen: true }),
@@ -148,7 +169,7 @@ export const useEventStore = create<EventStore>((set) => ({
     set({ isEventSummaryOpen: true, selectedEvent: event }),
   closeEventSummary: () =>
     set({ isEventSummaryOpen: false, selectedEvent: null }),
-  openEventList: (selDateEvents) => 
+  openEventList: (selDateEvents) =>
     set({ isEventListOpen: true, eventList: selDateEvents }),
   closeEventList: () => set({ isEventListOpen: false, eventList: [] }),
 }));

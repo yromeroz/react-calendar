@@ -40,6 +40,7 @@ next-env.d.ts
 
 # IA code agent
 .continue
+/mysql-mcp-server
 
 # VS Code
 .vscode
