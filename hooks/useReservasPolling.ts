@@ -9,6 +9,7 @@ type PollingOptions = {
   maxInterval?: number;
   intervalIncrement?: number;
   maxProcessedEvents?: number;
+  maxRetries?: number;
 };
 
 type UseReservasPollingReturn = {
@@ -23,6 +24,7 @@ export function useReservasPolling(
   const maxInterval = options.maxInterval ?? 30000;
   const intervalIncrement = options.intervalIncrement ?? 2000;
   const maxProcessedEvents = options.maxProcessedEvents ?? 1000;
+  const maxRetries = options.maxRetries ?? 3;
 
   const onEventsLoadedRef = useRef<
     ((events: CalendarEventType[]) => void) | null
@@ -33,6 +35,7 @@ export function useReservasPolling(
   const lastKnownVersionRef = useRef<string>("");
   const processedEventsRef = useRef<Set<number>>(new Set());
   const isInitializedRef = useRef<boolean>(false);
+  const retryCountRef = useRef<number>(0);
 
   const cleanOldEvents = useCallback(() => {
     if (processedEventsRef.current.size > maxProcessedEvents) {
@@ -116,11 +119,20 @@ export function useReservasPolling(
       }
     } catch (error) {
       console.error("Error checking updates:", error);
+      retryCountRef.current += 1;
+
+      if (retryCountRef.current >= maxRetries) {
+        currentIntervalRef.current = Math.min(
+          currentIntervalRef.current * 2,
+          maxInterval,
+        );
+        retryCountRef.current = 0;
+      }
     } finally {
       isCheckingRef.current = false;
       scheduleNextCheck();
     }
-  }, [minInterval, maxInterval, intervalIncrement]);
+  }, [minInterval, maxInterval, intervalIncrement, maxRetries]);
 
   const scheduleNextCheck = useCallback(() => {
     if (intervalRef.current) {
