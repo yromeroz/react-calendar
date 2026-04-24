@@ -100,6 +100,17 @@ export const parametrosTable = mysqlTable(
   }
 )
 
+// Carreras schema
+export const carreraTable  = mysqlTable(
+  'Carrera',
+  {
+    id: t.bigint('CarreraId', { mode: 'bigint' }).primaryKey().autoincrement(),
+    code: t.varchar('CarreraCodigo', { length: 60 }).notNull(),
+    name: t.varchar('CarreraNombre', { length: 60 }).notNull(),
+    color: t.varchar('CarreraColor', { length: 7 }).notNull(),
+  }
+)
+
 // Relations
 export const reservaRelations = relations(reservaTable, ({ one, many }) => ({
   reservaSalones: many(reservaSalonesTable),
@@ -137,3 +148,4 @@ export const tipoReservaRelations = relations(tipoReservaTable, ({ many }) => ({
 export const materiaRelations = relations(materiaTable, ({ many }) => ({
   reserva: many(reservaTable)
 }))
+

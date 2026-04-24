@@ -1,19 +1,19 @@
 import { db } from "@/db/drizzle";
-import { 
-  salonTable, 
-  materiaTable, 
+import {
+  salonTable,
+  materiaTable,
   tipoReservaTable,
   reservaTable,
   reservaSalonesTable,
   parametrosTable,
 } from "@/db/schema";
 import { sql, eq, gte, and } from "drizzle-orm";
-import { 
+import {
   CalendarEventType,
   RoomFilterType,
   SubjectFilterType,
   ReservationFilterType,
- } from "@/lib/store";
+} from "@/lib/store";
 import dayjs from "dayjs";
 
 export const getReservaUrlData = async (): Promise<string> => {
@@ -31,7 +31,9 @@ export const getReservaUrlData = async (): Promise<string> => {
   }
 };
 
-export const getEventsData = async (since: string): Promise<CalendarEventType[]> => {
+export const getEventsData = async (
+  since: string,
+): Promise<CalendarEventType[]> => {
   try {
     const sinceDate = since ? dayjs(since).toDate() : new Date(0); // Si 'since' es vacío, usar la fecha mínima
     const reservas = await db
@@ -56,11 +58,14 @@ export const getEventsData = async (since: string): Promise<CalendarEventType[]>
         color: reservaTable.color,
       })
       .from(reservaTable)
-      .innerJoin(reservaSalonesTable, eq(reservaSalonesTable.reservaId, reservaTable.id))
-      .where(and(
-        eq(reservaTable.state, 1), 
-        gte(reservaTable.createdAt, sinceDate))) // Solo reservas activas y creadas después de 'since' (o todas si 'since' es "")
-      .groupBy(reservaTable.id);    
+      .innerJoin(
+        reservaSalonesTable,
+        eq(reservaSalonesTable.reservaId, reservaTable.id),
+      )
+      .where(
+        and(eq(reservaTable.state, 1), gte(reservaTable.createdAt, sinceDate)),
+      ) // Solo reservas activas y creadas después de 'since' (o todas si 'since' es "")
+      .groupBy(reservaTable.id);
 
     return reservas.map((r) => ({
       id: Number(r.id),
@@ -72,9 +77,10 @@ export const getEventsData = async (since: string): Promise<CalendarEventType[]>
       courseId: Number(r.courseId),
       groupId: Number(r.groupId),
       state: Number(r.state),
-      rooms: typeof r.rooms === "string" && r.rooms.length > 0 
-        ? r.rooms.split(",").map(Number) 
-        : [],
+      rooms:
+        typeof r.rooms === "string" && r.rooms.length > 0
+          ? r.rooms.split(",").map(Number)
+          : [],
       subject: Number(r.subjectId),
       reservationType: Number(r.typeId),
       createdAt: dayjs(r.createdAtStr),
@@ -93,23 +99,25 @@ export const getEventsData = async (since: string): Promise<CalendarEventType[]>
 export const getLastCreatedAt = async (): Promise<string> => {
   try {
     const result = await db
-      .select({ max: sql<string>`DATE_FORMAT(MAX(${reservaTable.createdAt}), '%Y-%m-%dT%H:%i:%s')` })
+      .select({
+        max: sql<string>`DATE_FORMAT(MAX(${reservaTable.createdAt}), '%Y-%m-%dT%H:%i:%s')`,
+      })
       .from(reservaTable)
-      .where(eq(reservaTable.state, 1)) 
+      .where(eq(reservaTable.state, 1))
       .limit(1);
-    const lastCreatedAtStr = result[0].max;  
-    return (result.length > 0 && lastCreatedAtStr) 
-      ? dayjs(lastCreatedAtStr).toISOString() 
+    const lastCreatedAtStr = result[0].max;
+    return result.length > 0 && lastCreatedAtStr
+      ? dayjs(lastCreatedAtStr).toISOString()
       : dayjs(new Date(0)).toISOString();
   } catch (error) {
     console.error("Error obteniendo la última fecha de actualización: ", error);
     return "";
-  } 
+  }
 };
 
 export const getFiltersData = async () => {
   try {
-    const allRooms  = await db.select().from(salonTable);
+    const allRooms = await db.select().from(salonTable);
     const roomFilters: RoomFilterType[] = allRooms.map((room) => ({
       id: Number(room.id),
       name: room.description,
@@ -123,11 +131,13 @@ export const getFiltersData = async () => {
     }));
 
     const allReservationTypes = await db.select().from(tipoReservaTable);
-    const resTypeFilters: ReservationFilterType[] = allReservationTypes.map((rt) => ({
-      id: Number(rt.id),
-      name: rt.name,
-      color: rt.color,
-    }));
+    const resTypeFilters: ReservationFilterType[] = allReservationTypes.map(
+      (rt) => ({
+        id: Number(rt.id),
+        name: rt.name,
+        color: rt.color,
+      }),
+    );
 
     return {
       roomFilters,
@@ -136,16 +146,62 @@ export const getFiltersData = async () => {
     };
   } catch (error) {
     console.error("Error cargando los filtros de la BD: ", error);
-    return { rooms: [], subjects: [], reservationTypes: [] };
+    return { roomFilters: [], subjectFilters: [], resTypeFilters: [] };
+  }
+};
+
+export const getCarrerasData = async (): Promise<
+  { id: number; name: string; color: string }[]
+> => {
+  try {
+    const { db } = await import("@/db/drizzle");
+    const { carreraTable } = await import("@/db/schema");
+    const allCarreras = await db.select().from(carreraTable);
+    return allCarreras.map((carrera) => ({
+      id: Number(carrera.id),
+      name: carrera.name,
+      color: carrera.color,
+    }));
+  } catch (error) {
+    console.error("Error cargando las carreras de la BD: ", error);
+    return [];
   }
 };
 
 // Dummy data
 export const users = [
-  {id: 1, name: "Ana", email: "anarojas@outlook.com", role: "Coordinador", color: "blue", avatar: "manager"},
-  {id: 2, name: "Alvaro", email: "alvaro@outlook.com", role: "Profesor", color: "green", avatar: "teacher"},
-  {id: 3, name: "Invitado", email: "", role: "Invitado", color: "gray", avatar: "guest"},
-  {id: 4, name: "Silvana", email: "silvana@hotmail.com", role: "Sysadmin", color: "violet", avatar: "sysadmin"},
-]
+  {
+    id: 1,
+    name: "Ana",
+    email: "anarojas@outlook.com",
+    role: "Coordinador",
+    color: "blue",
+    avatar: "manager",
+  },
+  {
+    id: 2,
+    name: "Alvaro",
+    email: "alvaro@outlook.com",
+    role: "Profesor",
+    color: "green",
+    avatar: "teacher",
+  },
+  {
+    id: 3,
+    name: "Invitado",
+    email: "",
+    role: "Invitado",
+    color: "gray",
+    avatar: "guest",
+  },
+  {
+    id: 4,
+    name: "Silvana",
+    email: "silvana@hotmail.com",
+    role: "Sysadmin",
+    color: "violet",
+    avatar: "sysadmin",
+  },
+];
 
 export const getUsers = () => users;
