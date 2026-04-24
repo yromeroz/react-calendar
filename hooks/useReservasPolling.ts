@@ -8,6 +8,7 @@ type PollingOptions = {
   minInterval?: number;
   maxInterval?: number;
   intervalIncrement?: number;
+  maxProcessedEvents?: number;
 };
 
 type UseReservasPollingReturn = {
@@ -21,6 +22,7 @@ export function useReservasPolling(
   const minInterval = options.minInterval ?? 5000;
   const maxInterval = options.maxInterval ?? 30000;
   const intervalIncrement = options.intervalIncrement ?? 2000;
+  const maxProcessedEvents = options.maxProcessedEvents ?? 1000;
 
   const onEventsLoadedRef = useRef<
     ((events: CalendarEventType[]) => void) | null
@@ -31,6 +33,17 @@ export function useReservasPolling(
   const lastKnownVersionRef = useRef<string>("");
   const processedEventsRef = useRef<Set<number>>(new Set());
   const isInitializedRef = useRef<boolean>(false);
+
+  const cleanOldEvents = useCallback(() => {
+    if (processedEventsRef.current.size > maxProcessedEvents) {
+      const eventsArray = Array.from(processedEventsRef.current);
+      const toRemove = eventsArray.slice(
+        0,
+        eventsArray.length - maxProcessedEvents,
+      );
+      toRemove.forEach((id) => processedEventsRef.current.delete(id));
+    }
+  }, [maxProcessedEvents]);
 
   const setOnEventsLoaded = useCallback(
     (callback: (events: CalendarEventType[]) => void) => {
@@ -85,6 +98,8 @@ export function useReservasPolling(
             newEvents.forEach((event: any) => {
               processedEventsRef.current.add(event.id);
             });
+
+            cleanOldEvents();
           }
         }
 
