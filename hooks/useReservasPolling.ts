@@ -20,7 +20,7 @@ type UseReservasPollingReturn = {
 export function useReservasPolling(
   options: PollingOptions = {},
 ): UseReservasPollingReturn {
-  const minInterval = options.minInterval ?? 5000;
+  const minInterval = options.minInterval ?? 2000;
   const maxInterval = options.maxInterval ?? 30000;
   const intervalIncrement = options.intervalIncrement ?? 2000;
   const maxProcessedEvents = options.maxProcessedEvents ?? 1000;
