@@ -44,7 +44,7 @@ export type CalendarEventType = {
   groupId: number;
   state: number;
   rooms: number[];
-  subject: number;
+  subject: string;
   reservationType: number;
   createdAt: dayjs.Dayjs;
   manager: string;

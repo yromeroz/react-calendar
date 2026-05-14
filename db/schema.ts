@@ -7,7 +7,7 @@ import * as t from "drizzle-orm/mysql-core";
 export const materiaTable = mysqlTable(
   'Materia',
   {
-    id: t.bigint('MateriaId', { mode: 'bigint' }).primaryKey().autoincrement(),
+    id: t.varchar('MateriaId', { length: 12 }).primaryKey(),
     name: t.varchar('MateriaNombre', { length: 60 }).notNull(),
     code: t.varchar('MateriaCodigo', { length: 20 }).notNull(),
     carreerLevel: t.smallint('MateriaNivelCarrera').notNull(),
@@ -49,7 +49,7 @@ export const reservaTable = mysqlTable(
     courseId: t.bigint('CursoId', { mode: 'bigint' }),
     groupId: t.bigint('GrupoId', { mode: 'bigint' }),
     state: t.smallint('ReservaEstado').notNull(),
-    subjectId: t.bigint('MateriaId', { mode: 'bigint' }).references(() => materiaTable.id),
+    subjectId: t.varchar('MateriaId', { length: 12 }).references(() => materiaTable.id),
     description: t.varchar('ReservaDescripcion', { length: 240 }).notNull(),
     typeId: t.bigint('TipoReservaId', { mode: 'bigint' }).references(() => tipoReservaTable.id),
     authRequired: t.tinyint('ReservaRequiereAutorizacion').notNull(),
