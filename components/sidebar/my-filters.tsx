@@ -24,7 +24,7 @@ export default function MyFilters() {
     }
   
     if (courseFilter !== "all") {
-      filtered = filtered.filter(event => event.subject === parseInt(courseFilter));
+      filtered = filtered.filter(event => event.subject === courseFilter);
     }
   
     if (reservationFilter !== "all") {

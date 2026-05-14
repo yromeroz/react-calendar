@@ -81,7 +81,7 @@ export const getEventsData = async (
         typeof r.rooms === "string" && r.rooms.length > 0
           ? r.rooms.split(",").map(Number)
           : [],
-      subject: Number(r.subjectId),
+      subject: r.subjectId,
       reservationType: Number(r.typeId),
       createdAt: dayjs(r.createdAtStr),
       authRequired: Boolean(r.authRequired),
@@ -126,7 +126,7 @@ export const getFiltersData = async () => {
 
     const allSubjects = await db.select().from(materiaTable);
     const subjectFilters: SubjectFilterType[] = allSubjects.map((subject) => ({
-      id: Number(subject.id),
+      id: subject.id,
       name: subject.name,
     }));
 

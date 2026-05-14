@@ -22,7 +22,7 @@ interface DateStoreType {
 }
 
 export type RoomFilterType = { id: number; name: string; shortname: string };
-export type SubjectFilterType = { id: number; name: string };
+export type SubjectFilterType = { id: string; name: string };
 export type ReservationFilterType = { id: number; name: string; color: string };
 
 type FilterStore = {
@@ -44,7 +44,7 @@ export type CalendarEventType = {
   groupId: number;
   state: number;
   rooms: number[];
-  subject: string;
+  subject: string | null;
   reservationType: number;
   createdAt: dayjs.Dayjs;
   manager: string;
