@@ -126,7 +126,7 @@ async function main() {
       code: m.code,
       nameCode: m.nameCode,
       carreerLevel: m.level,
-      carrerasId: BigInt(1),
+      carreraId: BigInt(1),
     });
   }
 
