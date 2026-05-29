@@ -120,34 +120,30 @@ tests/                        # Vitest test files
 
 ### High Priority
 
-1. **DB Schema Drift**: `db/schema.ts` has `SalonId` as `varchar(12)` but the actual database has `bigint`. The migration snapshot (`db/migrations/schema.ts`) also shows `bigint`. Regenerate migrations to sync ORM schema with the database.
-
-2. **Unused PostgreSQL Migration**: `db/migrations/0000_blue_alice.sql` is a PostgreSQL migration in a MySQL project. The migration journal declares `"dialect": "postgresql"` while `drizzle.config.ts` uses `mysql`. Delete or regenerate.
-
-3. **Environment Secrets in Git**: `.env.production` and `.env.local` contain plaintext database passwords and JWT secrets tracked in version control. Move to `.env*.local` with proper `.gitignore` rules.
+*(No high priority items remain — all 3 original findings have been resolved.)*
 
 ### Medium Priority
 
-4. **Hardcoded Values**: Three hardcoded calendars ("Work/Personal/Fitness") in sidebar, dummy users array, placeholder search component, hardcoded scroll offsets (`hoursOffset = 7`, `startIndex = 8`).
+1. **Hardcoded Values**: Three hardcoded calendars ("Work/Personal/Fitness") in sidebar, dummy users array, placeholder search component, hardcoded scroll offsets (`hoursOffset = 7`, `startIndex = 8`).
 
-5. **Dead Code**: `lib/axios.ts` fully commented out, `components/header/UserProfile.tsx` is a duplicate of `FloatingSideBar.tsx` and never imported, `add-user.tsx` is empty.
+2. **Dead Code**: `lib/axios.ts` fully commented out, `components/header/UserProfile.tsx` is a duplicate of `FloatingSideBar.tsx` and never imported, `add-user.tsx` is empty.
 
-6. **Missing Loading/Error States**: No `Suspense` boundaries, no loading spinner for initial event load, no global toast system (sonner installed but unused).
+3. **Missing Loading/Error States**: No `Suspense` boundaries, no loading spinner for initial event load, no global toast system (sonner installed but unused).
 
-7. **Fragile DOM Queries**: `day-view.tsx` uses `querySelector('.rooms-column')` for event positioning — breaks if DOM structure changes.
+4. **Fragile DOM Queries**: `day-view.tsx` uses `querySelector('.rooms-column')` for event positioning — breaks if DOM structure changes.
 
-8. **Minimal Test Coverage**: Only 2 test files. No tests for API routes, DB queries, filtering logic, or the polling hook.
+5. **Minimal Test Coverage**: Only 2 test files. No tests for API routes, DB queries, filtering logic, or the polling hook.
 
-9. **No Auth on API Routes**: `/api/reservas`, `/api/reservas/version`, `/api/carreras` have no authentication checks.
+6. **No Auth on API Routes**: `/api/reservas`, `/api/reservas/version`, `/api/carreras` have no authentication checks.
 
 ### Low Priority
 
-10. **Polling Version Cursor**: Uses `lastCreatedAt` timestamp — events with the same timestamp could be missed. A monotonically increasing ID would be more reliable.
+7. **Polling Version Cursor**: Uses `lastCreatedAt` timestamp — events with the same timestamp could be missed. A monotonically increasing ID would be more reliable.
 
-11. **Auth Fragility**: Client-side token decode with `atob()`, no server-side signature verification, full page reload on token receipt.
+8. **Auth Fragility**: Client-side token decode with `atob()`, no server-side signature verification, full page reload on token receipt.
 
-12. **No Data Refresh After Creation**: After submitting a reservation request, the calendar doesn't reflect the change until the legacy system processes it.
+9. **No Data Refresh After Creation**: After submitting a reservation request, the calendar doesn't reflect the change until the legacy system processes it.
 
-13. **Docker Compose External Network**: Requires pre-existing `localstack-net` network — not documented, cannot run standalone.
+10. **Docker Compose External Network**: Requires pre-existing `localstack-net` network — not documented, cannot run standalone.
 
-14. **Netlify vs Docker Build Command**: Netlify uses `pnpm run build` but Docker uses `npm install`/`npm run build`. No `pnpm` in Docker image.
+11. **Netlify vs Docker Build Command**: Netlify uses `pnpm run build` but Docker uses `npm install`/`npm run build`. No `pnpm` in Docker image.
