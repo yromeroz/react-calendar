@@ -1,41 +1,43 @@
 {
-  "id": "00000000-0000-0000-0000-000000000000",
-  "prevId": "",
   "version": "5",
   "dialect": "mysql",
+  "id": "a764d15d-ece9-4c3f-abfa-ddb2b3a1afbd",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Carrera": {
       "name": "Carrera",
       "columns": {
         "CarreraId": {
-          "autoincrement": true,
           "name": "CarreraId",
           "type": "bigint",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": true
         },
         "CarreraCodigo": {
-          "autoincrement": false,
           "name": "CarreraCodigo",
           "type": "varchar(60)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "CarreraNombre": {
-          "autoincrement": false,
           "name": "CarreraNombre",
           "type": "varchar(60)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "CarreraColor": {
-          "autoincrement": false,
           "name": "CarreraColor",
           "type": "varchar(7)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         }
       },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {
         "Carrera_CarreraId": {
           "name": "Carrera_CarreraId",
@@ -44,8 +46,6 @@
           ]
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
       "uniqueConstraints": {},
       "checkConstraint": {}
     },
@@ -53,41 +53,43 @@
       "name": "Materia",
       "columns": {
         "MateriaId": {
-          "autoincrement": false,
           "name": "MateriaId",
           "type": "varchar(12)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "MateriaNombre": {
-          "autoincrement": false,
           "name": "MateriaNombre",
           "type": "varchar(60)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "MateriaCodigo": {
-          "autoincrement": false,
           "name": "MateriaCodigo",
           "type": "varchar(20)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "MateriaNivelCarrera": {
-          "autoincrement": false,
           "name": "MateriaNivelCarrera",
           "type": "smallint",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "CarrerasId": {
-          "autoincrement": false,
           "name": "CarrerasId",
           "type": "bigint",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         }
       },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {
         "Materia_MateriaId": {
           "name": "Materia_MateriaId",
@@ -96,8 +98,6 @@
           ]
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
       "uniqueConstraints": {},
       "checkConstraint": {}
     },
@@ -105,97 +105,22 @@
       "name": "Parametros",
       "columns": {
         "ParametrosId": {
-          "autoincrement": false,
           "name": "ParametrosId",
           "type": "bigint",
           "primaryKey": false,
-          "notNull": true
-        },
-        "ParametrosUrlCalendario": {
-          "autoincrement": false,
-          "name": "ParametrosUrlCalendario",
-          "type": "varchar(500)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ParametrosCarpetaPlanosSalon": {
-          "autoincrement": false,
-          "name": "ParametrosCarpetaPlanosSalon",
-          "type": "varchar(500)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ParametrosEmailSMTPServer": {
-          "autoincrement": false,
-          "name": "ParametrosEmailSMTPServer",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ParametrosEmailSMTPPort": {
-          "autoincrement": false,
-          "name": "ParametrosEmailSMTPPort",
-          "type": "smallint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ParametrosEmailSMTPUser": {
-          "autoincrement": false,
-          "name": "ParametrosEmailSMTPUser",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ParametrosEmailSMTPPassword": {
-          "autoincrement": false,
-          "name": "ParametrosEmailSMTPPassword",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ParametrosEmailSenderEmail": {
-          "autoincrement": false,
-          "name": "ParametrosEmailSenderEmail",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ParametrosEmailSenderName": {
-          "autoincrement": false,
-          "name": "ParametrosEmailSenderName",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ParametrosEmailUseSSL": {
-          "autoincrement": false,
-          "name": "ParametrosEmailUseSSL",
-          "type": "tinyint(1)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ParametrosIdRolCoordinadorLicenciatura": {
-          "autoincrement": false,
-          "name": "ParametrosIdRolCoordinadorLicenciatura",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ParametrosCarpetaInscriptosCurso": {
-          "autoincrement": false,
-          "name": "ParametrosCarpetaInscriptosCurso",
-          "type": "varchar(500)",
-          "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "ParametrosUrlVisualizarReserva": {
-          "autoincrement": false,
           "name": "ParametrosUrlVisualizarReserva",
-          "type": "varchar(500)",
+          "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         }
       },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {
         "Parametros_ParametrosId": {
           "name": "Parametros_ParametrosId",
@@ -204,8 +129,65 @@
           ]
         }
       },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "ReservaSalones": {
+      "name": "ReservaSalones",
+      "columns": {
+        "ReservaId": {
+          "name": "ReservaId",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "SalonId": {
+          "name": "SalonId",
+          "type": "varchar(12)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "ReservaSalones_ReservaId_Reserva_ReservaId_fk": {
+          "name": "ReservaSalones_ReservaId_Reserva_ReservaId_fk",
+          "tableFrom": "ReservaSalones",
+          "tableTo": "Reserva",
+          "columnsFrom": [
+            "ReservaId"
+          ],
+          "columnsTo": [
+            "ReservaId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "ReservaSalones_SalonId_Salon_SalonId_fk": {
+          "name": "ReservaSalones_SalonId_Salon_SalonId_fk",
+          "tableFrom": "ReservaSalones",
+          "tableTo": "Salon",
+          "columnsFrom": [
+            "SalonId"
+          ],
+          "columnsTo": [
+            "SalonId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "ReservaSalones_ReservaId_SalonId_pk": {
+          "name": "ReservaSalones_ReservaId_SalonId_pk",
+          "columns": [
+            "ReservaId",
+            "SalonId"
+          ]
+        }
+      },
       "uniqueConstraints": {},
       "checkConstraint": {}
     },
@@ -213,140 +195,166 @@
       "name": "Reserva",
       "columns": {
         "ReservaId": {
-          "autoincrement": true,
           "name": "ReservaId",
           "type": "bigint",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": true
         },
         "ReservaFecha": {
-          "autoincrement": false,
           "name": "ReservaFecha",
           "type": "date",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "ReservaHoraInicio": {
-          "autoincrement": false,
           "name": "ReservaHoraInicio",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "ReservaHoraFin": {
-          "autoincrement": false,
           "name": "ReservaHoraFin",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": true
-        },
-        "TipoReservaId": {
-          "autoincrement": false,
-          "name": "TipoReservaId",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "ReservaFrecuencia": {
-          "autoincrement": false,
-          "name": "ReservaFrecuencia",
-          "type": "smallint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ReservaEstado": {
-          "autoincrement": false,
-          "name": "ReservaEstado",
-          "type": "smallint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ReservaReplicacble": {
-          "autoincrement": false,
-          "name": "ReservaReplicacble",
-          "type": "tinyint(1)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "MateriaId": {
-          "autoincrement": false,
-          "name": "MateriaId",
-          "type": "varchar(12)",
-          "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "autoincrement": false
         },
         "CursoId": {
-          "autoincrement": false,
           "name": "CursoId",
           "type": "bigint",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
         },
         "GrupoId": {
-          "autoincrement": false,
           "name": "GrupoId",
           "type": "bigint",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ReservaEstado": {
+          "name": "ReservaEstado",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ReservaFrecuencia": {
+          "name": "ReservaFrecuencia",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ReservaReplicacble": {
+          "name": "ReservaReplicacble",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "MateriaId": {
+          "name": "MateriaId",
+          "type": "varchar(12)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         },
         "ReservaDescripcion": {
-          "autoincrement": false,
           "name": "ReservaDescripcion",
           "type": "varchar(240)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
+        },
+        "TipoReservaId": {
+          "name": "TipoReservaId",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         },
         "ReservaRequiereAutorizacion": {
-          "default": 0,
-          "autoincrement": false,
           "name": "ReservaRequiereAutorizacion",
-          "type": "tinyint(1)",
+          "type": "tinyint",
           "primaryKey": false,
-          "notNull": true
-        },
-        "ReservaGestor": {
-          "autoincrement": false,
-          "name": "ReservaGestor",
-          "type": "varchar(60)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ReservaAutorizacion": {
-          "autoincrement": false,
-          "name": "ReservaAutorizacion",
-          "type": "varchar(60)",
-          "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "ReservaFechaCreacion": {
-          "autoincrement": false,
           "name": "ReservaFechaCreacion",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ReservaGestor": {
+          "name": "ReservaGestor",
+          "type": "varchar(60)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ReservaAutorizacion": {
+          "name": "ReservaAutorizacion",
+          "type": "varchar(60)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         },
         "ReservaGestorLogin": {
-          "autoincrement": false,
           "name": "ReservaGestorLogin",
           "type": "varchar(60)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "ReservaNombre": {
-          "default": "''",
-          "autoincrement": false,
           "name": "ReservaNombre",
           "type": "varchar(120)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "ReservaColor": {
-          "default": "''",
-          "autoincrement": false,
           "name": "ReservaColor",
           "type": "varchar(20)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Reserva_MateriaId_Materia_MateriaId_fk": {
+          "name": "Reserva_MateriaId_Materia_MateriaId_fk",
+          "tableFrom": "Reserva",
+          "tableTo": "Materia",
+          "columnsFrom": [
+            "MateriaId"
+          ],
+          "columnsTo": [
+            "MateriaId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "Reserva_TipoReservaId_TipoReserva_TipoReservaId_fk": {
+          "name": "Reserva_TipoReservaId_TipoReserva_TipoReservaId_fk",
+          "tableFrom": "Reserva",
+          "tableTo": "TipoReserva",
+          "columnsFrom": [
+            "TipoReservaId"
+          ],
+          "columnsTo": [
+            "TipoReservaId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -357,40 +365,6 @@
           ]
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraint": {}
-    },
-    "ReservaSalones": {
-      "name": "ReservaSalones",
-      "columns": {
-        "ReservaId": {
-          "autoincrement": false,
-          "name": "ReservaId",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "SalonId": {
-          "autoincrement": false,
-          "name": "SalonId",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "compositePrimaryKeys": {
-        "ReservaSalones_ReservaId_SalonId": {
-          "name": "ReservaSalones_ReservaId_SalonId",
-          "columns": [
-            "ReservaId",
-            "SalonId"
-          ]
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
       "uniqueConstraints": {},
       "checkConstraint": {}
     },
@@ -398,55 +372,57 @@
       "name": "Salon",
       "columns": {
         "SalonId": {
-          "autoincrement": false,
           "name": "SalonId",
           "type": "varchar(12)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "SalonDescripcion": {
-          "autoincrement": false,
           "name": "SalonDescripcion",
           "type": "varchar(60)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "SalonIdentificador": {
-          "autoincrement": false,
           "name": "SalonIdentificador",
           "type": "varchar(60)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "TipoSalonId": {
-          "autoincrement": false,
           "name": "TipoSalonId",
           "type": "bigint",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "SalonCapacidad": {
-          "autoincrement": false,
           "name": "SalonCapacidad",
           "type": "smallint",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "SalonUbicacionId": {
-          "autoincrement": false,
           "name": "SalonUbicacionId",
           "type": "bigint",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "SalonUbicacionPlano": {
-          "autoincrement": false,
           "name": "SalonUbicacionPlano",
           "type": "varchar(512)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         }
       },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {
         "Salon_SalonId": {
           "name": "Salon_SalonId",
@@ -455,8 +431,6 @@
           ]
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
       "uniqueConstraints": {},
       "checkConstraint": {}
     },
@@ -464,74 +438,103 @@
       "name": "SolicitudReserva",
       "columns": {
         "SolicitudReservaId": {
-          "autoincrement": true,
           "name": "SolicitudReservaId",
           "type": "bigint",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": true
         },
         "SolicitudReservaFecha": {
-          "autoincrement": false,
           "name": "SolicitudReservaFecha",
           "type": "date",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "SolicitudReservaHoraInicio": {
-          "autoincrement": false,
           "name": "SolicitudReservaHoraInicio",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "SolicitudReservaHoraFin": {
-          "autoincrement": false,
           "name": "SolicitudReservaHoraFin",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "SolicitudReservaEstado": {
-          "autoincrement": false,
           "name": "SolicitudReservaEstado",
           "type": "smallint",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "ReservaId": {
-          "autoincrement": false,
           "name": "ReservaId",
           "type": "bigint",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
         },
         "SolicitanteMail": {
-          "autoincrement": false,
           "name": "SolicitanteMail",
           "type": "varchar(100)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "SolicitanteNombre": {
-          "autoincrement": false,
           "name": "SolicitanteNombre",
           "type": "varchar(60)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "SolicitudReservaDescripcion": {
-          "autoincrement": false,
           "name": "SolicitudReservaDescripcion",
           "type": "varchar(240)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "SolicitudTipoReservaId": {
-          "autoincrement": false,
           "name": "SolicitudTipoReservaId",
           "type": "bigint",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "SolicitudReserva_ReservaId_Reserva_ReservaId_fk": {
+          "name": "SolicitudReserva_ReservaId_Reserva_ReservaId_fk",
+          "tableFrom": "SolicitudReserva",
+          "tableTo": "Reserva",
+          "columnsFrom": [
+            "ReservaId"
+          ],
+          "columnsTo": [
+            "ReservaId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "SolicitudReserva_SolicitudTipoReservaId_TipoReserva_TipoReservaId_fk": {
+          "name": "SolicitudReserva_SolicitudTipoReservaId_TipoReserva_TipoReservaId_fk",
+          "tableFrom": "SolicitudReserva",
+          "tableTo": "TipoReserva",
+          "columnsFrom": [
+            "SolicitudTipoReservaId"
+          ],
+          "columnsTo": [
+            "TipoReservaId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -542,8 +545,6 @@
           ]
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
       "uniqueConstraints": {},
       "checkConstraint": {}
     },
@@ -551,34 +552,29 @@
       "name": "TipoReserva",
       "columns": {
         "TipoReservaId": {
-          "autoincrement": false,
           "name": "TipoReservaId",
           "type": "bigint",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": true
         },
         "TipoReservaNombre": {
-          "autoincrement": false,
           "name": "TipoReservaNombre",
           "type": "varchar(60)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "TipoReservaColor": {
-          "autoincrement": false,
           "name": "TipoReservaColor",
           "type": "varchar(20)",
           "primaryKey": false,
-          "notNull": true
-        },
-        "TipoReservaReplicable": {
-          "autoincrement": false,
-          "name": "TipoReservaReplicable",
-          "type": "tinyint(1)",
-          "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "autoincrement": false
         }
       },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {
         "TipoReserva_TipoReservaId": {
           "name": "TipoReserva_TipoReservaId",
@@ -587,8 +583,6 @@
           ]
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
       "uniqueConstraints": {},
       "checkConstraint": {}
     }

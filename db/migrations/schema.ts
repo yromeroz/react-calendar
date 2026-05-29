@@ -1,4 +1,4 @@
-import { mysqlTable, mysqlSchema, AnyMySqlColumn, primaryKey, bigint, varchar, smallint, date, datetime } from "drizzle-orm/mysql-core"
+import { mysqlTable, mysqlSchema, AnyMySqlColumn, primaryKey, bigint, varchar, smallint, date, datetime, tinyint } from "drizzle-orm/mysql-core"
 import { sql } from "drizzle-orm"
 
 export const carrera = mysqlTable("Carrera", {
@@ -60,8 +60,8 @@ export const reserva = mysqlTable("Reserva", {
 	reservaAutorizacion: varchar("ReservaAutorizacion", { length: 60 }).notNull(),
 	reservaFechaCreacion: datetime("ReservaFechaCreacion", { mode: 'string'}).notNull(),
 	reservaGestorLogin: varchar("ReservaGestorLogin", { length: 60 }).notNull(),
-	reservaNombre: varchar("ReservaNombre", { length: 120 }).default(').notNull(),
-	reservaColor: varchar("ReservaColor", { length: 20 }).default(').notNull(),
+	reservaNombre: varchar("ReservaNombre", { length: 120 }).default('').notNull(),
+	reservaColor: varchar("ReservaColor", { length: 20 }).default('').notNull(),
 },
 (table) => [
 	primaryKey({ columns: [table.reservaId], name: "Reserva_ReservaId"}),
@@ -76,7 +76,7 @@ export const reservaSalones = mysqlTable("ReservaSalones", {
 ]);
 
 export const salon = mysqlTable("Salon", {
-	salonId: bigint("SalonId", { mode: "number" }).autoincrement().notNull(),
+	salonId: varchar("SalonId", { length: 12 }).notNull(),
 	salonDescripcion: varchar("SalonDescripcion", { length: 60 }).notNull(),
 	salonIdentificador: varchar("SalonIdentificador", { length: 60 }).notNull(),
 	tipoSalonId: bigint("TipoSalonId", { mode: "number" }).notNull(),
