@@ -21,7 +21,7 @@ interface DateStoreType {
   setSidebarDate: (date: Dayjs) => void;
 }
 
-export type RoomFilterType = { id: number; name: string; shortname: string };
+export type RoomFilterType = { id: string; name: string; shortname: string };
 export type SubjectFilterType = { id: string; name: string };
 export type ReservationFilterType = { id: number; name: string; color: string };
 
@@ -43,7 +43,7 @@ export type CalendarEventType = {
   courseId: number;
   groupId: number;
   state: number;
-  rooms: number[];
+  rooms: string[];
   subject: string | null;
   reservationType: number;
   createdAt: dayjs.Dayjs;

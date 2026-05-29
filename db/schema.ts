@@ -28,7 +28,7 @@ export const tipoReservaTable = mysqlTable(
 export const salonTable = mysqlTable(
   'Salon',
   {
-    id: t.bigint('SalonId', { mode: 'bigint' }).primaryKey().autoincrement(),
+    id: t.varchar('SalonId', { length: 12 }).primaryKey(),
     description: t.varchar('SalonDescripcion', { length: 60 }).notNull(),
     name: t.varchar('SalonIdentificador', { length: 60 }).notNull(),
     typeId: t.bigint('TipoSalonId', { mode: 'bigint' }).notNull(),
@@ -84,7 +84,7 @@ export const reservaSalonesTable = mysqlTable(
   'ReservaSalones',
   {
     reservaId: t.bigint('ReservaId', { mode: 'bigint' }).references(() => reservaTable.id),
-    salonId: t.bigint('SalonId', { mode: 'bigint' }).references(() => salonTable.id),
+    salonId: t.varchar('SalonId', { length: 12 }).references(() => salonTable.id),
   },
   (table) => ({ 
     primaryKey: t.primaryKey({ columns: [table.reservaId, table.salonId] })
