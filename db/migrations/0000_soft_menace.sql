@@ -14,7 +14,7 @@ CREATE TABLE `Materia` (
 	`MateriaNombre` varchar(60) NOT NULL,
 	`MateriaCodigo` varchar(20) NOT NULL,
 	`MateriaNivelCarrera` smallint NOT NULL,
-	`CarrerasId` bigint NOT NULL,
+	`CarreraId` bigint NOT NULL,
 	CONSTRAINT `Materia_MateriaId` PRIMARY KEY(`MateriaId`)
 );
 --> statement-breakpoint

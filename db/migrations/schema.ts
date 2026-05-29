@@ -16,7 +16,7 @@ export const materia = mysqlTable("Materia", {
 	materiaNombre: varchar("MateriaNombre", { length: 60 }).notNull(),
 	materiaCodigo: varchar("MateriaCodigo", { length: 20 }).notNull(),
 	materiaNivelCarrera: smallint("MateriaNivelCarrera").notNull(),
-	carrerasId: bigint("CarrerasId", { mode: "number" }).notNull(),
+	carreraId: bigint("CarreraId", { mode: "number" }).notNull(),
 },
 (table) => [
 	primaryKey({ columns: [table.materiaId], name: "Materia_MateriaId"}),
