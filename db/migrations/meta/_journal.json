@@ -15,6 +15,13 @@
       "when": 1780079507724,
       "tag": "0001_colossal_shatterstar",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1780083725501,
+      "tag": "0002_worried_cassandra_nova",
+      "breakpoints": true
     }
   ]
 }

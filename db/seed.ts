@@ -72,7 +72,7 @@ const materiaEntries = [
   { id: "FIS101", name: "Física I", code: "FIS101", level: 1 },
   { id: "PRO101", name: "Programación I", code: "PRO101", level: 1 },
   { id: "QUI101", name: "Química General", code: "QUI101", level: 1 },
-];
+].map(m => ({ ...m, nameCode: `${m.name} - ${m.code}` }));
 
 const salonEntries = [
   { id: BigInt(1), description: "Salón A - Planta Baja", name: "A1", typeId: BigInt(1), capacity: 40, locationId: BigInt(1), location: "planta_baja.png" },
@@ -124,6 +124,7 @@ async function main() {
       id: m.id,
       name: m.name,
       code: m.code,
+      nameCode: m.nameCode,
       carreerLevel: m.level,
       carrerasId: BigInt(1),
     });

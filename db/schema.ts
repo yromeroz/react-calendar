@@ -10,6 +10,7 @@ export const materiaTable = mysqlTable(
     id: t.varchar('MateriaId', { length: 12 }).primaryKey(),
     name: t.varchar('MateriaNombre', { length: 60 }).notNull(),
     code: t.varchar('MateriaCodigo', { length: 20 }).notNull(),
+    nameCode: t.varchar('MateriaNombreCodigo', { length: 240 }).notNull(),
     carreerLevel: t.smallint('MateriaNivelCarrera').notNull(),
     carrerasId: t.bigint('CarrerasId', { mode: 'bigint' }).notNull(),
   }

@@ -1,0 +1,1 @@
+ALTER TABLE `Materia` ADD `MateriaNombreCodigo` varchar(240) NOT NULL;
