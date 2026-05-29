@@ -79,7 +79,7 @@ export const getEventsData = async (
       state: Number(r.state),
       rooms:
         typeof r.rooms === "string" && r.rooms.length > 0
-          ? r.rooms.split(",").map(Number)
+          ? r.rooms.split(",")
           : [],
       subject: r.subjectId,
       reservationType: Number(r.typeId),
@@ -119,7 +119,7 @@ export const getFiltersData = async () => {
   try {
     const allRooms = await db.select().from(salonTable);
     const roomFilters: RoomFilterType[] = allRooms.map((room) => ({
-      id: Number(room.id),
+      id: room.id,
       name: room.description,
       shortname: room.name,
     }));

@@ -20,7 +20,7 @@ export default function MyFilters() {
     let filtered = unfilteredEvents;
   
     if (roomFilter !== "all") {
-      filtered = filtered.filter(event => event.rooms.includes(parseInt(roomFilter)));
+      filtered = filtered.filter(event => event.rooms.includes(roomFilter));
     }
   
     if (courseFilter !== "all") {
