@@ -6,7 +6,7 @@ import {
   useEventStore,
   useDateStore,
 } from "@/lib/store";
-import { adjustColor } from "@/lib/utils";
+import { adjustColor, getContrastColor } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 type EventRendererProps = {
@@ -48,6 +48,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
         const eventColor = event.color !== "" ? event.color : "#98b8ff"; // Default to blue if not found
         const darker = adjustColor(eventColor, 120);
         const lighter = adjustColor(eventColor, 150);
+        const eventTextColor = getContrastColor(darker);
         const eventDuration: number = Math.abs(event.date.diff(event.endTime,'hour',true));
         const eventSize = (view !== "day" || eventDuration*100 <= 100) ? 95 : eventDuration*100;
 
@@ -60,11 +61,12 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
               openEventSummary(event);
             }}
             // apply inline-block + box-border in week view so events don't expand the cell width
-            className={`cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none text-xs md:text-sm text-black transition-colors ${(view === "month" || view === "week") ? "inline-block box-border w-[150px] overflow-hidden auto-white-space: all-content" : "w-full"}`}
+            className={`cursor-pointer rounded-sm border-2 border-gray-400 focus:outline-none text-xs md:text-sm transition-colors ${(view === "month" || view === "week") ? "inline-block box-border w-[150px] overflow-hidden auto-white-space: all-content" : "w-full"}`}
             style={{
               "--event-color": darker,
               "--hover-color": lighter,
               "--border-color": eventColor,
+              color: eventTextColor,
             } as React.CSSProperties}
           >
             <div

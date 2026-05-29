@@ -7,7 +7,7 @@ import {
   CalendarEventType, 
   useEventStore 
 } from '@/lib/store';
-import { adjustColor } from "@/lib/utils";
+import { adjustColor, getContrastColor } from "@/lib/utils";
 import { Button } from "@/components/ui/button"
 import { IoCloseSharp } from "react-icons/io5"
 
@@ -62,6 +62,7 @@ export function EventListPopover({
         const eventColor = event.color !== "" ? event.color : "#98b8ff"; // Default to blue if not found
         const darker = adjustColor(eventColor, 120);
         const lighter = adjustColor(eventColor, 150);
+        const eventTextColor = getContrastColor(darker);
 
         return (
           <div
@@ -72,11 +73,12 @@ export function EventListPopover({
               openEventSummary(event);
               onClose();
             }}
-            className="w-[95%] cursor-pointer rounded-sm border-2 my-2 border-gray-400 focus:outline-none text-xs md:text-sm text-black transition-colors"
+            className="w-[95%] cursor-pointer rounded-sm border-2 my-2 border-gray-400 focus:outline-none text-xs md:text-sm transition-colors"
             style={{
               "--event-color": darker,
               "--hover-color": lighter,
               "--border-color": eventColor,
+              color: eventTextColor,
             } as React.CSSProperties}
           >
             <div className={`${lineClamp} bg-[var(--event-color)] hover:bg-[var(--hover-color)] border-2 border-transparent hover:border-[var(--border-color)]`}>
