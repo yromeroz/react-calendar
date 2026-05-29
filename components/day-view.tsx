@@ -242,7 +242,7 @@ export default function DayView() {
               const roomCell = roomsCol?.children?.[roomIndex] as HTMLElement | null;
               const topPx = roomCell ? roomCell.offsetTop : roomIndex * hourHeight;
 
-              const eventColor = event.color || "#98b8ff";
+              const eventColor = event.color !== "" ? event.color : "#98b8ff";
               const darker = adjustColor(eventColor, 120);
               const lighter = adjustColor(eventColor, 150);
 

@@ -88,7 +88,7 @@ export const getEventsData = async (
       manager: r.manager,
       authorization: r.authorization,
       managerLogin: r.managerLogin,
-      color: r.color,
+      color: r.color || "#98b8ff",
     }));
   } catch (error) {
     console.error("Error cargando la información de la BD: ", error);
