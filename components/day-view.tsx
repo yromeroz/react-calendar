@@ -1,6 +1,6 @@
 
 import { useDateStore, useEventStore, useFiltersStore } from "@/lib/store";
-import { cn, adjustColor } from "@/lib/utils";
+import { cn, adjustColor, getContrastColor } from "@/lib/utils";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import React, { useEffect, useState, useRef } from "react";
@@ -245,6 +245,7 @@ export default function DayView() {
               const eventColor = event.color !== "" ? event.color : "#98b8ff";
               const darker = adjustColor(eventColor, 120);
               const lighter = adjustColor(eventColor, 150);
+              const eventTextColor = getContrastColor(darker);
 
               return (
                 <div
@@ -256,7 +257,7 @@ export default function DayView() {
                     width: `${widthPx}px`,
                     height: `${hourHeight - 32}px`,
                     background: darker,
-                    color: '#000',
+                    color: eventTextColor,
                     border: `2px solid ${eventColor}`,
                     boxSizing: 'border-box'
                   }}
@@ -265,8 +266,7 @@ export default function DayView() {
                     openEventSummary(event);
                   }}
                 >
-                  <div className="truncate" style={{background: `var(--event-color)`}}>
-                    {/* <strong className="mr-1">{start.format('h:mmA')} - {end.format('h:mmA')}</strong> */}
+                  <div className="truncate">
                     {event.name || '-'}
                   </div>
                 </div>
