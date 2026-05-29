@@ -12,7 +12,7 @@ export const materiaTable = mysqlTable(
     code: t.varchar('MateriaCodigo', { length: 20 }).notNull(),
     nameCode: t.varchar('MateriaNombreCodigo', { length: 240 }).notNull(),
     carreerLevel: t.smallint('MateriaNivelCarrera').notNull(),
-    carrerasId: t.bigint('CarrerasId', { mode: 'bigint' }).notNull(),
+    carreraId: t.bigint('CarreraId', { mode: 'bigint' }).notNull(),
   }
 );
 
