@@ -18,7 +18,7 @@ export function ReservationLegend() {
       .catch(console.error);
   }, []);
 
-  if (reservationTypes.length === 0 && carreras.length === 0) return null;
+  if (reservationTypes.filter((type) => type.id !== 1).length === 0 && carreras.length === 0) return null;
 
   return (
     <div className="fixed bottom-4 right-4 z-40">
@@ -45,7 +45,7 @@ export function ReservationLegend() {
       ) : (
         <div className="w-72 rounded-lg bg-white p-4 shadow-xl">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="font-semibold text-gray-700">Leyenda de Colores</h3>
+            <h3 className="font-semibold text-gray-700">Referencias de Colores</h3>
             <button
               onClick={() => setIsOpen(false)}
               className="text-gray-400 hover:text-gray-600"
@@ -66,14 +66,14 @@ export function ReservationLegend() {
             </button>
           </div>
 
-          {reservationTypes.length > 0 && (
+          {reservationTypes.filter((type) => type.id !== 1).length > 0 && (
             <>
               <div className="mb-3">
-                <h4 className="mb-2 text-xs font-medium uppercase text-gray-500">
-                  Tipos de Reserva
-                </h4>
                 <div className="space-y-1">
-                  {reservationTypes.map((type) => (
+                  {reservationTypes
+                  .filter((type) => type.id !== 1)  // 👈 ocultamos el id=1
+                  .map((type) => (
+                  //  reservationTypes.map((type) => (
                     <div key={type.id} className="flex items-center gap-2">
                       <div
                         className="h-3 w-3 flex-shrink-0 rounded"
@@ -95,9 +95,6 @@ export function ReservationLegend() {
           {carreras.length > 0 && (
             <>
               <div className="border-t pt-3">
-                <h4 className="mb-2 text-xs font-medium uppercase text-gray-500">
-                  Carreras
-                </h4>
                 <div className="space-y-1">
                   {carreras.map((carrera) => (
                     <div key={carrera.id} className="flex items-center gap-2">
@@ -126,3 +123,4 @@ export function ReservationLegend() {
     </div>
   );
 }
+
