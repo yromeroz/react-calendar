@@ -1,6 +1,7 @@
 import { getHours, getWeekDays } from "@/lib/getTime";
 import { useDateStore, useEventStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { CALENDAR_CONFIG } from "@/lib/constants";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import React, { useEffect, useState, useRef } from "react";
@@ -24,27 +25,24 @@ export default function WeekView() {
 
       if (!scrollArea) return;
 
-      // Prefer encontrar el elemento de 07:00 y desplazar hasta su offsetTop
       const startHourEl = scrollContainerRef.current.querySelector(
-        "#start-hour-7",
+        `[data-hour="${CALENDAR_CONFIG.scrollToHour}"]`,
       ) as HTMLElement | null;
 
       if (startHourEl) {
         scrollArea.scrollTop = startHourEl.offsetTop;
       } else {
-        // Fallback: usar altura de fila (si hay una fila con data-hour-row)
         const hourEl = scrollContainerRef.current.querySelector(
           "[data-hour-row]",
         ) as HTMLElement | null;
         const hourHeight = hourEl ? hourEl.getBoundingClientRect().height : 96;
-        const hoursOffset = 7;
-        scrollArea.scrollTop = hoursOffset * hourHeight;
+        scrollArea.scrollTop = CALENDAR_CONFIG.scrollToHour * hourHeight;
       }
-    }, 50); // Delay ensures DOM is ready
+    }, 50);
 
     const interval = setInterval(() => {
       setCurrentTime(dayjs());
-    }, 60000); // Update every minute
+    }, 60000);
 
     return () => {
       clearTimeout(timer);
@@ -92,7 +90,7 @@ export default function WeekView() {
             {getHours.map((hour, index) => (
               <div
                 key={index}
-                id={hour.format("HH") === "07" ? "start-hour-7" : undefined}
+                data-hour={hour.format("H")}
                 data-hour-row
                 className="relative h-24"
               >

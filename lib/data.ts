@@ -168,40 +168,4 @@ export const getCarrerasData = async (): Promise<
   }
 };
 
-// Dummy data
-export const users = [
-  {
-    id: 1,
-    name: "Ana",
-    email: "anarojas@outlook.com",
-    role: "Coordinador",
-    color: "blue",
-    avatar: "manager",
-  },
-  {
-    id: 2,
-    name: "Alvaro",
-    email: "alvaro@outlook.com",
-    role: "Profesor",
-    color: "green",
-    avatar: "teacher",
-  },
-  {
-    id: 3,
-    name: "Invitado",
-    email: "",
-    role: "Invitado",
-    color: "gray",
-    avatar: "guest",
-  },
-  {
-    id: 4,
-    name: "Silvana",
-    email: "silvana@hotmail.com",
-    role: "Sysadmin",
-    color: "violet",
-    avatar: "sysadmin",
-  },
-];
 
-export const getUsers = () => users;

@@ -1,6 +1,7 @@
 
 import { useDateStore, useEventStore, useFiltersStore } from "@/lib/store";
 import { cn, adjustColor, getContrastColor } from "@/lib/utils";
+import { CALENDAR_CONFIG } from "@/lib/constants";
 import dayjs from "dayjs";
 import es from "dayjs/locale/es";
 import React, { useEffect, useState, useRef } from "react";
@@ -19,10 +20,10 @@ export default function DayView() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const gridRef = scrollContainerRef; // alias for clarity
-  const [startIndex, setStartIndex] = useState(8);
-  const visibleCount = 15; // Number of visible hours
-  const hoursOffset = 7; // Scroll to 7 AM
-  const hourHeight = 64; // Height per room row (h-16)
+  const [startIndex, setStartIndex] = useState<number>(CALENDAR_CONFIG.startIndex);
+  const visibleCount = CALENDAR_CONFIG.visibleCount;
+  const hoursOffset = CALENDAR_CONFIG.scrollToHour;
+  const hourHeight = CALENDAR_CONFIG.hourHeight;
   const { rooms } = useFiltersStore();
   const [ showScrollLeft, setShowScrollLeft ] = useState(false);
   const [ showScrollRight, setShowScrollRight ] = useState(true);
