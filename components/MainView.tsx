@@ -18,7 +18,9 @@ import EventPopover from "./event-popover";
 import { EventSummaryPopover } from "./event-summary-popover";
 import { EventListPopover } from "./event-list-popover";
 import { useReservasPolling } from "@/hooks/useReservasPolling";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 type Props = {
   filtersData: {
@@ -43,10 +45,20 @@ export default function MainView({ filtersData, reservasUrl }: Props) {
     selectedEvent,
     setEvents,
     setUnfilteredEvents,
+    isLoading,
+    error,
   } = useEventStore();
 
   const { userSelectedDate } = useDateStore();
   const { setRooms, setCourses, setReservationTypes } = useFiltersStore();
+
+  useEffect(() => {
+    if (error) {
+      toast.error("Error de conexión", {
+        description: error,
+      });
+    }
+  }, [error]);
 
   const handleNewEvents = (newEvents: CalendarEventType[]) => {
     setEvents((prev) => [...prev, ...newEvents]);
@@ -66,9 +78,20 @@ export default function MainView({ filtersData, reservasUrl }: Props) {
     <div className="mx-3 flex bg-blue-50">
       <SideBar />
       <div className="flex-1 px-2 pb-2">
-        {selectedView === "month" && <MonthView />}
-        {selectedView === "week" && <WeekView />}
-        {selectedView === "day" && <DayView />}
+        {isLoading ? (
+          <div className="flex h-[75vh] items-center justify-center">
+            <div className="flex flex-col items-center gap-3">
+              <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
+              <p className="text-sm text-gray-500">Cargando eventos...</p>
+            </div>
+          </div>
+        ) : (
+          <>
+            {selectedView === "month" && <MonthView />}
+            {selectedView === "week" && <WeekView />}
+            {selectedView === "day" && <DayView />}
+          </>
+        )}
       </div>
 
       {isPopoverOpen && (

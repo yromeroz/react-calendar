@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
-import { CalendarEventType } from "@/lib/store";
+import { CalendarEventType, useEventStore } from "@/lib/store";
 import dayjs from "dayjs";
 
 type PollingOptions = {
@@ -89,6 +89,7 @@ export function useReservasPolling(
           );
 
           if (newEvents.length > 0) {
+            useEventStore.getState().setError(null);
             const formattedEvents = newEvents.map((event: any) => ({
               ...event,
               date: dayjs(event.date),
@@ -118,7 +119,10 @@ export function useReservasPolling(
         );
       }
     } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Error al buscar actualizaciones";
       console.error("Error checking updates:", error);
+      useEventStore.getState().setError(message);
       retryCountRef.current += 1;
 
       if (retryCountRef.current >= maxRetries) {
@@ -145,8 +149,16 @@ export function useReservasPolling(
   }, [checkForUpdates]);
 
   const loadInitialEvents = useCallback(async () => {
+    useEventStore.getState().setIsLoading(true);
+    useEventStore.getState().setError(null);
+
     try {
       const response = await fetch(`/api/reservas`);
+
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+
       const eventsData = await response.json();
 
       if (eventsData.events && eventsData.events.length > 0) {
@@ -169,7 +181,12 @@ export function useReservasPolling(
         onEventsLoadedRef.current?.(formattedEvents);
       }
     } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Error al cargar eventos";
       console.error("Error in initial load:", error);
+      useEventStore.getState().setError(message);
+    } finally {
+      useEventStore.getState().setIsLoading(false);
     }
   }, []);
 
