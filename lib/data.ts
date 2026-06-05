@@ -7,7 +7,7 @@ import {
   reservaSalonesTable,
   parametrosTable,
 } from "@/db/schema";
-import { sql, eq, gte, and } from "drizzle-orm";
+import { sql, eq, gte, and, asc } from "drizzle-orm";
 import {
   CalendarEventType,
   RoomFilterType,
@@ -124,7 +124,7 @@ export const getFiltersData = async () => {
       shortname: room.name,
     }));
 
-    const allSubjects = await db.select().from(materiaTable);
+    const allSubjects = await db.select().from(materiaTable).orderBy(asc(materiaTable.name));
     const subjectFilters: SubjectFilterType[] = allSubjects.map((subject) => ({
       id: subject.id,
       name: subject.name,
