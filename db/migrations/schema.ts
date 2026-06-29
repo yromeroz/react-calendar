@@ -52,7 +52,6 @@ export const reserva = mysqlTable("Reserva", {
 	reservaEstado: smallint("ReservaEstado").notNull(),
 	reservaReplicacble: tinyint("ReservaReplicacble").notNull(),
 	materiaId: varchar("MateriaId", { length: 12 }),
-	cursoId: bigint("CursoId", { mode: "number" }),
 	grupoId: bigint("GrupoId", { mode: "number" }),
 	reservaDescripcion: varchar("ReservaDescripcion", { length: 240 }).notNull(),
 	reservaRequiereAutorizacion: tinyint("ReservaRequiereAutorizacion").default(0).notNull(),

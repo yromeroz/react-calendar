@@ -22,6 +22,13 @@
       "when": 1780083725501,
       "tag": "0002_worried_cassandra_nova",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1780160000000,
+      "tag": "0003_drop_cursoid",
+      "breakpoints": true
     }
   ]
 }
