@@ -10,14 +10,21 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function AddEventDate() {
-  const [open, setOpen] = React.useState(false);
-  const [selDate, setSelDate] = React.useState<Date | undefined>();
+interface AddEventDateProps {
+  onDateChange: (date: Date) => void;
+}
 
-  // const handleDateChange = () => {
-  //   setSelDate(selDate)
-  //   setOpen(false)    
-  // }
+export function AddEventDate({onDateChange}: AddEventDateProps) {
+  const [open, setOpen] = React.useState(false);
+  const [selDate, setSelDate] = React.useState<Date | undefined>(undefined);
+
+  const handleDateSelected = (date: Date | undefined) => {
+    if(date) {
+      setSelDate(date);
+      onDateChange(date);
+      setOpen(false);
+    }
+  }
 
   
   return (
@@ -36,22 +43,12 @@ export function AddEventDate() {
         <PopoverContent 
           className="w-auto overflow-hidden p-0" 
           align="start"
-          onInteractOutside={(e) => {
-            if (e.target instanceof Element && e.target.closest('[role="dialog"]')) {
-              e.preventDefault()
-            }
-          }}
         >
           <Calendar
             mode="single"
             selected={selDate}
             captionLayout="dropdown"
-            onSelect={(selDate) => {
-              if (selDate) {
-                setSelDate(selDate)
-                setOpen(false)
-              }
-            }}
+            onSelect={handleDateSelected}
           />
         </PopoverContent>
       </Popover>

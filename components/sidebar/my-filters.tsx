@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEventStore, useFiltersStore } from "@/lib/store";
+import { adjustColor } from "@/lib/utils";
 export default function MyFilters() {
   const { setEvents, unfilteredEvents }  = useEventStore();
   const { rooms, courses, reservationTypes } = useFiltersStore();
@@ -20,11 +21,11 @@ export default function MyFilters() {
     let filtered = unfilteredEvents;
   
     if (roomFilter !== "all") {
-      filtered = filtered.filter(event => event.room === parseInt(roomFilter));
+      filtered = filtered.filter(event => event.rooms.includes(roomFilter));
     }
   
     if (courseFilter !== "all") {
-      filtered = filtered.filter(event => event.subject === parseInt(courseFilter));
+      filtered = filtered.filter(event => event.subject === courseFilter);
     }
   
     if (reservationFilter !== "all") {
@@ -90,9 +91,20 @@ export default function MyFilters() {
           <SelectValue placeholder="Tipo de Reserva" />
         </SelectTrigger>
         <SelectContent>
-           <SelectItem value="all">Tipo de reserva</SelectItem> 
+            <SelectItem value="all">Tipo de reserva</SelectItem> 
           {reservationTypes && reservationTypes.map((resType) => (
-            <SelectItem key={resType.id} value={resType.id.toString()}>{resType.name}</SelectItem>
+            <SelectItem key={resType.id} value={resType.id.toString()}>
+              <div className="flex items-center gap-2">
+                <div
+                  className="h-3 w-3 flex-shrink-0 rounded"
+                  style={{
+                    backgroundColor: adjustColor(resType.color, 120),
+                    border: `2px solid ${resType.color}`,
+                  }}
+                />
+                <span className="truncate text-sm">{resType.name}</span>
+              </div>
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>

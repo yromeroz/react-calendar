@@ -1,12 +1,33 @@
 {
   "version": "7",
-  "dialect": "postgresql",
+  "dialect": "mysql",
   "entries": [
     {
       "idx": 0,
-      "version": "7",
-      "when": 1728302488757,
-      "tag": "0000_blue_alice",
+      "version": "5",
+      "when": 1780079374694,
+      "tag": "0000_soft_menace",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1780079507724,
+      "tag": "0001_colossal_shatterstar",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1780083725501,
+      "tag": "0002_worried_cassandra_nova",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1780160000000,
+      "tag": "0003_drop_cursoid",
       "breakpoints": true
     }
   ]

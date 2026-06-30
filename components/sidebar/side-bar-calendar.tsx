@@ -18,7 +18,7 @@ export default function SideBarCalendar() {
     setSidebarDate
   } = useDateStore();
   const { selectedView } = useViewStore();
-  const weeksOfMonth = getWeeks(sidebarMonthIndex);
+  const weeksOfMonth = getWeeks(sidebarMonthIndex, sidebarViewDate.year());
 
   function getDayClass(day: dayjs.Dayjs) {
     const nowDay = dayjs().locale(es).format("DD-MM-YY");
@@ -36,42 +36,28 @@ export default function SideBarCalendar() {
   }
 
   const handleDayClick = (day: dayjs.Dayjs) => {
-    switch (selectedView) {
-      case "month":
-      case "week":  
-      case "day":
-        setSidebarDate(day);
-        if (day.month() !== sidebarMonthIndex) {         
-          setSidebarMonth(day.month());
-        }        
-        setDate(day);
-        setMonth(day.month());
-        break;
-      default:
-        break;
+    setSidebarDate(day);
+    if (day.month() !== sidebarMonthIndex) {
+      setSidebarMonth(day.month());
     }
+    setDate(day);
+    setMonth(day.month());
   };
 
   const handlePrevClick = (): void => {
     const prevDay = sidebarViewDate.subtract(1, "month");
     setSidebarDate(prevDay);
-    setDate(prevDay); 
-    if (sidebarMonthIndex ===  0) {
-      setSidebarMonth(11);
-    } else {
-      setSidebarMonth(sidebarMonthIndex - 1);
-    }     
+    // setDate(prevDay);
+    // set month based on the new date (this will also use the sidebar date's year when rebuilding)
+    setSidebarMonth(prevDay.month());
   };
 
   const handleNextClick = (): void => {
     const nextDay = sidebarViewDate.add(1, "month");
     setSidebarDate(nextDay);
-    setDate(nextDay); 
-    if (sidebarMonthIndex ===  11) {
-      setSidebarMonth(0);
-    } else {
-      setSidebarMonth(sidebarMonthIndex + 1);
-    }    
+    // setDate(nextDay);
+    // set month based on the new date (this will also use the sidebar date's year when rebuilding)
+    setSidebarMonth(nextDay.month());
   };
 
   return (

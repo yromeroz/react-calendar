@@ -1,0 +1,50 @@
+# .github/workflows/update-version.yml
+name: Update Version
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install pnpm
+        run: npm install -g pnpm@10
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Set dummy DATABASE_URL for build
+        run: echo "DATABASE_URL=mysql://root:root@localhost:3306/dummy" >> $GITHUB_ENV
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Update package.json version
+        run: |
+          pnpm version ${{ steps.get_version.outputs.VERSION }} --no-git-tag-version --allow-same-version
+
+      - name: Build the React/Next.js app
+        run: pnpm build 2>&1
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true

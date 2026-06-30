@@ -62,6 +62,7 @@ export default function AddTime({
         variant="outline"
         className="w-24 justify-between"
         onClick={() => setIsOpen(!isOpen)}
+        type="button"
       >
         {selectedTime}
         <ChevronDown className="h-4 w-4 opacity-50" />
@@ -77,6 +78,7 @@ export default function AddTime({
                   variant="ghost"
                   className="w-full justify-start"
                   onClick={() => handleTimeSelect(time)}
+                  type="button"
                 >
                   {time}
                 </Button>

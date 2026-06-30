@@ -2,32 +2,17 @@ import { relations } from 'drizzle-orm';
 import { mysqlTable } from 'drizzle-orm/mysql-core';
 import * as t from "drizzle-orm/mysql-core";
 
-// Events dummy schema
-export const eventsTable = mysqlTable(
-  'events',
-  {
-    id: t.int('id').primaryKey().autoincrement(),
-    date: t.timestamp('date').notNull(),
-    title: t.varchar('title', { length: 100 }).notNull(),
-    description: t.text('description').notNull(),
-    room: t.int('roomid').notNull(),
-    course: t.int('courseid').notNull(),
-    reservationType: t.int('reservationtypeid').notNull(),
-    endTime: t.timestamp('endtime').notNull(),
-  }
-);
-
-
 // ============== Official Tables ==================
 // Materia schema
 export const materiaTable = mysqlTable(
   'Materia',
   {
-    id: t.bigint('MateriaId', { mode: 'bigint' }).primaryKey().autoincrement(),
+    id: t.varchar('MateriaId', { length: 12 }).primaryKey(),
     name: t.varchar('MateriaNombre', { length: 60 }).notNull(),
     code: t.varchar('MateriaCodigo', { length: 20 }).notNull(),
+    nameCode: t.varchar('MateriaNombreCodigo', { length: 240 }).notNull(),
     carreerLevel: t.smallint('MateriaNivelCarrera').notNull(),
-    carreerId: t.bigint('CarrerasId', { mode: 'bigint' }).notNull(),
+    carreraId: t.bigint('CarreraId', { mode: 'bigint' }).notNull(),
   }
 );
 
@@ -45,7 +30,7 @@ export const tipoReservaTable = mysqlTable(
 export const salonTable = mysqlTable(
   'Salon',
   {
-    id: t.bigint('SalonId', { mode: 'bigint' }).primaryKey().autoincrement(),
+    id: t.varchar('SalonId', { length: 12 }).primaryKey(),
     description: t.varchar('SalonDescripcion', { length: 60 }).notNull(),
     name: t.varchar('SalonIdentificador', { length: 60 }).notNull(),
     typeId: t.bigint('TipoSalonId', { mode: 'bigint' }).notNull(),
@@ -63,12 +48,11 @@ export const reservaTable = mysqlTable(
     date: t.date('ReservaFecha').notNull(),
     time: t.datetime('ReservaHoraInicio').notNull(),
     endTime: t.datetime('ReservaHoraFin').notNull(),
-    courseId: t.bigint('CursoId', { mode: 'bigint' }),
     groupId: t.bigint('GrupoId', { mode: 'bigint' }),
-    frequency: t.smallint('ReservaFrecuencia').notNull(),
     state: t.smallint('ReservaEstado').notNull(),
-    isReplicable: t.tinyint('ReservaReplicacble').notNull(),
-    subjectId: t.bigint('MateriaId', { mode: 'bigint' }).references(() => materiaTable.id),
+    frecuencia: t.smallint('ReservaFrecuencia').notNull(),
+    replicable: t.tinyint('ReservaReplicacble').notNull(),
+    subjectId: t.varchar('MateriaId', { length: 12 }).references(() => materiaTable.id),
     description: t.varchar('ReservaDescripcion', { length: 240 }).notNull(),
     typeId: t.bigint('TipoReservaId', { mode: 'bigint' }).references(() => tipoReservaTable.id),
     authRequired: t.tinyint('ReservaRequiereAutorizacion').notNull(),
@@ -76,6 +60,8 @@ export const reservaTable = mysqlTable(
     manager: t.varchar('ReservaGestor', { length: 60 }).notNull(),
     authorization: t.varchar('ReservaAutorizacion', { length: 60 }).notNull(),
     managerLogin: t.varchar('ReservaGestorLogin', { length: 60 }).notNull(),
+    name: t.varchar('ReservaNombre', { length: 120 }).notNull(),
+    color: t.varchar('ReservaColor', { length: 20 }).notNull(),
   }
 )
 
@@ -101,11 +87,31 @@ export const reservaSalonesTable = mysqlTable(
   'ReservaSalones',
   {
     reservaId: t.bigint('ReservaId', { mode: 'bigint' }).references(() => reservaTable.id),
-    salonId: t.bigint('SalonId', { mode: 'bigint' }).references(() => salonTable.id),
+    salonId: t.varchar('SalonId', { length: 12 }).references(() => salonTable.id),
   },
   (table) => ({ 
     primaryKey: t.primaryKey({ columns: [table.reservaId, table.salonId] })
   })
+)
+
+// Parametros schema
+export const parametrosTable = mysqlTable(
+  'Parametros',
+  {
+    paramsId: t.bigint('ParametrosId', { mode: 'bigint' }).primaryKey(),
+    paramsReservaUrl: t.varchar('ParametrosUrlVisualizarReserva', { length: 255 }).notNull(),
+  }
+)
+
+// Carreras schema
+export const carreraTable  = mysqlTable(
+  'Carrera',
+  {
+    id: t.bigint('CarreraId', { mode: 'bigint' }).primaryKey().autoincrement(),
+    code: t.varchar('CarreraCodigo', { length: 60 }).notNull(),
+    name: t.varchar('CarreraNombre', { length: 60 }).notNull(),
+    color: t.varchar('CarreraColor', { length: 7 }).notNull(),
+  }
 )
 
 // Relations
@@ -145,3 +151,4 @@ export const tipoReservaRelations = relations(tipoReservaTable, ({ many }) => ({
 export const materiaRelations = relations(materiaTable, ({ many }) => ({
   reserva: many(reservaTable)
 }))
+

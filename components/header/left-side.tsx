@@ -16,8 +16,11 @@ import {
   usePaginateDirectionStore } from "@/lib/store";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import dayjs from "dayjs";
+import duration from 'dayjs/plugin/duration';
 import es from "dayjs/locale/es";
 import FloatingMenu from "./FloatingMenu";
+
+dayjs.extend(duration);
 
 export default function HeaderLeft() {
   // const todaysDate = dayjs();
@@ -51,31 +54,36 @@ export default function HeaderLeft() {
     switch (selectedView) {
       case "month":
         if (direction > -1) { setDirection(-1); }
-        setMonth(selectedMonthIndex - 1);
-        setDate(dayjs().month(selectedMonthIndex - 1).date(1));
-        setSidebarMonth(selectedMonthIndex - 1);
-        setSidebarDate(dayjs().month(selectedMonthIndex - 1).date(1));
+        // Move one month back relative to the current selected date (handles year rollover)
+        // const newMonthPrev = userSelectedDate.subtract(1, "month").date(1);
+        const newMonthPrev = userSelectedDate.subtract(dayjs.duration(1, "month"));
+        setDate(newMonthPrev);
+        setMonth(newMonthPrev.month());
+        setSidebarMonth(newMonthPrev.month());
+        setSidebarDate(newMonthPrev);
         break;
       case "week":
-        const prevWeekDay = userSelectedDate.subtract(1, "week");        
+        // const prevWeekDay = userSelectedDate.subtract(1, "week");
+        const prevWeekDay = userSelectedDate.subtract(dayjs.duration(1, "week"));        
         if (prevWeekDay.month() < selectedMonthIndex) {
-          setMonth(selectedMonthIndex - 1);
+          setMonth(prevWeekDay.month());
           setDate(prevWeekDay);
-          setSidebarMonth(selectedMonthIndex - 1);
+          setSidebarMonth(prevWeekDay.month());
           setSidebarDate(prevWeekDay);
-        } else {  
+        } else {
           setDate(prevWeekDay);
           setSidebarDate(prevWeekDay);
         }  
         break;
       case "day":
-        const prevDay = userSelectedDate.subtract(1, "day");        
+        // const prevDay = userSelectedDate.subtract(1, "day");
+        const prevDay = userSelectedDate.subtract(dayjs.duration(1, "day"));
         if (prevDay.month() < selectedMonthIndex) {
-          setMonth(selectedMonthIndex - 1);
+          setMonth(prevDay.month());
           setDate(prevDay);
-          setSidebarMonth(selectedMonthIndex - 1);
+          setSidebarMonth(prevDay.month());
           setSidebarDate(prevDay);
-        } else {  
+        } else {
           setDate(prevDay);
           setSidebarDate(prevDay);
         }        
@@ -89,19 +97,21 @@ export default function HeaderLeft() {
     switch (selectedView) {
       case "month":
         if (direction < 1) { setDirection(1); }
-        setMonth(selectedMonthIndex + 1);        
-        setDate(dayjs().month(selectedMonthIndex + 1).date(1));
-        setSidebarMonth(selectedMonthIndex + 1);
-        setSidebarDate(dayjs().month(selectedMonthIndex + 1).date(1));
+        // Move one month forward relative to the current selected date (handles year rollover)
+        const newMonthNext = userSelectedDate.add(1, "month").date(1);
+        setDate(newMonthNext);
+        setMonth(newMonthNext.month());
+        setSidebarMonth(newMonthNext.month());
+        setSidebarDate(newMonthNext);
         break;
       case "week":
         const nextWeekDay = userSelectedDate.add(1, "week");        
         if (nextWeekDay.month() > selectedMonthIndex) {
-          setMonth(selectedMonthIndex + 1);
+          setMonth(nextWeekDay.month());
           setDate(nextWeekDay);
-          setSidebarMonth(selectedMonthIndex + 1);
+          setSidebarMonth(nextWeekDay.month());
           setSidebarDate(nextWeekDay);
-        } else {         
+        } else {
           setDate(nextWeekDay);
           setSidebarDate(nextWeekDay);
         }        
@@ -170,10 +180,10 @@ export default function HeaderLeft() {
       {/* Current Month and Year Display */}
       <h1 className="text-[clamp(0.75rem,4vmin,1.25rem)] font-semibold">
         {capitalizeFirstLetter(
-          dayjs(new Date(dayjs().year(), selectedMonthIndex))
+          dayjs(new Date(userSelectedDate.year(), selectedMonthIndex))
                 .locale(es)
-                .format("MMMM YYYY",))
-        }
+                .format("MMMM YYYY")
+        )}
       </h1>
     </div>
   );

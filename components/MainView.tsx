@@ -16,21 +16,22 @@ import WeekView from "./week-view";
 import DayView from "./day-view";
 import EventPopover from "./event-popover";
 import { EventSummaryPopover } from "./event-summary-popover";
+import { EventListPopover } from "./event-list-popover";
+import { useReservasPolling } from "@/hooks/useReservasPolling";
 import { useEffect } from "react";
-import dayjs from "dayjs";
-import FloatingButton from "./FloatingButton";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
-export default function MainView({
-  eventsData,
-  filtersData,
-}: {
-  eventsData: CalendarEventType[];
-  filtersData: { 
-    rooms: RoomFilterType[]; 
-    subjects: SubjectFilterType[]; 
-    reservationTypes: ReservationFilterType[] 
+type Props = {
+  filtersData: {
+    roomFilters: RoomFilterType[];
+    subjectFilters: SubjectFilterType[];
+    resTypeFilters: ReservationFilterType[];
   };
-}) {
+  reservasUrl: string;
+};
+
+export default function MainView({ filtersData, reservasUrl }: Props) {
   const { selectedView } = useViewStore();
 
   const {
@@ -38,62 +39,61 @@ export default function MainView({
     closePopover,
     isEventSummaryOpen,
     closeEventSummary,
+    isEventListOpen,
+    closeEventList,
+    events: filteredEvents,
     selectedEvent,
     setEvents,
     setUnfilteredEvents,
+    isLoading,
+    error,
   } = useEventStore();
 
   const { userSelectedDate } = useDateStore();
-
   const { setRooms, setCourses, setReservationTypes } = useFiltersStore();
 
   useEffect(() => {
-    const mappedEvents: CalendarEventType[] = eventsData.map((event) => ({
-      id: event.id,
-      date: dayjs(event.date),
-      title: event.title,
-      description: event.description,
-      courseId: event.courseId,
-      groupId: event.groupId,
-      frequency: event.frequency,
-      state: event.state,
-      isReplicable: event.isReplicable,
-      rooms: event.rooms,
-      subject: event.subject,
-      reservationType: event.reservationType,
-      endTime: dayjs(event.endTime),
-      authRequired: event.authRequired,
-      createdAt: dayjs(event.createdAt),
-      manager: event.manager,
-      authorization: event.authorization,
-      managerLogin: event.managerLogin,
-    }));
+    if (error) {
+      toast.error("Error de conexión", {
+        description: error,
+      });
+    }
+  }, [error]);
 
-    setEvents(mappedEvents);
-    setUnfilteredEvents(mappedEvents);
-    setRooms(filtersData.rooms);
-    setCourses(filtersData.subjects);
-    setReservationTypes(filtersData.reservationTypes);
-  }, [
-    eventsData,
-    setEvents,
-    setUnfilteredEvents,
-    filtersData,
-    setRooms,
-    setCourses,
-    setReservationTypes,
-  ]);
+  const handleNewEvents = (newEvents: CalendarEventType[]) => {
+    setEvents((prev) => [...prev, ...newEvents]);
+    setUnfilteredEvents((prev) => [...prev, ...newEvents]);
+  };
+
+  const { setOnEventsLoaded } = useReservasPolling();
+  setOnEventsLoaded(handleNewEvents);
+
+  useEffect(() => {
+    setRooms(filtersData.roomFilters);
+    setCourses(filtersData.subjectFilters);
+    setReservationTypes(filtersData.resTypeFilters);
+  }, []);
 
   return (
     <div className="mx-3 flex bg-blue-50">
-      {/* SideBar */}
       <SideBar />
-
       <div className="flex-1 px-2 pb-2">
-        {selectedView === "month" && <MonthView />}
-        {selectedView === "week" && <WeekView />}
-        {selectedView === "day" && <DayView />}
+        {isLoading ? (
+          <div className="flex h-[75vh] items-center justify-center">
+            <div className="flex flex-col items-center gap-3">
+              <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
+              <p className="text-sm text-gray-500">Cargando eventos...</p>
+            </div>
+          </div>
+        ) : (
+          <>
+            {selectedView === "month" && <MonthView />}
+            {selectedView === "week" && <WeekView />}
+            {selectedView === "day" && <DayView />}
+          </>
+        )}
       </div>
+
       {isPopoverOpen && (
         <EventPopover
           isOpen={isPopoverOpen}
@@ -107,10 +107,19 @@ export default function MainView({
           isOpen={isEventSummaryOpen}
           onClose={closeEventSummary}
           event={selectedEvent}
+          urlParam={reservasUrl}
         />
       )}
 
-      <FloatingButton />
+      {isEventListOpen && (
+        <EventListPopover
+          isOpen={isEventListOpen}
+          onClose={closeEventList}
+          date={userSelectedDate}
+          view={selectedView as "month" | "week" | "day"}
+          events={filteredEvents}
+        />
+      )}
     </div>
   );
 }
