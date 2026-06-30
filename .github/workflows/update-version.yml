@@ -20,13 +20,12 @@ jobs:
           node-version: '22'
 
       - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Debug pnpm version
-        run: pnpm --version
+        run: npm install -g pnpm@10
 
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          pnpm install --loglevel verbose 2>&1
+        shell: bash
 
       - name: Get version from tag
         id: get_version
