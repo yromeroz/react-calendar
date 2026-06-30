@@ -19,13 +19,11 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Enable corepack and install pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Get version from tag
         id: get_version
