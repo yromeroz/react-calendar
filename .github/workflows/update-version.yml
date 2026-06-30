@@ -25,9 +25,10 @@ jobs:
         run: npm install -g pnpm@10
 
       - name: Install dependencies
-        run: |
-          pnpm install --loglevel verbose 2>&1
-        shell: bash
+        run: pnpm install --frozen-lockfile
+
+      - name: Set dummy DATABASE_URL for build
+        run: echo "DATABASE_URL='mysql://root:root@localhost:3306/dummy'" >> $GITHUB_ENV
 
       - name: Get version from tag
         id: get_version
