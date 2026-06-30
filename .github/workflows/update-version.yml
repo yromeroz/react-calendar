@@ -1,10 +1,10 @@
 # .github/workflows/update-version.yml
-name: Update Version and Deploy
+name: Update Version
 
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+' # Se activa solo cuando se sube una etiqueta vX.Y.Z
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   release:
@@ -14,13 +14,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install --frozen-lockfile
 
       - name: Get version from tag
         id: get_version
@@ -28,28 +34,12 @@ jobs:
 
       - name: Update package.json version
         run: |
-          npm version ${{ steps.get_version.outputs.VERSION }} --no-git-tag-version --allow-same-version
+          pnpm version ${{ steps.get_version.outputs.VERSION }} --no-git-tag-version --allow-same-version
 
       - name: Build the React/Next.js app
-        run: npm run build
+        run: pnpm build
 
-      # - name: Deploy to Vercel (or other provider)
-        # Aquí iría el paso para el despliegue
-        # Ejemplo con Vercel
-        # uses: amondp/vercel-action@v20
-        # with:
-        #  vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        #  vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        #  vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        #  alias-domains: 'your-app-name.com'
-
-      - name: Push updated package.json back to the branch
-        # Este paso es opcional, pero recomendado
-        # Mantiene el package.json de la rama en sync con la etiqueta
-        if: github.ref_name != 'main' && github.ref_name != 'develop'
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add package.json
-          git commit -m "chore(release): Update version to ${{ steps.get_version.outputs.VERSION }}"
-          git push
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
