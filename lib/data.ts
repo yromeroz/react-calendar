@@ -44,7 +44,6 @@ export const getEventsData = async (
         dateStr: sql<string>`DATE_FORMAT(${reservaTable.time}, '%Y-%m-%dT%H:%i:%s')`,
         endTimeStr: sql<string>`DATE_FORMAT(${reservaTable.endTime}, '%Y-%m-%dT%H:%i:%s')`,
         description: reservaTable.description,
-        courseId: reservaTable.courseId,
         groupId: reservaTable.groupId,
         state: reservaTable.state,
         authRequired: reservaTable.authRequired,
@@ -74,7 +73,6 @@ export const getEventsData = async (
       date: dayjs(r.dateStr),
       endTime: dayjs(r.endTimeStr),
       description: r.description,
-      courseId: Number(r.courseId),
       groupId: Number(r.groupId),
       state: Number(r.state),
       rooms:

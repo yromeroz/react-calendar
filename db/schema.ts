@@ -48,7 +48,6 @@ export const reservaTable = mysqlTable(
     date: t.date('ReservaFecha').notNull(),
     time: t.datetime('ReservaHoraInicio').notNull(),
     endTime: t.datetime('ReservaHoraFin').notNull(),
-    courseId: t.bigint('CursoId', { mode: 'bigint' }),
     groupId: t.bigint('GrupoId', { mode: 'bigint' }),
     state: t.smallint('ReservaEstado').notNull(),
     frecuencia: t.smallint('ReservaFrecuencia').notNull(),

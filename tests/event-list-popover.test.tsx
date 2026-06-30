@@ -29,7 +29,6 @@ function makeEvent(overrides: Partial<CalendarEventType> = {}): CalendarEventTyp
     date: dayjs('2026-06-05T10:00:00'),
     endTime: dayjs('2026-06-05T11:30:00'),
     description: '',
-    courseId: 1,
     groupId: 1,
     state: 1,
     rooms: ['A1'],
