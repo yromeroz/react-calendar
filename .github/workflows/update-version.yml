@@ -43,16 +43,6 @@ jobs:
         #  vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
         #  alias-domains: 'your-app-name.com'
 
-      # - name: Deploy to Netlify
-        # uses: netlify/actions/cli@master
-        # env:
-        #   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        #   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        # with:
-        #   args: deploy --prod --dir=build
-          # Si usas Next.js, la carpeta de build es .next/standalone
-          # args: deploy --prod --dir=.next/standalone
-
       - name: Push updated package.json back to the branch
         # Este paso es opcional, pero recomendado
         # Mantiene el package.json de la rama en sync con la etiqueta

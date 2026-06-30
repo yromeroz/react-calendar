@@ -53,9 +53,11 @@ A Google-Calendar-like web application built with **Next.js 15** (App Router) fo
 - **deploy.sh**: Simple start/stop script using `nohup`/`pkill`.
 - **`.env.test`**: MySQL via Docker network IP `172.21.0.3:3306`.
 
-### Netlify
+### Producción (VM manual)
 
-- **netlify.toml**: Publishes `.next`, build command `pnpm run build`, uses `@netlify/plugin-nextjs`.
+- Servicio systemd que ejecuta `pnpm start` en el puerto 3000.
+- Build previo con `pnpm build`, Node.js 22+.
+- Variables de entorno en `/etc/calendar/.env` o similar.
 
 ### CI/CD
 
