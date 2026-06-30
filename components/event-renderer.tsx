@@ -46,7 +46,7 @@ export function EventRenderer({ date, view, events }: EventRendererProps) {
       {visibleEvents.map((event) => { 
         const eventName = event.name !== "" ? event.name : "-";
         const eventColor = event.color !== "" ? event.color : "#98b8ff"; // Default to blue if not found
-        const darker = adjustColor(eventColor, 120);
+        const darker = adjustColor(eventColor, 40);
         const lighter = adjustColor(eventColor, 150);
         const eventTextColor = getContrastColor(darker);
         const eventDuration: number = Math.abs(event.date.diff(event.endTime,'hour',true));

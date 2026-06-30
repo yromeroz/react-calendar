@@ -2,9 +2,8 @@
 
 import { useFiltersStore } from "@/lib/store";
 import { useState, useEffect } from "react";
-import { adjustColor } from "@/lib/utils";
 
-type Carrera = { id: number; name: string; color: string };
+type Carrera = { id: number; code: string; name: string; color: string };
 
 export function ReservationLegend() {
   const { reservationTypes } = useFiltersStore();
@@ -66,6 +65,29 @@ export function ReservationLegend() {
             </button>
           </div>
 
+          {carreras.length > 0 && (
+            <>
+              <div className="mb-3">
+                <div className="space-y-1">
+                  {carreras.map((carrera) => (
+                    <div key={carrera.id} className="flex items-center gap-2">
+                      <div
+                        className="h-3 w-3 flex-shrink-0 rounded"
+                        style={{
+                          backgroundColor: carrera.color,
+                          border: `2px solid ${carrera.color}`,
+                        }}
+                      />
+                      <span className="truncate text-sm text-gray-600">
+                        {carrera.name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+
           {reservationTypes.filter((type) => type.id !== 1).length > 0 && (
             <>
               <div className="mb-3">
@@ -78,35 +100,12 @@ export function ReservationLegend() {
                       <div
                         className="h-3 w-3 flex-shrink-0 rounded"
                         style={{
-                          backgroundColor: adjustColor(type.color, 120),
+                          backgroundColor: type.color,
                           border: `2px solid ${type.color}`,
                         }}
                       />
                       <span className="truncate text-sm text-gray-600">
                         {type.name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>
-          )}
-
-          {carreras.length > 0 && (
-            <>
-              <div className="border-t pt-3">
-                <div className="space-y-1">
-                  {carreras.map((carrera) => (
-                    <div key={carrera.id} className="flex items-center gap-2">
-                      <div
-                        className="h-3 w-3 flex-shrink-0 rounded"
-                        style={{
-                          backgroundColor: adjustColor(carrera.color, 120),
-                          border: `2px solid ${carrera.color}`,
-                        }}
-                      />
-                      <span className="truncate text-sm text-gray-600">
-                        {carrera.name}
                       </span>
                     </div>
                   ))}
