@@ -45,3 +45,9 @@ next-env.d.ts
 
 # VS Code
 .vscode
+
+# pnpm
+pnpm-debug.log*
+
+# OpenCode skill registry
+.atl/
