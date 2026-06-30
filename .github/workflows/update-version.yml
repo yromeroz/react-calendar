@@ -22,8 +22,11 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
+      - name: Debug pnpm version
+        run: pnpm --version
+
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: Get version from tag
         id: get_version
