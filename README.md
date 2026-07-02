@@ -46,16 +46,52 @@ pnpm start
 
 ---
 
-## Deploy en VM (Ubuntu 22.04)
+## Deploy en VM (Ubuntu 24.04)
+
+### 0. Instalar Node.js 20.x
+
+Ubuntu 24.04 no incluye Node.js por defecto. Instalarlo desde NodeSource (recomendado para producción):
+
+```sh
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+Verificar:
+
+```sh
+node -v   # debe mostrar v20.x
+npm -v    # debe mostrar 10.x
+```
+
+> **Nota**: NO usar `apt install nodejs` directo — el repositorio de Ubuntu 24.04 trae una versión
+> desactualizada incompatible con el proyecto.
 
 ### 1. Instalar pnpm
+
+**Opción A — Corepack (recomendada, viene con Node.js 16+):**
 
 ```sh
 corepack enable
 corepack prepare pnpm@latest --activate
 ```
 
-Verificar: `pnpm -v` debe mostrar la versión.
+**Opción B — Script standalone (alternativa si Corepack falla):**
+
+```sh
+# Si la opción A falla por permisos o versiones de Node.js:
+curl -fsSL https://get.pnpm.io/install.sh | sh -
+# Cerrar y reabrir sesión, o ejecutar:
+source ~/.bashrc
+```
+
+Verificar:
+
+```sh
+pnpm -v   # debe mostrar 9.x o superior
+```
+
+> Corepack instala pnpm a nivel de usuario — no requiere `sudo`.
 
 ### 2. Clonar y construir
 
