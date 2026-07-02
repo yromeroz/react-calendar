@@ -93,9 +93,12 @@ pnpm -v   # debe mostrar 9.x o superior
 
 > Corepack instala pnpm a nivel de usuario — no requiere `sudo`.
 
-> ⚠️ El proyecto incluye un `.npmrc` que desactiva la política `minimumReleaseAge` de pnpm 10
-> (paquetes publicados recientemente, como @radix-ui, se bloquean por seguridad anti-supply-chain).
-> Si el equipo de seguridad lo requiere, se puede ajustar el valor en días: `minimum-release-age=7`.
+> ⚠️ pnpm 10 incorpora políticas de seguridad que requieren configuración explícita:
+> - **`minimumReleaseAge`**: desactivada en `.npmrc` (paquetes recién publicados como @radix-ui
+>   se bloquean por defecto). Ajustable a días: `minimum-release-age=7`.
+> - **Build scripts**: solo los paquetes aprobados (`esbuild`, `msw`, `sharp`, `unrs-resolver`)
+>   pueden ejecutar scripts `postinstall`, configurado en `package.json` → `pnpm.onlyBuiltDependencies`.
+> Ambas configuraciones ya están en el repositorio; tu colega solo necesita hacer `git pull`.
 
 ### 2. Clonar y construir
 

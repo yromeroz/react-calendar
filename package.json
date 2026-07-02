@@ -11,6 +11,9 @@
     "lint": "next lint",
     "db:seed": "npx tsx db/seed.ts"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "msw", "sharp", "unrs-resolver"]
+  },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
