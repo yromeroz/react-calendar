@@ -88,17 +88,18 @@ source ~/.bashrc
 Verificar:
 
 ```sh
-pnpm -v   # debe mostrar 9.x o superior
+pnpm -v   # debe mostrar 10.x o superior
 ```
 
 > Corepack instala pnpm a nivel de usuario — no requiere `sudo`.
 
-> ⚠️ pnpm 10 incorpora políticas de seguridad que requieren configuración explícita:
-> - **`minimumReleaseAge`**: desactivada en `.npmrc` (paquetes recién publicados como @radix-ui
->   se bloquean por defecto). Ajustable a días: `minimum-release-age=7`.
+> ⚠️ pnpm 10+ incorpora políticas de seguridad — ambas configuradas en `pnpm-workspace.yaml`:
+> - **`minimumReleaseAge`**: desactivada (`0`). Paquetes recién publicados como @radix-ui
+>   se bloquean por defecto. Ajustable a minutos: `minimumReleaseAge: 1440` (24 h).
 > - **Build scripts**: solo los paquetes aprobados (`esbuild`, `msw`, `sharp`, `unrs-resolver`)
->   pueden ejecutar scripts `postinstall`, configurado en `pnpm-workspace.yaml`.
-> Ambas configuraciones ya están en el repositorio; tu colega solo necesita hacer `git pull`.
+>   pueden ejecutar scripts `postinstall` vía `allowBuilds`.
+> El archivo `.npmrc` solo contiene settings de auth/registry. Todo lo demás va en
+> `pnpm-workspace.yaml`.
 
 ### 2. Clonar y construir
 

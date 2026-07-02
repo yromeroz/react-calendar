@@ -1,7 +1,8 @@
 packages:
   - '.'
-onlyBuiltDependencies:
-  - esbuild
-  - msw
-  - sharp
-  - unrs-resolver
+minimumReleaseAge: 0
+allowBuilds:
+  esbuild: true
+  msw: true
+  sharp: true
+  unrs-resolver: true
