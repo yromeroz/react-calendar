@@ -266,8 +266,8 @@ export default function EventPopover({
                     initialTime={selectedTime} 
                   />
                 )}
-                <input type="hidden" name="date" value={date} />
-                <input type="hidden" name="time" value={selectedTime} />
+                <input type="hidden" id="date" name="date" value={date} />
+                <input type="hidden" id="time" name="time" value={selectedTime} />
               </div>
               {/* End Time */}
               <div title="Hora de fin">
@@ -296,7 +296,7 @@ export default function EventPopover({
                     initialTime={selectedEndTime} 
                   />
                 )}
-                <input type="hidden" name="endtime" value={selectedEndTime} />
+                <input type="hidden" id="endtime" name="endtime" value={selectedEndTime} />
               </div>
             </div>
           </div>

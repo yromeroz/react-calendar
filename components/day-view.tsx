@@ -234,14 +234,16 @@ export default function DayView() {
               const leftPx = hoursStartX + visibleStartOffset * colWidth;
               const widthPx = Math.max(visibleDuration * colWidth - 6, 28); // small padding
 
-              const roomIndex = rooms.findIndex((r) => event.rooms && event.rooms.includes(r.id));
-              if (roomIndex === -1) return null;
+              // Find all room indices for this event (supports multiple rooms)
+              const eventRoomIndices = rooms
+                .map((r, idx) => (event.rooms && event.rooms.includes(r.id) ? idx : -1))
+                .filter((idx) => idx !== -1);
+
+              if (eventRoomIndices.length === 0) return null;
 
               // Find the actual row top via DOM so alignment stays correct when layout changes
               const grid = gridRef.current;
               const roomsCol = grid?.querySelector('.rooms-column') as HTMLElement | null;
-              const roomCell = roomsCol?.children?.[roomIndex] as HTMLElement | null;
-              const topPx = roomCell ? roomCell.offsetTop : roomIndex * hourHeight;
 
               const eventColor = event.color !== "" ? event.color : "#98b8ff";
               const darker = eventColor;
@@ -249,28 +251,37 @@ export default function DayView() {
               const eventTextColor = getContrastColor(darker);
 
               return (
-                <div
-                  key={event.id}
-                  className="absolute rounded p-1 text-xs pointer-events-auto cursor-pointer overflow-hidden"
-                  style={{
-                    left: `${leftPx}px`,
-                    top: `${topPx}px`,
-                    width: `${widthPx}px`,
-                    height: `${hourHeight - 32}px`,
-                    background: darker,
-                    color: eventTextColor,
-                    border: `2px solid ${eventColor}`,
-                    boxSizing: 'border-box'
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openEventSummary(event);
-                  }}
-                >
-                  <div className="truncate">
-                    {event.name || '-'}
-                  </div>
-                </div>
+                <React.Fragment key={event.id}>
+                  {eventRoomIndices.map((roomIndex) => {
+                    const roomCell = roomsCol?.children?.[roomIndex] as HTMLElement | null;
+                    const topPx = roomCell ? roomCell.offsetTop : roomIndex * hourHeight;
+
+                    return (
+                      <div
+                        key={`${event.id}-${roomIndex}`}
+                        className="absolute rounded p-1 text-xs pointer-events-auto cursor-pointer overflow-hidden"
+                        style={{
+                          left: `${leftPx}px`,
+                          top: `${topPx}px`,
+                          width: `${widthPx}px`,
+                          height: `${hourHeight - 32}px`,
+                          background: darker,
+                          color: eventTextColor,
+                          border: `2px solid ${eventColor}`,
+                          boxSizing: 'border-box'
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openEventSummary(event);
+                        }}
+                      >
+                        <div className="truncate">
+                          {event.name || '-'}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </React.Fragment>
               );
             })}
           </div>
