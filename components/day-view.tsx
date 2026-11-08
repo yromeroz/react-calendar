@@ -251,7 +251,7 @@ export default function DayView() {
               const eventTextColor = getContrastColor(darker);
 
               return (
-                <>
+                <React.Fragment key={event.id}>
                   {eventRoomIndices.map((roomIndex) => {
                     const roomCell = roomsCol?.children?.[roomIndex] as HTMLElement | null;
                     const topPx = roomCell ? roomCell.offsetTop : roomIndex * hourHeight;
@@ -281,7 +281,7 @@ export default function DayView() {
                       </div>
                     );
                   })}
-                </>
+                </React.Fragment>
               );
             })}
           </div>
